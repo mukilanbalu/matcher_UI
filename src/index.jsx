@@ -49,7 +49,7 @@ const providerConfig = {
     clientId: "ElYbgNgv8swQ0cKUCv0QuFFWAA8uh4VK",
     onRedirectCallback,
     authorizationParams: {
-        redirect_uri: "http://localhost:3000",
+        redirect_uri: window.location.origin,
         audience: "matcher",
         scope: "profile"
     },
