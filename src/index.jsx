@@ -51,7 +51,7 @@ const providerConfig = {
     authorizationParams: {
         redirect_uri: window.location.origin,
         audience: "matcher",
-        scope: "profile"
+        scope: "openid profile email"
     },
 };
 

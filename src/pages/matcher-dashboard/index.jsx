@@ -15,6 +15,7 @@ import profileService from 'apiServices/profileService';
 import ComponentSkeleton from 'pages/component-overview/ComponentSkeleton';
 import { useNavigate } from 'react-router';
 import { useAuth0 } from '@auth0/auth0-react';
+import ProfileFilters from 'components/filter-panel';
 
 // DASHBOARD //
 const apiUrl = import.meta.env.VITE_API_ENDPOINT;
@@ -74,6 +75,7 @@ export default function DashboardMatcher() {
     const [profiles, setProfiles] = useState([]);
     const [isLoading, setLoading] = useState(true);
 
+    const [profileFilters, setProfileFilters] = useState({})
 
     const { user } = useAuth0();
 
@@ -89,6 +91,27 @@ export default function DashboardMatcher() {
         setLoading(false);
     }, []);
 
+    useEffect(() => {
+        setLoading(true);
+        let payload = Object.entries(profileFilters).reduce((acc, [key, value]) => {
+            if ((value && !(Array.isArray(value)) && value?.trim()) || (Array.isArray(value) && value.length > 0)) {
+                acc[key] = value;
+            }
+            return acc;
+        }, {});
+        try {
+            profileService.searchProfiles({ filters: { ...payload } }).then(res => {
+                if (res.status === 200) {
+                    setProfiles(res.data.data);
+                } else if (res.status === 204) {
+                    setProfiles([]);
+                }
+            });
+        } catch (err) {
+            console.error("Error fetching profiles")
+        }
+        setLoading(false);
+    }, [profileFilters]);
 
 
     const renderProfileCards = (profile) => (
@@ -127,6 +150,12 @@ export default function DashboardMatcher() {
                         <Typography variant="body1">
                             {profile.professional.location}
                         </Typography>
+                        <Typography variant="body1">
+                            {profile?.astro?.rasi}
+                        </Typography>
+                        <Typography variant="body1">
+                            {profile?.astro?.nakshatram}
+                        </Typography>
                     </Grid>
                 </CardContent>
             </MainCard>
@@ -137,40 +166,25 @@ export default function DashboardMatcher() {
     return (
         <ComponentSkeleton isLoading={isLoading}>
             <Grid container rowSpacing={4.5} columnSpacing={2.75}>
-                {!isLoading && profiles.map((data) =>
-                    <Grid item xs={12} sm={6} md={6} lg={6} key={data?.email}>
-                        {renderProfileCards(data)}
-                    </Grid>
+                <Grid item xs={12} sx={{ mb: -2.25 }}>
+                    <MainCard border={false} shadow={3} boxShadow  >
+                        <ProfileFilters setProfileFilters={setProfileFilters} />
+                    </MainCard>
+                </Grid>
 
-                )}
+                {(!isLoading && profiles.length > 0) ?
 
-
-                {/* <Grid item xs={12} sm={6} md={6} lg={6}>
-                <MainCard content={false} sx={{ display: "flex", cursor: "pointer", "&:hover": { backgroundColor: "rgba(22, 119, 255, 0.08)", borderRight: "2px solid rgb(22, 119, 255)" } }} onClick={() => console.log(profile.email)}>
-                    <CardMedia component="img" sx={{ maxHeight: "250px", width: "auto" }} image={profile.profile_img} alt="green iguana" />
-                    <CardContent  >
-                        <Typography variant="h2" gutterBottom>
-                            {profile.name}
+                    profiles.map((data) =>
+                        <Grid item xs={12} sm={6} md={6} lg={6} key={data?.email}>
+                            {renderProfileCards(data)}
+                        </Grid>
+                    ) :
+                    <Grid item xs={12} sm={6} md={6} lg={12} >
+                        <Typography variant='h4' align='center' mt={"50px"} >
+                            No data available
                         </Typography>
-                        <div sx={{ display: "flex", justifyContent: "space-between" }}>
-                            <Typography variant="body1">
-                                {profile.dob.age} years
-                            </Typography>
-                            <Typography variant="body1">
-                                {profile.professional.education}
-                            </Typography>
-                            <Typography variant="body1">
-                                {profile.professional.job}
-                            </Typography>
-                            <Typography variant="body1">
-                                {profile.professional.location}
-                            </Typography>
-                        </div>
-
-                    </CardContent>
-                </MainCard>
-            </Grid> */}
-
+                    </Grid>
+                }
             </Grid>
         </ComponentSkeleton>
     );

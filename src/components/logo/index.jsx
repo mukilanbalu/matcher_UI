@@ -13,7 +13,7 @@ import config from 'config';
 
 const LogoSection = ({ sx, to }) => {
   return (
-    <ButtonBase disableRipple component={Link} to={!to ? config.defaultPath : to} sx={sx}>
+    <ButtonBase disableRipple component={Link} to={!to ? "/" : to} sx={sx}>
       <Stack direction="row" spacing={1} alignItems="center">
         <Logo />
       </Stack>

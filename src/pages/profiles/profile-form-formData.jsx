@@ -292,7 +292,6 @@ const ProfileForm = (props) => {
 
         profileImage.forEach((profile, index) => {
             formData.append('profile_img', profile);
-
         })
 
         formData.append('astro_img', astroImage[0]);
@@ -305,8 +304,6 @@ const ProfileForm = (props) => {
             if (props.isCreateProfile) {
                 formData.delete('email');
                 formData.append('email', user.email);
-
-
                 responseData = await profileService.createProfile(formData);
             }
             else {
@@ -321,10 +318,7 @@ const ProfileForm = (props) => {
         } catch (e) {
             console.error(e);
         }
-
-
         setSubmitting(false);
-
     };
 
     return (
@@ -336,10 +330,8 @@ const ProfileForm = (props) => {
             {({ handleSubmit, handleBlur, handleChange, values, touched, errors, isSubmitting }) => (
                 <form noValidate onSubmit={handleSubmit}>
                     <Grid container spacing={3}>
-
                         <Grid item xs={12} lg={12} mb={2} >
                             <MainCard border={false} shadow={3} boxShadow  >
-
                                 <Grid container spacing={2}>
                                     <Grid item xs={12} lg={12} >
                                         <Typography variant="h3" color="textPrimary" sx={{ mb: "20px", fontWeight: 500 }}>
@@ -382,6 +374,7 @@ const ProfileForm = (props) => {
                                             </Grid>
                                         </Grid>
                                     </Grid>
+
                                     <Grid key={"weight"} item xs={12} lg={6}>
                                         <Grid container>
                                             <Grid item xs={12} lg={3} xl={3}>
