@@ -100,31 +100,25 @@ export default function ProfileDetails(props) {
 
   const apiUrl = import.meta.env.VITE_API_ENDPOINT;
   const getData = () => {
+    setIsLoading(true);
     if (state) {
-      setIsLoading(true);
       profileService.searchProfiles({ filters: { email: state.email }, isFullProfile: true }).then(res => {
         if (res.status === 200) {
           setProfile(res.data.data[0]);
         }
+        setIsLoading(false);
       });
-      setIsLoading(false);
     } else {
-      setIsLoading(true);
       profileService.searchProfiles({ filters: { email: props?.currentUser?.email }, isFullProfile: true }).then(res => {
         if (res.status === 200) {
           setProfile(res.data.data[0]);
         } else if (res.status === 204) {
           setIsCreateProfile(true)
         }
+        setIsLoading(false);
       });
-      setIsLoading(false);
     }
   }
-
-  useEffect(() => {
-    getData()
-  }, []);
-
   useEffect(() => {
     getData()
   }, [state, pathname]);
@@ -147,7 +141,6 @@ export default function ProfileDetails(props) {
   const handleCreate = () => {
     setProfile(initProfile);
     setIsEdit(true);
-
   }
 
   const renderProfileImagePreview = () => (

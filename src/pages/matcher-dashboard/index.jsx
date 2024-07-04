@@ -72,26 +72,22 @@ export default function DashboardMatcher() {
         }
     }
 
+
+    const initialValues = {
+        [`astro.nakshatram`]: '',
+        [`astro.rasi`]: '',
+        gender: '',
+        [`birth.age`]: [21, 31],
+    };
+
     const [profiles, setProfiles] = useState([]);
     const [isLoading, setLoading] = useState(true);
 
-    const [profileFilters, setProfileFilters] = useState({})
+    const [profileFilters, setProfileFilters] = useState(initialValues)
 
     const { user } = useAuth0();
 
-
-
-    useEffect(() => {
-        setLoading(true);
-        profileService.searchProfiles({}).then(res => {
-            if (res.status === 200) {
-                setProfiles(res.data.data);
-            }
-        });
-        setLoading(false);
-    }, []);
-
-    useEffect(() => {
+    const getProfiles = () => {
         setLoading(true);
         let payload = Object.entries(profileFilters).reduce((acc, [key, value]) => {
             if ((value && !(Array.isArray(value)) && value?.trim()) || (Array.isArray(value) && value.length > 0)) {
@@ -106,11 +102,18 @@ export default function DashboardMatcher() {
                 } else if (res.status === 204) {
                     setProfiles([]);
                 }
+                setLoading(false);
+
             });
         } catch (err) {
-            console.error("Error fetching profiles")
+            console.error("Error fetching profiles");
+            setLoading(false);
         }
-        setLoading(false);
+    }
+
+    useEffect(() => {
+        getProfiles();
+        console.log("Profiles loaded")
     }, [profileFilters]);
 
 
@@ -164,15 +167,17 @@ export default function DashboardMatcher() {
 
 
     return (
-        <ComponentSkeleton isLoading={isLoading}>
-            <Grid container rowSpacing={4.5} columnSpacing={2.75}>
-                <Grid item xs={12} sx={{ mb: -2.25 }}>
-                    <MainCard border={false} shadow={3} boxShadow  >
-                        <ProfileFilters setProfileFilters={setProfileFilters} />
-                    </MainCard>
-                </Grid>
+
+        <Grid container rowSpacing={4.5} columnSpacing={2.75}>
+            <Grid item xs={12} sx={{ mb: -2.25 }}>
+                <MainCard border={false} shadow={3} boxShadow  >
+                    <ProfileFilters profileFilters={profileFilters} setProfileFilters={setProfileFilters} />
+                </MainCard>
+            </Grid>
+            <ComponentSkeleton isLoading={isLoading}>
 
                 {(!isLoading && profiles.length > 0) ?
+
 
                     profiles.map((data) =>
                         <Grid item xs={12} sm={6} md={6} lg={6} key={data?.email}>
@@ -181,11 +186,11 @@ export default function DashboardMatcher() {
                     ) :
                     <Grid item xs={12} sm={6} md={6} lg={12} >
                         <Typography variant='h4' align='center' mt={"50px"} >
-                            No data available
+                            No profile available for the filters
                         </Typography>
                     </Grid>
                 }
-            </Grid>
-        </ComponentSkeleton>
+            </ComponentSkeleton>
+        </Grid>
     );
 }

@@ -5,13 +5,6 @@ import { Select, FormControl, InputLabel, MenuItem, Grid, Slider, Stack } from '
 
 const ProfileFilters = (props) => {
 
-    const initialValues = {
-        [`astro.nakshatram`]: '',
-        [`astro.rasi`]: '',
-        gender: '',
-        [`birth.age`]: [21, 31],
-    };
-    const [profileFilters, setProfileFilters] = useState(initialValues)
     const raasiList = [
         'Mesham',
         'Risabham',
@@ -63,25 +56,23 @@ const ProfileFilters = (props) => {
     const handleSubmit = (values) => {
     };
     const handleChange = (values) => {
-        setProfileFilters({ ...profileFilters, [values?.target?.name]: values?.target?.value });
-        props.setProfileFilters({ ...profileFilters, [values?.target?.name]: values?.target?.value });
+        props.setProfileFilters({ ...props.profileFilters, [values?.target?.name]: values?.target?.value });
     };
 
     return (
-        <Formik initialValues={profileFilters} >
+        <Formik initialValues={props.profileFilters} >
             {({ handleBlur, values, touched, errors, isSubmitting }) => (
                 <form noValidate onChange={handleSubmit} >
-                    <Grid container owSpacing={4.5} columnSpacing={2.75}>
+                    <Grid container rowSpacing={4.5} columnSpacing={2.75}>
                         <Grid item xs={12} sm={12} md={12} lg={3}>
                             <FormControl fullWidth>
                                 <InputLabel id="gender-label">Bride / Groom</InputLabel>
                                 <Select
                                     name={"gender"}
-                                    value={profileFilters.gender}
+                                    value={props.profileFilters.gender}
                                     onChange={handleChange}
                                     fullWidth
                                     variant="outlined"
-                                    margin="normal"
                                     displayEmpty
                                 >
                                     <MenuItem value={" "}>
@@ -104,11 +95,10 @@ const ProfileFilters = (props) => {
                                 <InputLabel id="raasi-label">Raasi</InputLabel>
                                 <Select
                                     name={"astro.rasi"}
-                                    value={profileFilters["astro.rasi"]}
+                                    value={props.profileFilters["astro.rasi"]}
                                     onChange={handleChange}
                                     fullWidth
                                     variant="outlined"
-                                    margin="normal"
                                     displayEmpty
                                 >
                                     <MenuItem value={" "}>
@@ -129,11 +119,10 @@ const ProfileFilters = (props) => {
                                 <InputLabel id="nakshatram-label">Nakshatram</InputLabel>
                                 <Select
                                     name={"astro.nakshatram"}
-                                    value={profileFilters["astro.nakshatram"]}
+                                    value={props.profileFilters["astro.nakshatram"]}
                                     onChange={handleChange}
                                     fullWidth
                                     variant="outlined"
-                                    margin="normal"
                                     displayEmpty
                                 >
                                     <MenuItem value={" "}>
@@ -150,16 +139,16 @@ const ProfileFilters = (props) => {
                         </Grid>
 
                         <Grid item xs={12} sm={12} md={12} lg={3}>
-                            <InputLabel id="age-label" sx={{ mr: "15px" }}>Age : {`${profileFilters[`birth.age`][0]} - ${profileFilters[`birth.age`][1]} `}  </InputLabel>
+                            <InputLabel id="age-label" sx={{ mr: "15px" }}>Age : {`${props.profileFilters[`birth.age`][0]} - ${props.profileFilters[`birth.age`][1]} `}  </InputLabel>
 
                             <FormControl fullWidth>
                                 <Stack direction={"row-reverse"}>
                                     <Slider
                                         name='birth.age'
-                                        aria-label="age"
+                                        // aria-label="age"
                                         // defaultValue={values.age}
                                         onChange={handleChange}
-                                        value={profileFilters[`birth.age`]}
+                                        value={props.profileFilters[`birth.age`]}
                                         // getAriaValueText={"age"}
                                         valueLabelDisplay="auto"
                                         // shiftStep={30}
