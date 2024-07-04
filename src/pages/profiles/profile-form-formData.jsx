@@ -309,7 +309,7 @@ const ProfileForm = (props) => {
             else {
                 responseData = await profileService.patchProfile(formData);
             }
-            if (!isEmpty(responseData)) {
+            if (responseData.status === 200) {
                 props.setProfile(responseData.data.data);
                 props.setIsCreateProfile(false);
                 props.setIsEdit(false);

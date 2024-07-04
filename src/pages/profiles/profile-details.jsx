@@ -101,24 +101,32 @@ export default function ProfileDetails(props) {
   const apiUrl = import.meta.env.VITE_API_ENDPOINT;
   const getData = () => {
     setIsLoading(true);
-    if (state) {
-      profileService.searchProfiles({ filters: { email: state.email }, isFullProfile: true }).then(res => {
-        if (res.status === 200) {
-          setProfile(res.data.data[0]);
-        }
-        setIsLoading(false);
-      });
-    } else {
-      profileService.searchProfiles({ filters: { email: props?.currentUser?.email }, isFullProfile: true }).then(res => {
-        if (res.status === 200) {
-          setProfile(res.data.data[0]);
-        } else if (res.status === 204) {
-          setIsCreateProfile(true)
-        }
-        setIsLoading(false);
-      });
+    try {
+      if (state) {
+        profileService.searchProfiles({ filters: { email: state.email }, isFullProfile: true }).then(res => {
+          if (res.status === 200) {
+            setProfile(res.data.data[0]);
+          }
+          setIsLoading(false);
+        });
+      } else {
+        profileService.searchProfiles({ filters: { email: props?.currentUser?.email }, isFullProfile: true }).then(res => {
+          if (res.status === 200) {
+            setProfile(res.data.data[0]);
+          } else if (res.status === 204) {
+            setIsCreateProfile(true)
+          }
+          setIsLoading(false);
+        });
+      }
+    }
+    catch (err) {
+      console.error("Error fetching profiles");
+      setIsLoading(false);
     }
   }
+
+
   useEffect(() => {
     getData()
   }, [state, pathname]);
