@@ -23,6 +23,8 @@ import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import html2pdf from 'html2pdf.js';
 import ImageCarousel from "../../components/image-carousel";
+import { initialProfileValues } from 'constants/appConstants';
+import { calculateAge } from 'utils/appUtils';
 export default function ProfileDetails(props) {
 
   const [isLoading, setIsLoading] = useState(true);
@@ -47,58 +49,6 @@ export default function ProfileDetails(props) {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-
-  const initProfile = {
-    name: "",
-    email: "",
-    profile_img: "",
-    gender: "",
-    height: "",
-    weight: "",
-    colour: "",
-    birth: {
-      dob: "",
-      time: "",
-      day: "",
-      age: "",
-      place: "",
-      tamil_year: "",
-      tamil_month: "",
-      tamil_date: ""
-    },
-    professional: {
-      education: "",
-      job: "",
-      sector: "",
-      income: "",
-      location: "",
-    },
-    family: {
-      father_name: "",
-      father_job: "",
-      mother_name: "",
-      mother_job: "",
-      income: "",
-      ancestral_origin: "",
-      kuladeivam: "",
-      brothers: 0,
-      sisters: 0,
-      married_brothers: 0,
-      married_sisters: "",
-      mobile: "",
-      address: "",
-    },
-    astro: {
-      gothram: "",
-      rasi: "",
-      nakshatram: "",
-      patham: "",
-      lagnam: "",
-      img: "",
-    },
-  }
-
-  const apiUrl = import.meta.env.VITE_API_ENDPOINT;
   const getData = () => {
     setIsLoading(true);
     try {
@@ -147,7 +97,7 @@ export default function ProfileDetails(props) {
   };
 
   const handleCreate = () => {
-    setProfile(initProfile);
+    setProfile(initialProfileValues);
     setIsEdit(true);
   }
 
@@ -166,10 +116,10 @@ export default function ProfileDetails(props) {
               component="img"
               sx={{
               }}
-              src={(data[category]) ? `${apiUrl}/${data[category]}` : ""} alt={"astro_image"}
+              src={data[category]}
             ></Box>
           </Grid>)
-      } else if (category !== "_id") {
+      } else if (category !== "_id" && category !== "mobile") {
         details.push(
           <Grid key={category} item xs={12} lg={6}>
             <Grid container>
@@ -205,7 +155,7 @@ export default function ProfileDetails(props) {
                 maxWidth: "100%",
                 cursor: "pointer"
               }}
-              src={(profile?.profile_img) ? `${apiUrl}/${profile.profile_img[0]}` : ""}
+              src={(profile?.profile_img) ? `${profile.profile_img[0]}` : ""}
               alt={"profile_image"}
               onClick={handleOpen}
             />
@@ -223,7 +173,10 @@ export default function ProfileDetails(props) {
             </Typography>
             <br />
             <Typography variant="h6" color="textPrimary" sx={{ mb: "8px", fontWeight: "500" }}>
-              {`${profile?.birth?.age} years | ${profile?.height}  | ${profile?.weight}  | ${profile?.colour} `}
+              {calculateAge(profile?.birth?.dob)} {`years | ${profile?.marital_status}`}
+            </Typography>
+            <Typography variant="h6" color="textPrimary" sx={{ mb: "8px", fontWeight: "500" }}>
+              {`${profile?.height}  | ${profile?.weight}  | ${profile?.colour} `}
             </Typography>
             <Typography variant="h6" color="textPrimary" sx={{ mb: "8px", fontWeight: "500" }}>
               <SchoolIcon fontSize='10' /> {profile?.professional?.education}
@@ -236,6 +189,9 @@ export default function ProfileDetails(props) {
             </Typography>
             <Typography variant="h6" color="textPrimary" sx={{ mb: "8px", fontWeight: "500" }}>
               <PhoneOutlined /> {profile?.family?.mobile}
+            </Typography>
+            <Typography variant="caption" color="textPrimary" sx={{ mb: "8px", fontWeight: "500" }}>
+              <em>Profile created on: {profile?.created_on} </em>
             </Typography>
           </Grid>
         </Grid>

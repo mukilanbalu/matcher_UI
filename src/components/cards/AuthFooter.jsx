@@ -11,25 +11,35 @@ export default function AuthFooter() {
     <Container maxWidth="xl">
       <Stack
         direction={{ xs: 'column', sm: 'row' }}
-        justifyContent={{ xs: 'center', sm: 'space-between' }}
+        justifyContent={{ xs: 'center', sm: 'flex-end' }}
         spacing={2}
         textAlign={{ xs: 'center', sm: 'inherit' }}
       >
-        <Typography variant="subtitle2" color="secondary">
+        {/* <Typography variant="subtitle2" color="secondary">
           This site is protected by{' '}
           <Typography component={Link} variant="subtitle2" href="#mantis-privacy" target="_blank" underline="hover">
             Privacy Policy
           </Typography>
-        </Typography>
+        </Typography> */}
 
         <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 1, sm: 3 }} textAlign={{ xs: 'center', sm: 'inherit' }}>
           <Typography
             variant="subtitle2"
             color="secondary"
             component={Link}
-            href="https://codedthemes.com"
             target="_blank"
             underline="hover"
+          >
+            &copy; <a href="http://marriagematcher.com/">Marriagematcher</a> <span id="copyrightYear">2024</span>
+
+          </Typography>
+          <Typography
+            variant="subtitle2"
+            color="secondary"
+            component={Link}
+            target="_blank"
+            underline="hover"
+            href='/terms-and-conditions'
           >
             Terms and Conditions
           </Typography>
@@ -37,7 +47,7 @@ export default function AuthFooter() {
             variant="subtitle2"
             color="secondary"
             component={Link}
-            href="https://codedthemes.com"
+            href="/privacy-policy"
             target="_blank"
             underline="hover"
           >
@@ -47,11 +57,11 @@ export default function AuthFooter() {
             variant="subtitle2"
             color="secondary"
             component={Link}
-            href="https://codedthemes.com"
+            href="/disclaimer"
             target="_blank"
             underline="hover"
           >
-            CA Privacy Notice
+            Disclaimer
           </Typography>
         </Stack>
       </Stack>

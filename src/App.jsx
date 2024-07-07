@@ -16,6 +16,9 @@ import DashboardMatcher from 'pages/matcher-dashboard';
 import AuthProvider from 'components/auth0provider';
 import { Auth0Provider, useAuth0 } from '@auth0/auth0-react';
 import { Button } from '@mui/material';
+import Disclaimer from 'pages/public-pges/disclaimer';
+import PrivacyPolicy from 'pages/public-pges/privacy-policy';
+import TermsOfUse from 'pages/public-pges/terms-of-use';
 
 
 const Color = Loadable(lazy(() => import('pages/component-overview/color')));
@@ -61,7 +64,9 @@ export default function App() {
                 <Routes>
                   <Route element={<MinimalLayout />}>
                     <Route path='/login' element={(!isLoading && isAuthenticated) ? <Navigate to="/" /> : <Login />} />
-                    <Route path='/register' element={< Register />} />
+                    <Route path='/disclaimer' element={< Disclaimer />} />
+                    <Route path='/privacy-policy' element={< PrivacyPolicy />} />
+                    <Route path='/terms-and-conditions' element={< TermsOfUse />} />
                     <Route path='*' element={<SamplePage />} />
                   </Route>
 

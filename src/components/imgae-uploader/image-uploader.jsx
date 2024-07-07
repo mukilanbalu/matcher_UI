@@ -11,39 +11,78 @@ const ImageUploader = (props) => {
     const { user } = useAuth0();
 
 
-    useEffect(() => {
-        if (!images?.length) {
-            return;
-        }
 
-        const fileReaders = [];
-        const previews = [];
+    const handleFileChange = (event) => {
+        const files = Array.from(event.target.files); // Convert FileList to Array
+        const imagesArray = [];
 
-        Array.from(images).forEach((file, index) => {
-            const fileReader = new FileReader();
-            fileReaders.push(fileReader);
-
-            fileReader.onload = () => {
-                previews.push(fileReader.result);
-
-                // When all files are read, update the state
-                if (previews.length === images.length) {
-                    setPreviewImages(previews);
-                }
-            };
-
-            fileReader.readAsDataURL(file);
-        });
-
-        // Clean up
-        return () => {
-            fileReaders.forEach((fileReader) => {
-                if (fileReader.readyState === 1) {
-                    fileReader.abort();
-                }
+        const processImage = (file) => {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    imagesArray.push(e.target.result);
+                    resolve();
+                };
+                reader.onerror = (error) => {
+                    reject(error);
+                };
+                reader.readAsDataURL(file);
             });
         };
-    }, [images]);
+
+        const processImages = () => {
+            const promises = files.map(processImage);
+            return Promise.all(promises);
+        };
+
+        processImages().then(() => {
+            setImages(imagesArray);
+            if (props.title !== "astrology_image") {
+                props.setProfileImage(imagesArray)
+            } else {
+                props.setAstroImage(imagesArray[0])
+            }
+            console.log(imagesArray)
+        }).catch((error) => {
+            console.error('Error processing images:', error);
+        });
+    };
+
+    // useEffect(() => {
+    //     if (!images?.length) {
+    //         return;
+    //     }
+
+    //     const fileReaders = [];
+    //     const previews = [];
+
+    //     Array.from(images).forEach((file, index) => {
+    //         const fileReader = new FileReader();
+    //         fileReaders.push(fileReader);
+
+    //         fileReader.onload = () => {
+    //             previews.push(fileReader.result);
+
+    //             // When all files are read, update the state
+    //             if (previews.length === images.length) {
+    //                 setPreviewImages(previews);
+    //             }
+    //         };
+
+    //         fileReader.readAsDataURL(file);
+    //     });
+
+
+
+    //     // Clean up
+    //     return () => {
+    //         fileReaders.forEach((fileReader) => {
+    //             if (fileReader.readyState === 1) {
+    //                 fileReader.abort();
+    //             }
+    //         });
+    //     };
+    // }, [images]);
 
 
     const handelImageUpload = (event) => {
@@ -54,12 +93,13 @@ const ImageUploader = (props) => {
             const newFiles = Object.values(event.target.files).map((file, index) =>
                 new File([file], `${email?.replace(/[^a-zA-Z0-9]/g, '_')}_${props.title === "astrology_image" ? "astro" : "profile"}_${index + 1}.${file.name.split('.').pop()}`, { type: file.type })
             )
-
+            const base64Img = handleFileChange(event);
+            console.log(base64Img);
 
             if (props.title !== "astrology_image") {
                 props.setProfileImage(newFiles)
             } else {
-                props.setAstroImage(newFiles)
+                props.setAstroImage(newFiles[0])
             }
 
         };
@@ -76,14 +116,14 @@ const ImageUploader = (props) => {
                 type="file"
                 accept='.jpg , .png, .jpeg, .JPG, .JPEG, .PNG'
                 style={{ display: 'none' }}
-                onChange={handelImageUpload}
+                onChange={handleFileChange}
                 multiple={props.title !== "astrology_image"}
             />
             <Stack spacing={1} direction={'row'} >
 
                 <Box border={0.1} sx={{ width: "100%" }}>
-                    {previewImages.length ?
-                        <>{previewImages.map((previewImage) =>
+                    {images.length ?
+                        <>{images.map((previewImage) =>
                             < Box
                                 shadow={3}
                                 boxShadow

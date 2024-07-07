@@ -2,56 +2,9 @@
 import React, { useState } from 'react';
 import { Formik, ErrorMessage } from 'formik';
 import { Select, FormControl, InputLabel, MenuItem, Grid, Slider, Stack } from '@mui/material';
+import { martialStatusList, nakshatramList, workStatusList } from 'constants/appConstants';
 
 const ProfileFilters = (props) => {
-
-    const raasiList = [
-        'Mesham',
-        'Risabham',
-        'Mithunam',
-        'Kadagam',
-        'Simmam',
-        'Kanni',
-        'Thulam',
-        'Viruchigam',
-        'Dhanushu',
-        'Magaram',
-        'Kumbham',
-        'Meenam'
-    ];
-
-    const nakshatramList = [
-        "Ashwini",
-        "Bharani",
-        "Karthigai",
-        "Rohini",
-        "Mrigashira",
-        "Thiruvathira",
-        "Punarpoosam",
-        "Pooyam",
-        "Aayilyam",
-        "Magam",
-        "Pooram",
-        "Uthiram",
-        "Hastham",
-        "Chithirai",
-        "Swati",
-        "Visakam",
-        "Anuradam",
-        "Keetai",
-        "Moolam",
-        "Pooradam",
-        "Uthradam",
-        "Thiruvonam",
-        "Avittam",
-        "Sadhayam",
-        "Poorattathi",
-        "Uthrattathi",
-        "Revathi"
-
-    ]
-
-
 
     const handleSubmit = (values) => {
     };
@@ -64,9 +17,9 @@ const ProfileFilters = (props) => {
             {({ handleBlur, values, touched, errors, isSubmitting }) => (
                 <form noValidate onChange={handleSubmit} >
                     <Grid container rowSpacing={4.5} columnSpacing={2.75}>
-                        <Grid item xs={12} sm={12} md={12} lg={3}>
+                        <Grid item xs={12} sm={12} md={6} lg={2}>
                             <FormControl fullWidth>
-                                <InputLabel id="gender-label">Bride / Groom</InputLabel>
+                                <InputLabel id="gender-label">Looking for</InputLabel>
                                 <Select
                                     name={"gender"}
                                     value={props.profileFilters.gender}
@@ -76,7 +29,7 @@ const ProfileFilters = (props) => {
                                     displayEmpty
                                 >
                                     <MenuItem value={" "}>
-                                        <em>Select Bride / Groom</em>
+                                        <em>Looking for</em>
                                     </MenuItem>
 
                                     <MenuItem key={"Bride"} value={"Bride"}>
@@ -90,31 +43,7 @@ const ProfileFilters = (props) => {
                             </FormControl>
                         </Grid>
 
-                        <Grid item xs={12} sm={12} md={12} lg={3}>
-                            <FormControl fullWidth>
-                                <InputLabel id="raasi-label">Raasi</InputLabel>
-                                <Select
-                                    name={"astro.rasi"}
-                                    value={props.profileFilters["astro.rasi"]}
-                                    onChange={handleChange}
-                                    fullWidth
-                                    variant="outlined"
-                                    displayEmpty
-                                >
-                                    <MenuItem value={" "}>
-                                        <em>Select Raasi</em>
-                                    </MenuItem>
-                                    {raasiList.map(option => (
-                                        <MenuItem key={option} value={option}>
-                                            {option}
-                                        </MenuItem>
-                                    ))}
-                                </Select>
-                                <ErrorMessage name="rasip" component="div" />
-                            </FormControl>
-                        </Grid>
-
-                        <Grid item xs={12} sm={12} md={12} lg={3}>
+                        <Grid item xs={12} sm={12} md={6} lg={2}>
                             <FormControl fullWidth>
                                 <InputLabel id="nakshatram-label">Nakshatram</InputLabel>
                                 <Select
@@ -138,28 +67,105 @@ const ProfileFilters = (props) => {
                             </FormControl>
                         </Grid>
 
-                        <Grid item xs={12} sm={12} md={12} lg={3}>
+
+
+                        <Grid item xs={12} sm={12} md={6} lg={2}>
+                            <FormControl fullWidth>
+                                <InputLabel id="work_status-label">Wokring status</InputLabel>
+                                <Select
+                                    name={"professional.work_status"}
+                                    value={props.profileFilters["professional.work_status"]}
+                                    onChange={handleChange}
+                                    fullWidth
+                                    variant="outlined"
+                                    displayEmpty
+                                >
+                                    <MenuItem value={" "}>
+                                        <em>Select </em>
+                                    </MenuItem>
+                                    {workStatusList.map(option => (
+                                        <MenuItem key={option} value={option}>
+                                            {option}
+                                        </MenuItem>
+                                    ))}
+                                </Select>
+                                <ErrorMessage name="work_status" component="div" />
+                            </FormControl>
+                        </Grid>
+
+                        <Grid item xs={12} sm={12} md={6} lg={2}>
+                            <FormControl fullWidth>
+                                <InputLabel id="marital_status-label">Marital status</InputLabel>
+                                <Select
+                                    name={"marital_status"}
+                                    value={props.profileFilters["marital_status"]}
+                                    onChange={handleChange}
+                                    fullWidth
+                                    variant="outlined"
+                                    displayEmpty
+                                >
+                                    <MenuItem value={" "}>
+                                        <em>Select </em>
+                                    </MenuItem>
+                                    {martialStatusList.map(option => (
+                                        <MenuItem key={option} value={option}>
+                                            {option}
+                                        </MenuItem>
+                                    ))}
+                                </Select>
+                                <ErrorMessage name="marital_status" component="div" />
+                            </FormControl>
+                        </Grid>
+
+
+                        <Grid item xs={12} sm={12} md={6} lg={2}>
+                            <FormControl fullWidth>
+                                <InputLabel id="created_on-label"> Profile posted </InputLabel>
+                                <Select
+                                    name={"created_on"}
+                                    value={props.profileFilters["created_on"]}
+                                    onChange={handleChange}
+                                    fullWidth
+                                    variant="outlined"
+                                    displayEmpty
+                                >
+                                    <MenuItem value={" "}>
+                                        <em>Select </em>
+                                    </MenuItem>
+                                    <MenuItem value={"10"}>
+                                        Last 10 days
+                                    </MenuItem>
+                                    <MenuItem value={"30"}>
+                                        Last month
+                                    </MenuItem>
+                                    <MenuItem value={"90"}>
+                                        Last 3 month
+                                    </MenuItem>
+                                    <MenuItem value={"All"}>
+                                        All
+                                    </MenuItem>
+                                </Select>
+                                <ErrorMessage name="created_on" component="div" />
+                            </FormControl>
+                        </Grid>
+                        <Grid item xs={12} sm={12} md={6} lg={2}>
                             <InputLabel id="age-label" sx={{ mr: "15px" }}>Age : {`${props.profileFilters[`birth.age`][0]} - ${props.profileFilters[`birth.age`][1]} `}  </InputLabel>
 
                             <FormControl fullWidth>
                                 <Stack direction={"row-reverse"}>
                                     <Slider
                                         name='birth.age'
-                                        // aria-label="age"
-                                        // defaultValue={values.age}
                                         onChange={handleChange}
                                         value={props.profileFilters[`birth.age`]}
-                                        // getAriaValueText={"age"}
                                         valueLabelDisplay="auto"
-                                        // shiftStep={30}
                                         step={1}
-                                        // marks
                                         min={21}
                                         max={55} />
                                 </Stack>
                                 <ErrorMessage name="age" component="div" />
                             </FormControl>
                         </Grid>
+
                     </Grid>
                 </form>
             )
