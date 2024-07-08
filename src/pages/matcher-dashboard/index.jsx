@@ -10,9 +10,10 @@ import { useAuth0 } from '@auth0/auth0-react';
 import ProfileFilters from 'components/filter-panel';
 import { calculateAge } from 'utils/appUtils';
 import InfiniteScroll from 'react-infinite-scroll-component';
+import { notifyError } from 'components/toaster/toast';
+import ScrollToTopButton from 'components/scroll-to-top/scroll-top';
 
 // DASHBOARD //
-const apiUrl = import.meta.env.VITE_API_ENDPOINT;
 
 export default function DashboardMatcher() {
 
@@ -32,6 +33,7 @@ export default function DashboardMatcher() {
 
     const [profiles, setProfiles] = useState([]);
     const [isLoading, setLoading] = useState(true);
+    const [isLoadingMore, setLoadingMore] = useState(false);
     const [hasMore, setHasMore] = useState(true);
     const [profileFilters, setProfileFilters] = useState(initialValues);
     const [prevLimit, setPrevLimit] = useState(initialValues.limit);
@@ -42,9 +44,12 @@ export default function DashboardMatcher() {
     const page = useRef(1);
     const scrollParentRef = useRef(null);
 
-    const getProfiles = async (profileFilter) => {
-
-        setLoading(true);
+    const getProfiles = async (profileFilter, append) => {
+        if (append) {
+            setLoadingMore(true);
+        } else {
+            setLoading(true);
+        }
         let payload = Object.entries(profileFilter).reduce((acc, [key, value]) => {
             if ((value && typeof value === 'string' && value.trim()) || (Array.isArray(value) && value.length > 0) || (typeof value === 'number')) {
                 acc[key] = value;
@@ -56,16 +61,14 @@ export default function DashboardMatcher() {
 
             if (res.status === 200) {
                 if (profileFilter.limit !== prevLimit || profileFilter.skip !== prevSkip) {
-                    setProfiles((prevProfiles) => {
-                        if (profileFilter.skip === 0) {
-                            return res.data.data;
-                        } else {
-                            const newProfiles = res.data.data.filter(newProfile =>
-                                !prevProfiles.some(existingProfile => existingProfile.email === newProfile.email)
-                            );
-                            return [...prevProfiles, ...newProfiles];
-                        }
-                    })
+                    if (append) {
+                        const newProfiles = res.data.data.filter(newProfile =>
+                            !profiles.some(existingProfile => existingProfile.email === newProfile.email)
+                        );
+                        setProfiles((prevProfiles) => [...prevProfiles, ...newProfiles]);
+                    } else {
+                        setProfiles(res.data.data);
+                    }
                     setPrevLimit(profileFilter.limit);
                     setPrevSkip(profileFilter.skip);
                 } else {
@@ -78,7 +81,7 @@ export default function DashboardMatcher() {
             }
             setLoading(false);
         } catch (err) {
-            console.error("Error fetching profiles");
+            notifyError("Error fetching profiles");
             setLoading(false);
         }
     };
@@ -95,7 +98,6 @@ export default function DashboardMatcher() {
 
 
     useEffect(() => {
-        console.log("filter")
         if (timeoutId.current) {
             clearTimeout(timeoutId.current);
         }
@@ -132,7 +134,7 @@ export default function DashboardMatcher() {
     useEffect(() => {
         console.log("pagi")
         if (profileFilters.skip > 0) {
-            getProfiles(profileFilters);
+            getProfiles(profileFilters, profileFilters.skip > 0);
         }
     }, [profileFilters.limit, profileFilters.skip]);
 
@@ -184,6 +186,12 @@ export default function DashboardMatcher() {
             </CardContent>
         </MainCard>
     );
+
+    const renderMessage = (msg, color) => (<Grid item xs={12} sx={{ background: color }}>
+        <Typography variant="h6" align='center'>{msg} </Typography>
+    </Grid>)
+
+
     return (
         <Grid container rowSpacing={4.5} columnSpacing={2.75} >
             <Grid item xs={12} sx={{ mb: -2.25 }}>
@@ -197,11 +205,8 @@ export default function DashboardMatcher() {
                         dataLength={profiles.length} //This is important field to render the next data
                         next={loadFunc}
                         hasMore={hasMore}
-                        loader={<h4>Loading...</h4>}
-                        endMessage={
-                            <p style={{ textAlign: 'center' }}>
-                                <b>You have seen it all</b>
-                            </p>}
+                        loader={renderMessage("Loading more Data", "#fffbe6")}
+                        endMessage={renderMessage("No more Data Available !", "#fffbe6")}
                         style={{
                             display: "flex",
                             flexWrap: "wrap",
@@ -210,6 +215,7 @@ export default function DashboardMatcher() {
                             // marginTop: " -36px",
                             // marginLeft: "-22px",
                         }}
+                        scrollThreshold={"1px"}
 
                     >
                         {!isLoading && profiles.length > 0 ?
@@ -228,6 +234,7 @@ export default function DashboardMatcher() {
                     </InfiniteScroll>
                 </ComponentSkeleton>
             </Grid>
+            <ScrollToTopButton />
         </Grid>
     );
 }

@@ -13,18 +13,13 @@ import SchoolIcon from '@mui/icons-material/School';
 import { useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 
-import Backdrop from '@mui/material/Backdrop';
-import Modal from '@mui/material/Modal';
-import Fade from '@mui/material/Fade';
 import profileService from 'apiServices/profileService';
 import ProfileForm from './profile-form-formData';
-import ImageUploader from 'components/imgae-uploader/image-uploader';
-import html2canvas from 'html2canvas';
-import jsPDF from 'jspdf';
 import html2pdf from 'html2pdf.js';
 import ImageCarousel from "../../components/image-carousel";
 import { initialProfileValues } from 'constants/appConstants';
 import { calculateAge } from 'utils/appUtils';
+import { notifyError } from 'components/toaster/toast';
 export default function ProfileDetails(props) {
 
   const [isLoading, setIsLoading] = useState(true);
@@ -33,17 +28,6 @@ export default function ProfileDetails(props) {
   const [isCreateProfile, setIsCreateProfile] = useState(false);
   const location = useLocation();
   const { state, pathname } = location;
-  const style = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: 400,
-    bgcolor: 'background.paper',
-    border: '2px solid #000',
-    boxShadow: 24,
-    p: 4,
-  };
 
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
@@ -71,17 +55,17 @@ export default function ProfileDetails(props) {
       }
     }
     catch (err) {
-      console.error("Error fetching profiles");
+      notifyError("Error fetching profiles");
       setIsLoading(false);
     }
   }
-
 
   useEffect(() => {
     getData()
   }, [state, pathname]);
 
   const downloadAsPDF = () => {
+    setIsLoading(true);
     const input = document.getElementById('pdf-content');
     html2pdf()
       .from(input)
@@ -93,7 +77,11 @@ export default function ProfileDetails(props) {
         jsPDF: { unit: 'in', format: 'A4', orientation: 'portrait' }
 
       })
-      .save();
+      .save()
+      .finally(() => {
+        setIsLoading(false);
+      });
+
   };
 
   const handleCreate = () => {
@@ -137,8 +125,6 @@ export default function ProfileDetails(props) {
           </Grid>
         );
       }
-
-      // }
     }
     return details;
   };
@@ -279,9 +265,6 @@ export default function ProfileDetails(props) {
       </MainCard>
     </Grid>
   </>
-
-
-
 
   return (
     <ComponentSkeleton isLoading={isLoading}>

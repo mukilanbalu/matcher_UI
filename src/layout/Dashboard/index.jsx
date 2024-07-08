@@ -17,6 +17,7 @@ import { handlerDrawerOpen, useGetMenuMaster } from 'apiServices/menu';
 import { ThemeContextProvider } from 'contexts/theme-context/dark-mode';
 import AuthFooter from 'components/cards/AuthFooter';
 import { Grid } from '@mui/material';
+import ToastNotification from 'components/toaster/toast';
 // ==============================|| MAIN LAYOUT ||============================== //
 
 export default function DashboardLayout() {
@@ -43,6 +44,8 @@ export default function DashboardLayout() {
     <Grid item xs={12} sx={{ m: 3, mt: 1 }}>
       <AuthFooter />
     </Grid>
+    <ToastNotification />
+
   </>
 
   );

@@ -31,7 +31,7 @@ import '@fontsource/public-sans/700.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { Auth0Provider } from '@auth0/auth0-react';
-// import history from 'utils/history';
+import ScrollTop from 'components/ScrollTop';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 
@@ -58,7 +58,9 @@ const providerConfig = {
 root.render(
     <Auth0Provider
         {...providerConfig}>
-        <App />
+        <ScrollTop>
+            <App />
+        </ScrollTop>
     </Auth0Provider>
 
 

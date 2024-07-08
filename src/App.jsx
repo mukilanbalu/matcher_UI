@@ -9,27 +9,16 @@ import Login from 'pages/authentication/login';
 import DashboardLayout from 'layout/Dashboard';
 
 import Loadable from 'components/Loadable';
-import Dashboard from 'layout/Dashboard';
-import { lazy, createContext, useContext, useState, useEffect, Suspense } from 'react';
-import Register from 'pages/authentication/register';
+import { lazy, useEffect, Suspense } from 'react';
 import DashboardMatcher from 'pages/matcher-dashboard';
-import AuthProvider from 'components/auth0provider';
-import { Auth0Provider, useAuth0 } from '@auth0/auth0-react';
-import { Button } from '@mui/material';
+import { useAuth0 } from '@auth0/auth0-react';
 import Disclaimer from 'pages/public-pges/disclaimer';
 import PrivacyPolicy from 'pages/public-pges/privacy-policy';
 import TermsOfUse from 'pages/public-pges/terms-of-use';
 
 
-const Color = Loadable(lazy(() => import('pages/component-overview/color')));
-const Typography = Loadable(lazy(() => import('pages/component-overview/typography')));
 const ProfileDetails = Loadable(lazy(() => import('pages/profiles/profile-details')));
-const Shadow = Loadable(lazy(() => import('pages/component-overview/shadows')));
-const DashboardDefault = Loadable(lazy(() => import('pages/dashboard/index')));
 
-// render - login
-const AuthLogin = Loadable(lazy(() => import('pages/authentication/login')));
-const AuthRegister = Loadable(lazy(() => import('pages/authentication/register')));
 
 // render - sample page
 const SamplePage = Loadable(lazy(() => import('pages/extra-pages/sample-page')));

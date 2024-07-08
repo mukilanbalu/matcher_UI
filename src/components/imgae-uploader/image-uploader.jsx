@@ -1,16 +1,11 @@
 import { Box, Button, Grid, Stack } from '@mui/material';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import profileImg from "../../assets/images/profile.png"
 import imgPlaceholder from "../../assets/images/imagePlaceholder.jpg"
-import { useAuth0 } from '@auth0/auth0-react';
 
 const ImageUploader = (props) => {
     const [images, setImages] = useState([])
     const imgPickerRef = useRef();
-    const [previewImages, setPreviewImages] = useState([])
-    const { user } = useAuth0();
-
-
 
     const handleFileChange = (event) => {
         const files = Array.from(event.target.files); // Convert FileList to Array
@@ -48,62 +43,6 @@ const ImageUploader = (props) => {
         });
     };
 
-    // useEffect(() => {
-    //     if (!images?.length) {
-    //         return;
-    //     }
-
-    //     const fileReaders = [];
-    //     const previews = [];
-
-    //     Array.from(images).forEach((file, index) => {
-    //         const fileReader = new FileReader();
-    //         fileReaders.push(fileReader);
-
-    //         fileReader.onload = () => {
-    //             previews.push(fileReader.result);
-
-    //             // When all files are read, update the state
-    //             if (previews.length === images.length) {
-    //                 setPreviewImages(previews);
-    //             }
-    //         };
-
-    //         fileReader.readAsDataURL(file);
-    //     });
-
-
-
-    //     // Clean up
-    //     return () => {
-    //         fileReaders.forEach((fileReader) => {
-    //             if (fileReader.readyState === 1) {
-    //                 fileReader.abort();
-    //             }
-    //         });
-    //     };
-    // }, [images]);
-
-
-    const handelImageUpload = (event) => {
-        if (event.target.files && event.target.files.length) {
-            const selectedImage = event.target.files;
-            setImages(selectedImage)
-            let email = user.email;
-            const newFiles = Object.values(event.target.files).map((file, index) =>
-                new File([file], `${email?.replace(/[^a-zA-Z0-9]/g, '_')}_${props.title === "astrology_image" ? "astro" : "profile"}_${index + 1}.${file.name.split('.').pop()}`, { type: file.type })
-            )
-            const base64Img = handleFileChange(event);
-            console.log(base64Img);
-
-            if (props.title !== "astrology_image") {
-                props.setProfileImage(newFiles)
-            } else {
-                props.setAstroImage(newFiles[0])
-            }
-
-        };
-    }
     const handelImagePick = () => {
         imgPickerRef.current.click();
     };

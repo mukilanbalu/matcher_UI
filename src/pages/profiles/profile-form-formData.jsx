@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Formik, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { Grid, InputLabel, OutlinedInput, FormHelperText, Button, Select, MenuItem, Typography, Divider } from '@mui/material';
@@ -6,9 +6,8 @@ import MainCard from 'components/MainCard';
 import AnimateButton from 'components/@extended/AnimateButton';
 import ImageUploader from 'components/imgae-uploader/image-uploader';
 import profileService from 'apiServices/profileService';
-import { isEmpty } from 'lodash';
-import { useAuth0 } from '@auth0/auth0-react';
 import { raasiList, nakshatramList, tamilMonthsList, tamilYearsList, yesNoList, daysList, workStatusList } from 'constants/appConstants';
+import { notifyError, notifySuccess } from 'components/toaster/toast';
 
 const validationSchema = Yup.object({
     name: Yup.string().min(3, 'Name must be at least 3 characters').required('Required'),
@@ -79,8 +78,6 @@ const renderField = (name, key, value, handleChange, values) => {
             );
         }
 
-
-
         return (
             <OutlinedInput
                 type="text"
@@ -120,8 +117,6 @@ const renderField = (name, key, value, handleChange, values) => {
             );
         }
 
-
-
         return (
             <OutlinedInput
                 type="text"
@@ -136,10 +131,6 @@ const renderField = (name, key, value, handleChange, values) => {
         );
 
     }
-
-
-
-
 };
 
 const renderFormFields = (fields, prefix = '', handleChange, values) => {
@@ -189,73 +180,12 @@ const ProfileForm = (props) => {
     const [profileImage, setProfileImage] = useState([]);
     const [astroImage, setAstroImage] = useState("");
 
-
-    const { user } = useAuth0();
-
-    // const handleChange = (e) => {
-
-    // const { name, value } = e.target;
-    // setChangedValues((prevState) => ({
-    //     ...prevState,
-    //     [name]: value
-    // }));
-    // setFormData((prevState) => ({
-    //     ...prevState,
-    //     [name]: value
-    // }));
-
-    //     const { name, value } = e.target;
-
-    //     // Use lodash's set function to handle nested updates
-    //     setFormData((prevState) => {
-    //         const newState = _.cloneDeep(prevState);
-    //         _.set(newState, name, value);
-    //         return newState;
-    //     });
-
-    //     setChangedValues((prevState) => {
-    //         const newState = _.cloneDeep(prevState);
-    //         _.set(newState, name, value);
-    //         return newState;
-    //     });
-
-    // };
-
     const handleSubmit = async (values, { setSubmitting }) => {
         setSubmitting(true);
-        // Only log changed values
-        // const formData = new FormData();
-
-        // delete values.profile_img
-        // delete values.astro.img
-        // const appendFormData = (data, root = '') => {
-        //     for (const key in data) {
-        //         if (data[key] instanceof FileList && key !== 'profile_img') {
-        //             for (let i = 0; i < data[key].length; i++) {
-        //                 formData.append(`${root}${key}[]`, data[key][i]);
-        //             }
-        //         } else if (typeof data[key] === 'object' && data[key] !== null && key !== 'profile_img') {
-        //             appendFormData(data[key], `${root}${key}.`);
-        //         }
-        //         else {
-        //             formData.append(`${root}${key}`, data[key]);
-        //         }
-        //     }
-        // };
-
-        // profileImage.forEach((profile, index) => {
-        //     formData.append('profile_img', profile);
-        // })
-
-        // formData.append('astro_img', astroImage[0]);
-
-        // appendFormData(values);
-
         let payload = {};
         payload = {
             ...formData,
             ...values,
-
         }
 
         if (profileImage.length) {
@@ -264,11 +194,6 @@ const ProfileForm = (props) => {
         if (astroImage !== "") {
             payload.astro.img = astroImage;
         }
-
-        console.log(payload)
-
-
-
 
         let responseData;
 
@@ -283,10 +208,12 @@ const ProfileForm = (props) => {
             if (responseData.status === 200) {
                 props.setProfile(responseData.data.data);
                 props.setIsCreateProfile(false);
+                notifySuccess(props.isCreateProfile ? "Profile crated successfully" : "Profile Saved successfully");
                 props.setIsEdit(false);
             }
 
         } catch (e) {
+            notifyError("Error !")
             console.error(e);
         }
         setSubmitting(false);
