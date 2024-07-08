@@ -34,3 +34,4 @@ tsconfig.node.json
 
 # Ignore coverage directory
 coverage/
+src/.DS_Store
