@@ -37,7 +37,6 @@ const ImageUploader = (props) => {
             } else {
                 props.setAstroImage(imagesArray[0])
             }
-            console.log(imagesArray)
         }).catch((error) => {
             console.error('Error processing images:', error);
         });

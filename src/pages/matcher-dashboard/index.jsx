@@ -12,12 +12,14 @@ import { calculateAge } from 'utils/appUtils';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { notifyError } from 'components/toaster/toast';
 import ScrollToTopButton from 'components/scroll-to-top/scroll-top';
+import { useTranslation } from 'react-i18next';
 
 // DASHBOARD //
 
 export default function DashboardMatcher() {
 
     const navigate = useNavigate();
+    const { t, i18n } = useTranslation();
 
     const initialValues = {
         gender: '',
@@ -39,7 +41,7 @@ export default function DashboardMatcher() {
     const [prevLimit, setPrevLimit] = useState(initialValues.limit);
     const [prevSkip, setPrevSkip] = useState(initialValues.skip);
     const { user } = useAuth0();
-    const debounceTimeout = 3000;
+    const debounceTimeout = 1000;
     const timeoutId = useRef(null);
     const page = useRef(1);
     const scrollParentRef = useRef(null);
@@ -94,9 +96,6 @@ export default function DashboardMatcher() {
     }
 
 
-
-
-
     useEffect(() => {
         if (timeoutId.current) {
             clearTimeout(timeoutId.current);
@@ -132,7 +131,6 @@ export default function DashboardMatcher() {
     ]);
 
     useEffect(() => {
-        console.log("pagi")
         if (profileFilters.skip > 0) {
             getProfiles(profileFilters, profileFilters.skip > 0);
         }

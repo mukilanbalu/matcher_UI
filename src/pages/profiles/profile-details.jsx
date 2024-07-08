@@ -20,6 +20,7 @@ import ImageCarousel from "../../components/image-carousel";
 import { initialProfileValues } from 'constants/appConstants';
 import { calculateAge } from 'utils/appUtils';
 import { notifyError } from 'components/toaster/toast';
+import { useTranslation } from 'react-i18next';
 export default function ProfileDetails(props) {
 
   const [isLoading, setIsLoading] = useState(true);
@@ -28,6 +29,7 @@ export default function ProfileDetails(props) {
   const [isCreateProfile, setIsCreateProfile] = useState(false);
   const location = useLocation();
   const { state, pathname } = location;
+  const { t } = useTranslation();
 
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
@@ -73,9 +75,23 @@ export default function ProfileDetails(props) {
         watermark: { text: 'Downloaded from matcher.com', color: '#000', opacity: 0.5 },
         filename: `${profile.name}_profile.pdf`,
         margin: [1, 0.5],
-        html2canvas: { scale: 3 },
+        html2canvas: {
+          scale: 3,
+          logging: true, // Enable logging to check for any errors
+          useCORS: true, // Enable cross-origin images
+          allowTaint: true, // Allow cross-origin images to taint the canvas
+          onclone: (document) => {
+            // Ensure all images are fully loaded
+            const images = document.querySelectorAll('img');
+            images.forEach((img) => {
+              if (!img.complete) {
+                img.onload = () => { }; // Force load event
+                img.src = img.src; // Re-trigger the loading
+              }
+            });
+          }
+        },
         jsPDF: { unit: 'in', format: 'A4', orientation: 'portrait' }
-
       })
       .save()
       .finally(() => {
@@ -113,12 +129,12 @@ export default function ProfileDetails(props) {
             <Grid container>
               <Grid item xs={12} lg={3} xl={3}>
                 <Typography variant="h6" color="textPrimary" sx={{ mb: '8px', fontWeight: 500 }}>
-                  {category.charAt(0).toUpperCase() + category.slice(1).replace("_", " ")}:
+                  {t(category.charAt(0).toUpperCase() + category.slice(1).replace("_", " "))}:
                 </Typography>
               </Grid>
               <Grid item xs={12} lg={6} xl={9}>
                 <Typography variant="h6" color="textPrimary" sx={{ mb: '8px', fontWeight: 500 }}>
-                  {data[category]}
+                  {t(data[category])}
                 </Typography>
               </Grid>
             </Grid>
@@ -190,7 +206,7 @@ export default function ProfileDetails(props) {
       <MainCard border={false} shadow={3} boxShadow  >
         <Grid>
           <Typography variant="h3" color="textPrimary">
-            Birth Details
+            {t("Birth Details")}
           </Typography>
           <br />
         </Grid>
@@ -204,7 +220,7 @@ export default function ProfileDetails(props) {
       <MainCard border={false} shadow={3} boxShadow  >
         <Grid >
           <Typography variant="h3" color="textPrimary">
-            Professional Details
+            {t("Professional Details")}
           </Typography>
           <br />
         </Grid>
@@ -219,7 +235,8 @@ export default function ProfileDetails(props) {
       <MainCard border={false} shadow={3} boxShadow  >
         <Grid >
           <Typography variant="h3" color="textPrimary">
-            Family Details
+            {t("Family Details")}
+
           </Typography>
           <br />
         </Grid>
@@ -234,7 +251,8 @@ export default function ProfileDetails(props) {
       <MainCard border={false} shadow={3} boxShadow  >
         <Grid >
           <Typography variant="h3" color="textPrimary">
-            Astrology Details
+
+            {t("Astrology Details")}
           </Typography>
           <br />
         </Grid>
