@@ -1,5 +1,36 @@
-node_modules
-dist
+# Ignore node_modules directory
+node_modules/
 
+# Ignore build output directories
+dist/
+build/
 
+# Ignore environment variable files
 .env
+.env.local
+.env.*.local
+
+# Ignore lock files
+yarn.lock
+package-lock.json
+pnpm-lock.yaml
+
+# Ignore TypeScript config files
+tsconfig.node.json
+
+# Ignore log files
+*.log
+
+# Ignore IDE directories and files
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+# Ignore MacOS system files
+.DS_Store
+
+# Ignore coverage directory
+coverage/
