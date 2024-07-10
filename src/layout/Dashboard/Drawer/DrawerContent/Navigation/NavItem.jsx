@@ -13,6 +13,7 @@ import Typography from '@mui/material/Typography';
 
 // project import
 import { handlerActiveItem, useGetMenuMaster } from 'apiServices/menu';
+import { useTranslation } from 'react-i18next';
 
 export default function NavItem({ item, level }) {
   const theme = useTheme();
@@ -20,6 +21,7 @@ export default function NavItem({ item, level }) {
   const { menuMaster } = useGetMenuMaster();
   const drawerOpen = menuMaster.isDashboardDrawerOpened;
   const openItem = menuMaster.openedItem;
+  const { t } = useTranslation();
 
   let itemTarget = '_self';
   if (item.target) {
@@ -100,11 +102,11 @@ export default function NavItem({ item, level }) {
             }),
             ...(!drawerOpen &&
               isSelected && {
-                bgcolor: 'primary.lighter',
-                '&:hover': {
-                  bgcolor: 'primary.lighter'
-                }
-              })
+              bgcolor: 'primary.lighter',
+              '&:hover': {
+                bgcolor: 'primary.lighter'
+              }
+            })
           }}
         >
           {itemIcon}
@@ -114,7 +116,7 @@ export default function NavItem({ item, level }) {
         <ListItemText
           primary={
             <Typography variant="h6" sx={{ color: isSelected ? iconSelectedColor : textColor }}>
-              {item.title}
+              {t(item.title)}
             </Typography>
           }
         />

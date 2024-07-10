@@ -185,12 +185,13 @@ export const skinColorsList = [
 export const daysList = ["ஞாயிறு", "திங்கள்", "செவ்வாய்", "புதன்", "வியாழன்", "வெள்ளி", "சனி"];
 
 export const workStatusList = [
-    "Working", "Not working", "Seeking Work", "Self-Employed /  Business", "Exam Preparation"
+    "Working", "Not working", "Seeking Work", "Self-Employed / Business", "Exam Preparation"
 ]
 
 export const martialStatusList = [
     "Single",
     "Widowed",
+    "Widower",
     "Divorced",
     "Separated"
 ]
@@ -257,8 +258,8 @@ export const initialProfileValues = {
         nakshatram: "",
         patham: "",
         lagnam: "",
-        birth_deasi: "",
-        current_desai: "",
+        // birth_deasi: "",
+        desai: "",
         desai_year: "",
         desai_month: "",
         desai_date: "",

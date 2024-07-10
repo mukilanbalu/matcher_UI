@@ -24,7 +24,7 @@ import { useTranslation } from 'react-i18next';
 export default function ProfileDetails(props) {
 
   const [isLoading, setIsLoading] = useState(true);
-  const [profile, setProfile] = useState({});
+  const [profile, setProfile] = useState(initialProfileValues);
   const [isEdit, setIsEdit] = useState(false);
   const [isCreateProfile, setIsCreateProfile] = useState(false);
   const location = useLocation();
@@ -59,6 +59,9 @@ export default function ProfileDetails(props) {
     catch (err) {
       notifyError("Error fetching profiles");
       setIsLoading(false);
+    }
+    finally {
+      setIsLoading(false)
     }
   }
 

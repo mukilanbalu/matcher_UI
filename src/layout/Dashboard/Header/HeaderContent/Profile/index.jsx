@@ -27,6 +27,7 @@ import Transitions from 'components/@extended/Transitions';
 // assets
 import LogoutOutlined from '@ant-design/icons/LogoutOutlined';
 import UserOutlined from '@ant-design/icons/UserOutlined';
+import { useTranslation } from 'react-i18next';
 
 // tab panel wrapper
 function TabPanel({ children, value, index, ...other }) {
@@ -52,6 +53,7 @@ export default function Profile() {
   const anchorRef = useRef(null);
   const [open, setOpen] = useState(false);
   const { logout, user } = useAuth0();
+  const { t } = useTranslation();
 
   const handleToggle = () => {
     setOpen((prevOpen) => !prevOpen);
@@ -132,7 +134,7 @@ export default function Profile() {
                         </Stack>
                       </Grid>
                       <Grid item>
-                        <Tooltip title="Logout">
+                        <Tooltip title={t("Logout")}>
                           <IconButton size="large" sx={{ color: 'text.primary' }} onClick={logout} >
                             <LogoutOutlined />
                           </IconButton>
@@ -152,7 +154,7 @@ export default function Profile() {
                           textTransform: 'capitalize'
                         }}
                         icon={<UserOutlined style={{ marginBottom: 0, marginRight: '10px' }} />}
-                        label="Profile"
+                        label={t("Profile")}
                         {...a11yProps(0)}
                       />
                       {/* <Tab

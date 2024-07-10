@@ -19,7 +19,7 @@ import { useTranslation } from 'react-i18next';
 export default function DashboardMatcher() {
 
     const navigate = useNavigate();
-    const { t, i18n } = useTranslation();
+    const { t } = useTranslation();
 
     const initialValues = {
         gender: '',
@@ -225,7 +225,7 @@ export default function DashboardMatcher() {
                             :
                             <Grid item xs={12} sm={6} md={6} lg={12} sx={{ minHeight: "70vh" }}>
                                 <Typography variant='h4' align='center' mt={"50px"}>
-                                    No profile available for the filters
+                                    {t("No profile available for the filters")}
                                 </Typography>
                             </Grid>
                         }

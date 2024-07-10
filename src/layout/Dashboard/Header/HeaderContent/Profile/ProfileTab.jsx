@@ -15,6 +15,7 @@ import UserOutlined from '@ant-design/icons/UserOutlined';
 import WalletOutlined from '@ant-design/icons/WalletOutlined';
 import { useAuth0 } from '@auth0/auth0-react';
 import { useNavigate } from 'react-router';
+import { useTranslation } from 'react-i18next';
 
 
 
@@ -24,6 +25,7 @@ export default function ProfileTab() {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const { user, logout } = useAuth0();
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const handleListItemClick = (index) => {
     setSelectedIndex(index);
@@ -47,14 +49,14 @@ export default function ProfileTab() {
         <ListItemIcon>
           <EditOutlined />
         </ListItemIcon>
-        <ListItemText primary="Edit Profile" />
+        <ListItemText primary={t("Edit Profile")} />
       </ListItemButton>
 
       <ListItemButton selected={selectedIndex === 2} onClick={(event) => handleListItemClick(2)}>
         <ListItemIcon>
           <LogoutOutlined />
         </ListItemIcon>
-        <ListItemText primary="Logout" />
+        <ListItemText primary={t("Logout")} />
       </ListItemButton>
       {/* <ListItemButton selected={selectedIndex === 1} onClick={(event) => handleListItemClick(event, 1, '/apps/profiles/account/basic')}>
         <ListItemIcon>

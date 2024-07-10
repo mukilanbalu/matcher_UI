@@ -2,10 +2,12 @@ import { Box, Button, Grid, Stack } from '@mui/material';
 import React, { useRef, useState } from 'react';
 import profileImg from "../../assets/images/profile.png"
 import imgPlaceholder from "../../assets/images/imagePlaceholder.jpg"
+import { useTranslation } from 'react-i18next';
 
 const ImageUploader = (props) => {
     const [images, setImages] = useState([])
     const imgPickerRef = useRef();
+    const { t } = useTranslation();
 
     const handleFileChange = (event) => {
         const files = Array.from(event.target.files); // Convert FileList to Array
@@ -92,7 +94,7 @@ const ImageUploader = (props) => {
 
             </Stack>
             <Button variant='contained' size='sm' onClick={handelImagePick} sx={{ mx: "30px", mt: "15px", float: "right" }} >
-                Upload Image
+                {t("Upload image")}
             </Button>
         </Grid>
     )
