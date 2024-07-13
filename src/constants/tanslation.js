@@ -109,7 +109,19 @@ export const tamil = {
   "Astrology image": "ஜாதகம்",
   "Upload image": "படத்தைப் பதிவேற்றவும்",
   "Cancel": "ரத்து செய்யவும்",
-  "Save": "சேமிக்கவும்"
+  "Save": "சேமிக்கவும்",
+  Disclaimer: "மறுப்புத் தெரிவிப்பு",
+  [`The information in user profiles is provided by the 
+  users themselves. Our site does not verify the authenticity 
+  of this information and is not responsible for its accuracy. 
+  Users are advised to independently verify the details by contacting
+   the profile owner directly or through other means. Use this information 
+   at your own discretion.`]: `பயனர் சுயவிவரங்களில் உள்ள தகவல்கள் பயனர்களால் தாங்களே வழங்கப்படுகின்றன.
+          இந்த தகவல்களின் நம்பகத்தன்மை அல்லது முழுமைத்தன்மை குறித்து எங்கள் தளம் எந்த 
+          உத்தரவாதமும் அளிப்பதில்லை.நீங்கள் முக்கியமானதாகக் கருதும் எந்தவொரு தகவலையும்,
+          சுயவிவர உரிமையாளரை நேரடியாகத் தொடர்புகொள்வதன் மூலமோ அல்லது வேறு எந்த 
+          வழியிலோ சுயமாக சரிபார்க்க வேண்டிய பொறுப்பு உங்களுடையதே.
+          இந்த தகவலை உங்கள் சொந்த விருப்பப்படி பயன்படுத்தவும்.`
 
 
 };

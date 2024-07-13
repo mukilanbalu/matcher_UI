@@ -196,7 +196,7 @@ export default function ProfileDetails(props) {
               <PhoneOutlined /> {profile?.family?.mobile}
             </Typography>
             <Typography variant="caption" color="textPrimary" sx={{ mb: "8px", fontWeight: "500" }}>
-              <em>Profile created on: {profile?.created_on} </em>
+              <em>Profile created on: {new Intl.DateTimeFormat('en-US', { month: 'short', year: 'numeric' }).format(profile?.created_on && new Date(profile?.created_on))} </em>
             </Typography>
           </Grid>
         </Grid>

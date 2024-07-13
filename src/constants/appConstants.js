@@ -225,7 +225,7 @@ export const initialProfileValues = {
 
     },
     professional: {
-        working_status: "",
+        work_status: "",
         education: "",
         job: "",
         income: "",
@@ -247,8 +247,7 @@ export const initialProfileValues = {
         married_brothers: "",
         married_sisters: "",
         address: "",
-        mobile: ""
-
+        mobile: "",
     },
     astro: {
         tamil_year: "",
@@ -258,7 +257,6 @@ export const initialProfileValues = {
         nakshatram: "",
         patham: "",
         lagnam: "",
-        // birth_deasi: "",
         desai: "",
         desai_year: "",
         desai_month: "",

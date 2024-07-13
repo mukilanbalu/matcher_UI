@@ -13,7 +13,6 @@ import {
     KeyboardArrowRight,
 } from '@mui/icons-material';
 
-const apiUrl = import.meta.env.VITE_API_ENDPOINT;
 
 const ImageCarousel = ({ open, handleClose, images }) => {
     const [activeStep, setActiveStep] = useState(0);
@@ -45,7 +44,7 @@ const ImageCarousel = ({ open, handleClose, images }) => {
                 </Paper>
                 <div>
                     <img
-                        src={`${apiUrl}/${images[activeStep]}`}
+                        src={images[activeStep]}
                         alt={images[activeStep].label}
                         style={{ display: 'block', maxHeight: "80vh", margin: "0 auto" }}
                     />

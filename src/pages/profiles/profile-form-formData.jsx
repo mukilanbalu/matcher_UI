@@ -6,9 +6,10 @@ import MainCard from 'components/MainCard';
 import AnimateButton from 'components/@extended/AnimateButton';
 import ImageUploader from 'components/imgae-uploader/image-uploader';
 import profileService from 'apiServices/profileService';
-import { raasiList, nakshatramList, tamilMonthsList, tamilYearsList, yesNoList, daysList, workStatusList } from 'constants/appConstants';
+import { raasiList, nakshatramList, tamilMonthsList, tamilYearsList, yesNoList, daysList, workStatusList, martialStatusList } from 'constants/appConstants';
 import { notifyError, notifySuccess } from 'components/toaster/toast';
 import { useTranslation } from 'react-i18next';
+import { useAuth0 } from '@auth0/auth0-react';
 
 
 
@@ -18,17 +19,112 @@ const ProfileForm = (props) => {
     const [profileImage, setProfileImage] = useState([]);
     const [astroImage, setAstroImage] = useState("");
     const { t } = useTranslation();
-
+    const { user } = useAuth0();
 
     const validationSchema = Yup.object({
-        name: Yup.string().min(3, 'Name must be at least 3 characters').required('Required'),
+        name: Yup.string()
+            .min(3, 'Name must be at least 2 characters')
+            .matches(/^[a-zA-Z\s]*$/, 'Name cannot contain special characters')
+            .required('Required'),
+        // email: Yup.string()
+        //     .email('Invalid email address')
+        //     .required('Required'),
+        height: Yup.string().trim()
+            .required('Required'),
+        weight: Yup.string().trim()
+            .required('Required'),
+        gender: Yup.string().trim()
+            .required('Required'),
+        colour: Yup.string().trim()
+            .required('Required'),
+        marital_status: Yup.string().trim()
+            .required('Required'),
+        birth: Yup.object({
+            dob: Yup.string().trim()
+                .required('Required'),
+            time: Yup.string().trim()
+                .required('Required'),
+            day: Yup.string().trim()
+                .required('Required'),
+            place: Yup.string().trim()
+                .required('Required'),
+        }),
+        professional: Yup.object({
+            work_status: Yup.string().trim()
+                .required('Required'),
+            education: Yup.string().trim()
+                .required('Required'),
+            job: Yup.string().trim()
+                .required('Required'),
+            income: Yup.string().trim()
+                .required('Required'),
+            location: Yup.string().trim()
+                .required('Required'),
+        }),
+        family: Yup.object({
+            father_name: Yup.string().trim()
+                .required('Required'),
+            mother_name: Yup.string().trim()
+                .required('Required'),
+            father_job: Yup.string().trim()
+                .required('Required'),
+            mother_job: Yup.string().trim()
+                .required('Required'),
+            father_alive: Yup.string().trim()
+                .required('Required'),
+            mother_alive: Yup.string().trim()
+                .required('Required'),
+            poorvigam: Yup.string().trim()
+                .required('Required'),
+            gothram: Yup.string().trim()
+                .required('Required'),
+            kuladeivam: Yup.string().trim()
+                .required('Required'),
+            brothers: Yup.number()
+                .required('Required'),
+            sisters: Yup.number()
+                .required('Required'),
+            married_brothers: Yup.number()
+                .required('Required'),
+            married_sisters: Yup.number()
+                .required('Required'),
+            address: Yup.string().trim()
+                .required('Required'),
+            mobile: Yup.string().trim()
+                .matches(/^\d{10}$/, 'Invalid mobile number')
+                .required('Required'),
+        }),
+        astro: Yup.object({
+            tamil_year: Yup.string().trim()
+                .required('Required'),
+            tamil_month: Yup.string().trim()
+                .required('Required'),
+            tamil_date: Yup.string().trim()
+                .required('Required'),
+            rasi: Yup.string().trim()
+                .required('Required'),
+            nakshatram: Yup.string().trim()
+                .required('Required'),
+            patham: Yup.string().trim()
+                .required('Required'),
+            lagnam: Yup.string().trim()
+                .required('Required'),
+            desai: Yup.string().trim()
+                .required('Required'),
+            desai_year: Yup.string().trim()
+                .required('Required'),
+            desai_month: Yup.string().trim()
+                .required('Required'),
+            desai_date: Yup.string().trim()
+                .required('Required'),
+        }),
     });
 
     const renderField = (name, key, value, handleChange, values) => {
-
         const dropdownOptions = {
             gender: ["Male", "Female"],
             colour: ["Fair", "Wheatish", "Dusky", "Black"],
+            marital_status: martialStatusList,
             rasi: raasiList,
             nakshatram: nakshatramList,
             tamil_month: tamilMonthsList,
@@ -59,8 +155,6 @@ const ProfileForm = (props) => {
             location: "working location",
             // Add placeholders for other fields as needed
         };
-
-
 
         // Handle nested fields
         if (name.includes('.')) {
@@ -150,27 +244,25 @@ const ProfileForm = (props) => {
     const renderFormFields = (fields, prefix = '', handleChange, values) => {
         return Object.entries(fields).map(([key, value]) => {
             const name = prefix ? `${prefix}.${key}` : key;
-            if (["name", "gender", "email", "profile_img", "height", "weight", "colour", "_id", "astro._id",
-                "family._id", "professional._id", "birth._id", "astro.img", "__v", "marital_status"
+            if ([
+                "name", "gender", "email", "profile_img", "height", "weight", "colour", "_id", "astro._id",
+                "family._id", "professional._id", "birth._id", "astro.img", "__v", "marital_status", "created_on"
             ].includes(name)) {
-                return
+                return null;
             } else if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
                 return (
-                    <>
-                        <Grid item xs={12} key={name}>
+                    <React.Fragment key={name}>
+                        <Grid item xs={12}>
                             <Typography variant="h3" color="textPrimary" sx={{ mb: "20px", fontWeight: 500 }}>
                                 {t(`${key.charAt(0).toUpperCase() + key.slice(1).replace("_", " ")} Details`)}
                             </Typography>
-
                             <Grid container spacing={2}>
                                 {renderFormFields(value, name, handleChange, values)}
                             </Grid>
                         </Grid>
                         <Divider sx={{ my: "40px" }} />
-                    </>
-
-                )
-
+                    </React.Fragment>
+                );
             }
 
             return (
@@ -196,29 +288,36 @@ const ProfileForm = (props) => {
         payload = {
             ...formData,
             ...values,
+            email: user?.email
         }
 
         if (profileImage.length) {
-            payload.profile_img = profileImage;
+            payload.profile_img = [
+                ...payload.profile_img,
+                ...profileImage];
         }
         if (astroImage !== "") {
             payload.astro.img = astroImage;
         }
 
         let responseData;
-
         try {
 
             if (props.isCreateProfile) {
+                payload = {
+                    ...payload,
+                    created_on: new Date().toISOString()
+                }
                 responseData = await profileService.createProfile(payload);
             }
             else {
+
                 responseData = await profileService.patchProfile(payload);
             }
             if (responseData.status === 200) {
                 props.setProfile(responseData.data.data);
                 props.setIsCreateProfile(false);
-                notifySuccess(props.isCreateProfile ? "Profile crated successfully" : "Profile Saved successfully");
+                notifySuccess(props.isCreateProfile ? "Profile created successfully" : "Profile Saved successfully");
                 props.setIsEdit(false);
             }
 
@@ -232,7 +331,7 @@ const ProfileForm = (props) => {
     return (
         <Formik
             initialValues={formData}
-            // validationSchema={validationSchema}
+            validationSchema={validationSchema}
             onSubmit={handleSubmit}
         >
             {({ handleSubmit, handleBlur, handleChange, values, touched, errors, isSubmitting }) => (
