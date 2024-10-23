@@ -10,9 +10,7 @@ import { raasiList, nakshatramList, tamilMonthsList, tamilYearsList, yesNoList, 
 import { notifyError, notifySuccess } from 'components/toaster/toast';
 import { useTranslation } from 'react-i18next';
 import { useAuth0 } from '@auth0/auth0-react';
-
-
-
+import { isEmpty } from 'lodash';
 
 const ProfileForm = (props) => {
     const [formData, setFormData] = useState(props.profile);
@@ -269,7 +267,8 @@ const ProfileForm = (props) => {
                 <Grid key={name} item xs={12} lg={6}>
                     <Grid container>
                         <Grid item xs={12} lg={3} xl={3}>
-                            <InputLabel htmlFor={`${name}-input`}>{t(key.charAt(0).toUpperCase() + key.slice(1).replace("_", " "))}</InputLabel>
+                            <InputLabel htmlFor={`${name}-input`} required >{t(key.charAt(0).toUpperCase() + key.slice(1).replace("_", " "))}
+                            </InputLabel>
                         </Grid>
                         <Grid item xs={12} lg={6} xl={9}>
                             {renderField(name, key, value, handleChange, values)}
@@ -320,12 +319,14 @@ const ProfileForm = (props) => {
                 notifySuccess(props.isCreateProfile ? "Profile created successfully" : "Profile Saved successfully");
                 props.setIsEdit(false);
             }
+            setSubmitting(false);
 
         } catch (e) {
             notifyError("Error !")
             console.error(e);
+            setSubmitting(false);
+
         }
-        setSubmitting(false);
     };
 
     return (
@@ -349,7 +350,9 @@ const ProfileForm = (props) => {
                                     <Grid key={"name"} item xs={12} lg={6} sx={{ mb: "8px" }}>
                                         <Grid container>
                                             <Grid item xs={12} lg={3} xl={3}>
-                                                <InputLabel htmlFor={`${"name"}-input`}> {t("name".charAt(0).toUpperCase() + "name".slice(1).replace("_", " "))}</InputLabel>
+                                                <InputLabel htmlFor={`${"name"}-input`} required > {t("name".charAt(0).toUpperCase() + "name".slice(1).replace("_", " "))}
+
+                                                </InputLabel>
                                             </Grid>
                                             <Grid item xs={12} lg={6} xl={9}>
                                                 {renderField("name", "name", formData.name, handleChange, values)}
@@ -361,7 +364,7 @@ const ProfileForm = (props) => {
                                     <Grid key={"gender"} item xs={12} lg={6} sx={{ mb: "8px" }}>
                                         <Grid container>
                                             <Grid item xs={12} lg={3} xl={3}>
-                                                <InputLabel htmlFor={`${"gender"}-input`}>{t("gender".charAt(0).toUpperCase() + "gender".slice(1).replace("_", " "))}</InputLabel>
+                                                <InputLabel htmlFor={`${"gender"}-input`} required>{t("gender".charAt(0).toUpperCase() + "gender".slice(1).replace("_", " "))}</InputLabel>
                                             </Grid>
                                             <Grid item xs={12} lg={6} xl={9}>
                                                 {renderField("gender", "gender", formData.gender, handleChange, values)}
@@ -372,7 +375,7 @@ const ProfileForm = (props) => {
                                     <Grid key={"marital_status"} item xs={12} lg={6} sx={{ mb: "8px" }}>
                                         <Grid container>
                                             <Grid item xs={12} lg={3} xl={3}>
-                                                <InputLabel htmlFor={`${"marital_status"}-input`}>{t("marital_status".charAt(0).toUpperCase() + "marital_status".slice(1).replace("_", " "))}</InputLabel>
+                                                <InputLabel htmlFor={`${"marital_status"}-input`} required>{t("marital_status".charAt(0).toUpperCase() + "marital_status".slice(1).replace("_", " "))}</InputLabel>
                                             </Grid>
                                             <Grid item xs={12} lg={6} xl={9}>
                                                 {renderField("marital_status", "marital_status", formData.marital_status, handleChange, values)}
@@ -383,7 +386,7 @@ const ProfileForm = (props) => {
                                     <Grid key={"height"} item xs={12} lg={6}>
                                         <Grid container>
                                             <Grid item xs={12} lg={3} xl={3}>
-                                                <InputLabel htmlFor={`${"height"}-input`}>{t("height".charAt(0).toUpperCase() + "height".slice(1).replace("_", " "))}</InputLabel>
+                                                <InputLabel htmlFor={`${"height"}-input`} required>{t("height".charAt(0).toUpperCase() + "height".slice(1).replace("_", " "))}</InputLabel>
                                             </Grid>
                                             <Grid item xs={12} lg={6} xl={9}>
                                                 {renderField("height", "height", formData.height, handleChange, values)}
@@ -395,7 +398,7 @@ const ProfileForm = (props) => {
                                     <Grid key={"weight"} item xs={12} lg={6}>
                                         <Grid container>
                                             <Grid item xs={12} lg={3} xl={3}>
-                                                <InputLabel htmlFor={`${"weight"}-input`}>{t("weight".charAt(0).toUpperCase() + "weight".slice(1).replace("_", " "))}</InputLabel>
+                                                <InputLabel htmlFor={`${"weight"}-input`} required>{t("weight".charAt(0).toUpperCase() + "weight".slice(1).replace("_", " "))}</InputLabel>
                                             </Grid>
                                             <Grid item xs={12} lg={6} xl={9}>
                                                 {renderField("weight", "weight", formData.weight, handleChange, values)}
@@ -407,7 +410,7 @@ const ProfileForm = (props) => {
                                     <Grid key={"colour"} item xs={12} lg={6}>
                                         <Grid container>
                                             <Grid item xs={12} lg={3} xl={3}>
-                                                <InputLabel htmlFor={`${"colour"}-input`}>{t("colour".charAt(0).toUpperCase() + "colour".slice(1).replace("_", " "))}</InputLabel>
+                                                <InputLabel htmlFor={`${"colour"}-input`} required>{t("colour".charAt(0).toUpperCase() + "colour".slice(1).replace("_", " "))}</InputLabel>
                                             </Grid>
                                             <Grid item xs={12} lg={6} xl={9}>
                                                 {renderField("colour", "colour", formData.colour, handleChange, values)}
@@ -425,7 +428,7 @@ const ProfileForm = (props) => {
                                 <Grid key={"profile_image"} item xs={12} lg={12}>
                                     <Grid container>
                                         <Grid item xs={12} lg={3} xl={2}>
-                                            <InputLabel htmlFor={`${"profile_image"}-input`}>{t("profile_image".charAt(0).toUpperCase() + "profile_image".slice(1).replace("_", " "))}</InputLabel>
+                                            <InputLabel htmlFor={`${"profile_image"}-input`} required>{t("profile_image".charAt(0).toUpperCase() + "profile_image".slice(1).replace("_", " "))}</InputLabel>
                                         </Grid>
                                         <Grid item xs={12} lg={6} xl={10}>
                                             <ImageUploader setProfileImage={setProfileImage} />
@@ -438,7 +441,7 @@ const ProfileForm = (props) => {
                                 <Grid key={"astrology_image"} item xs={12} lg={12}>
                                     <Grid container>
                                         <Grid item xs={12} lg={3} xl={2}>
-                                            <InputLabel htmlFor={`${"astrology_image"}-input`}>{t("astrology_image".charAt(0).toUpperCase() + "astrology_image".slice(1).replace("_", " "))}</InputLabel>
+                                            <InputLabel htmlFor={`${"astrology_image"}-input`} required>{t("astrology_image".charAt(0).toUpperCase() + "astrology_image".slice(1).replace("_", " "))}</InputLabel>
                                         </Grid>
                                         <Grid item xs={12} lg={6} xl={10}>
                                             <ImageUploader title={"astrology_image"} setAstroImage={setAstroImage} />
@@ -464,9 +467,11 @@ const ProfileForm = (props) => {
                                             </Button>
                                         </AnimateButton>
                                     </Grid>
-                                    {errors.submit && (
+                                    {!isEmpty(errors) && (
                                         <Grid item xs={12}>
-                                            <FormHelperText error>{errors.submit}</FormHelperText>
+                                            <FormHelperText error>
+                                                ** {t("Please enter values for all the fields")}
+                                            </FormHelperText>
                                         </Grid>
                                     )}
                                 </Grid>
@@ -476,6 +481,7 @@ const ProfileForm = (props) => {
                 </form>
             )}
         </Formik>
+
     );
 };
 

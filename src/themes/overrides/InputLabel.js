@@ -7,6 +7,12 @@ export default function InputLabel(theme) {
         root: {
           color: theme.palette.grey[600]
         },
+        asterisk: {
+          color: "#db3131",
+          "&$error": {
+            color: "#db3131",
+          },
+        },
         outlined: {
           lineHeight: '1rem',
           top: -4,
@@ -25,3 +31,17 @@ export default function InputLabel(theme) {
     }
   };
 }
+
+
+// components: {
+//     MuiFormLabel: {
+//         styleOverrides: {
+//             asterisk: {
+//                 color: "#db3131",
+//                 "&$error": {
+//                     color: "#db3131",
+//                 },
+//             },
+//         },
+//     },
+// },

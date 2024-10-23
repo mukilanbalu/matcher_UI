@@ -33,6 +33,8 @@ import reportWebVitals from './reportWebVitals';
 import { Auth0Provider } from '@auth0/auth0-react';
 import ScrollTop from 'components/ScrollTop';
 import "./components/il18/i18"
+import { Provider } from 'react-redux';
+import { store } from 'store/store';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
@@ -61,7 +63,9 @@ root.render(
     <Auth0Provider
         {...providerConfig}>
         <ScrollTop>
-            <App />
+            <Provider store={store}>
+                <App />
+            </Provider>
         </ScrollTop>
     </Auth0Provider>
 

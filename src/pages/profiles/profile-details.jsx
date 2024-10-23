@@ -36,8 +36,8 @@ export default function ProfileDetails(props) {
   const handleClose = () => setOpen(false);
 
   const getData = () => {
-    setIsLoading(true);
     try {
+      setIsLoading(true);
       if (state) {
         profileService.searchProfiles({ filters: { email: state.email }, isFullProfile: true }).then(res => {
           if (res.status === 200) {
@@ -53,15 +53,12 @@ export default function ProfileDetails(props) {
             setIsCreateProfile(true)
           }
           setIsLoading(false);
-        });
+        })
       }
     }
     catch (err) {
-      notifyError("Error fetching profiles");
+      notifyError("Error fetching your profile");
       setIsLoading(false);
-    }
-    finally {
-      setIsLoading(false)
     }
   }
 
@@ -163,6 +160,7 @@ export default function ProfileDetails(props) {
               src={(profile?.profile_img) ? `${profile.profile_img[0]}` : ""}
               alt={"profile_image"}
               onClick={handleOpen}
+              blurDataURL={`data:image/png;base64,${profile.profile_img[0]}`}
             />
           </Grid>
           <Grid item xs={12} lg={9} xl={9}>

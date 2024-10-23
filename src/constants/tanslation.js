@@ -110,6 +110,7 @@ export const tamil = {
   "Upload image": "படத்தைப் பதிவேற்றவும்",
   "Cancel": "ரத்து செய்யவும்",
   "Save": "சேமிக்கவும்",
+  "Please enter values for all the fields": "தயவுசெய்து அனைத்து விவரங்களையும் உள்ளிடவும்",
   Disclaimer: "மறுப்புத் தெரிவிப்பு",
   [`The information in user profiles is provided by the 
   users themselves. Our site does not verify the authenticity 
