@@ -7,7 +7,7 @@ const AuthProvider = ({ childern }) => {
         domain="dev-matcher.us.auth0.com"
         clientId="ElYbgNgv8swQ0cKUCv0QuFFWAA8uh4VK"
         authorizationParams={{
-            redirect_uri: "http://localhost:3000/login"
+            redirect_uri: "https://marriagematcher.netlify.app/login"
         }}
     >
         {childern}
