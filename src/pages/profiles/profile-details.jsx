@@ -5,7 +5,7 @@ import Typography from '@mui/material/Typography';
 // project import
 import MainCard from 'components/MainCard';
 import ComponentSkeleton from '../component-overview/ComponentSkeleton';
-import { Box, Button, Container } from '@mui/material';
+import { Box, Button, Container, Tooltip } from '@mui/material';
 import { EditOutlined, FilePdfOutlined, PhoneOutlined } from '@ant-design/icons';
 import { WorkOutline } from '@mui/icons-material';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
@@ -167,9 +167,18 @@ export default function ProfileDetails(props) {
             {pathname === "/my_profile" ?
               <Button variant="outilned" size='large' sx={{ float: "right", fontSize: "22px" }} onClick={() => setIsEdit(true)}>
                 <EditOutlined alt='Edit proifle' />
-              </Button> : <Button variant="outilned" color='primary' size='large' sx={{ float: "right", fontSize: "22px", color: "primary" }} onClick={downloadAsPDF}>
-                <FilePdfOutlined />
-              </Button>
+              </Button> :
+              <Tooltip title={t("download as PDF")}>
+                <Button
+                  variant="outilned"
+                  color='primary'
+                  size='large'
+                  sx={{ float: "right", fontSize: "22px", color: "primary" }}
+                  onClick={downloadAsPDF}
+                >
+                  <FilePdfOutlined />
+                </Button>
+              </Tooltip>
             }
             <Typography variant="h3" color="textPrimary">
               {profile?.name}
@@ -194,7 +203,7 @@ export default function ProfileDetails(props) {
               <PhoneOutlined /> {profile?.family?.mobile}
             </Typography>
             <Typography variant="caption" color="textPrimary" sx={{ mb: "8px", fontWeight: "500" }}>
-              <em>Profile created on: {new Intl.DateTimeFormat('en-US', { month: 'short', year: 'numeric' }).format(profile?.created_on && new Date(profile?.created_on))} </em>
+              {/* <em>Profile created on: {new Intl.DateTimeFormat('en-US', { month: 'short', year: 'numeric' }).format(profile?.created_on && new Date(profile?.created_on))} </em> */}
             </Typography>
           </Grid>
         </Grid>

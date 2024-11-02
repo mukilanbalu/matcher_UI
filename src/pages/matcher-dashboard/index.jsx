@@ -147,41 +147,48 @@ export default function DashboardMatcher() {
                     borderRight: "2px solid rgb(22, 119, 255)"
                 },
                 minHeight: "252px",
+                border: "1px solid #d5d5d5"
             }}
             onClick={() => navigate("/profile/details", { state: profile })}
         >
-            <CardMedia
-                component="img"
-                sx={{ maxHeight: "250px", width: "auto", minWidth: "190" }}
-                image={profile?.profile_img ? `${profile.profile_img[0]}` : ""}
-                alt="profile image"
-            />
-            <CardContent>
-                <Typography variant="h2" gutterBottom>
-                    {profile.name}
-                </Typography>
-
-                <Grid>
-                    <Typography variant="body1">
-                        {calculateAge(profile?.birth?.dob)} years | {profile?.marital_status}
-                    </Typography>
-                    <Typography variant="body1">
-                        {profile.professional.education}
-                    </Typography>
-                    <Typography variant="body1">
-                        {profile.professional.job}
-                    </Typography>
-                    <Typography variant="body1">
-                        {profile.professional.location}
-                    </Typography>
-                    <Typography variant="body1">
-                        {profile?.astro?.rasi}
-                    </Typography>
-                    <Typography variant="body1">
-                        {profile?.astro?.nakshatram}
-                    </Typography>
+            <Grid container spacing={0}>
+                <Grid item xs={12} sm={12} md={6} lg={6} xl={6} sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+                    <CardMedia
+                        component="img"
+                        sx={{ maxHeight: "250px", width: "auto", height: "auto", maxWidth: "100%", minWidth: "190" }}
+                        image={profile?.profile_img ? `${profile.profile_img[0]}` : ""}
+                        alt="profile image"
+                    />
                 </Grid>
-            </CardContent>
+                <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
+                    <CardContent>
+                        <Typography variant="h2" gutterBottom>
+                            {profile.name}
+                        </Typography>
+
+                        <Grid>
+                            <Typography variant="body1">
+                                {calculateAge(profile?.birth?.dob)} years | {profile?.marital_status}
+                            </Typography>
+                            <Typography variant="body1">
+                                {profile.professional.education}
+                            </Typography>
+                            <Typography variant="body1">
+                                {profile.professional.job}
+                            </Typography>
+                            <Typography variant="body1">
+                                {profile.professional.location}
+                            </Typography>
+                            <Typography variant="body1">
+                                {profile?.astro?.rasi}
+                            </Typography>
+                            <Typography variant="body1">
+                                {profile?.astro?.nakshatram}
+                            </Typography>
+                        </Grid>
+                    </CardContent>
+                </Grid>
+            </Grid>
         </MainCard>
     );
 
@@ -191,8 +198,8 @@ export default function DashboardMatcher() {
 
 
     return (
-        <Grid container rowSpacing={4.5} columnSpacing={2.75} >
-            <Grid item xs={12} sx={{ mb: -2.25 }}>
+        <Grid container rowSpacing={2} columnSpacing={2} >
+            <Grid item xs={12} >
                 <MainCard border={false} shadow={3} boxShadow>
                     <ProfileFilters profileFilters={profileFilters} setProfileFilters={setProfileFilters} />
                 </MainCard>
@@ -218,7 +225,7 @@ export default function DashboardMatcher() {
                     >
                         {!isLoading && profiles.length > 0 ?
                             profiles.map((data) =>
-                                <Grid item xs={12} sm={6} md={6} lg={6} key={data?.email} padding={3} >
+                                <Grid item xs={12} sm={6} md={6} lg={4} key={data?.email} padding={1} >
                                     {renderProfileCards(data)}
                                 </Grid>
                             )
