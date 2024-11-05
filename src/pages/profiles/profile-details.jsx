@@ -7,7 +7,7 @@ import MainCard from 'components/MainCard';
 import ComponentSkeleton from '../component-overview/ComponentSkeleton';
 import { Box, Button, Container, Tooltip } from '@mui/material';
 import { EditOutlined, FilePdfOutlined, PhoneOutlined } from '@ant-design/icons';
-import { WorkOutline } from '@mui/icons-material';
+import { Check, Close, WorkOutline } from '@mui/icons-material';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import SchoolIcon from '@mui/icons-material/School';
 import { useLocation } from 'react-router-dom';
@@ -21,12 +21,20 @@ import { initialProfileValues } from 'constants/appConstants';
 import { calculateAge } from 'utils/appUtils';
 import { notifyError } from 'components/toaster/toast';
 import { useTranslation } from 'react-i18next';
+import axios from 'axios';
+import pokeralaService from 'apiServices/prokereala';
+import { MaterialReactTable } from 'material-react-table';
 export default function ProfileDetails(props) {
 
   const [isLoading, setIsLoading] = useState(true);
   const [profile, setProfile] = useState(initialProfileValues);
   const [isEdit, setIsEdit] = useState(false);
   const [isCreateProfile, setIsCreateProfile] = useState(false);
+  const [matchScore, setMatchScore] = useState({
+    "maximum_points": "",
+    "obtained_points": "",
+    "matches": []
+  });
   const location = useLocation();
   const { state, pathname } = location;
   const { t } = useTranslation();
@@ -60,6 +68,21 @@ export default function ProfileDetails(props) {
       notifyError("Error fetching your profile");
       setIsLoading(false);
     }
+  }
+
+  const getProutham = () => {
+    pokeralaService.getMatch(
+      {
+        params: {
+          girl_nakshatra: 5,
+          girl_nakshatra_pada: 2,
+          boy_nakshatra: 6,
+          boy_nakshatra_pada: 2
+        },
+      }
+    ).then((res) => {
+      setMatchScore(res.data.data)
+    }).catch((err) => console.log(err))
   }
 
   useEffect(() => {
@@ -108,6 +131,24 @@ export default function ProfileDetails(props) {
   const renderProfileImagePreview = () => (
     open && <ImageCarousel open={open} handleClose={handleClose} images={profile?.profile_img} />
   )
+
+  const columns = [
+    {
+      accessorKey: 'name',
+      header: `${t('name')}`,
+      Cell: ({ renderedCellValue, row }) => t(renderedCellValue)
+
+    },
+    {
+      accessorKey: 'has_porutham',
+      header: `${t('match')}`,
+      Cell: ({ renderedCellValue, row }) => renderedCellValue ? <Check color='success' /> : <Close color='error' />
+    },
+    {
+      accessorKey: 'description',
+      header: `${t('description')}`,
+    }
+  ]
 
 
   const renderProfileDetails = (data) => {
@@ -271,6 +312,29 @@ export default function ProfileDetails(props) {
         </Grid>
       </MainCard>
     </Grid>
+    <Grid item xs={12} lg={12} mb={2}>
+      <MainCard border={false} shadow={3} boxShadow  >
+        <Grid >
+          <Typography variant="h3" color="textPrimary">
+
+            {t("Match score")}  {matchScore?.obtained_points} / {matchScore?.maximum_points}
+          </Typography>
+          <br />
+        </Grid>
+        {/* <Grid container> */}
+
+        <MaterialReactTable
+          columns={columns}
+          data={matchScore?.matches}
+          enableBottomToolbar={false}
+          enableTopToolbar={false}
+          enableSorting={false}
+          enablePagination={false}
+          enableColumnActions={false}
+        />
+        {/* </Grid> */}
+      </MainCard>
+    </Grid>
   </>
 
 
@@ -293,7 +357,7 @@ export default function ProfileDetails(props) {
       </MainCard>
     </Grid>
   </>
-
+  getProutham()
   return (
     <ComponentSkeleton isLoading={isLoading}>
       <Container maxWidth="md" id="pdf-content">

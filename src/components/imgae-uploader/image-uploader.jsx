@@ -70,7 +70,8 @@ const ImageUploader = (props) => {
                 accept='.jpg , .png, .jpeg, .JPG, .JPEG, .PNG'
                 style={{ display: 'none' }}
                 onChange={handleFileChange}
-                multiple={props.title !== "astrology_image"}
+                // multiple={props.title !== "astrology_image"}
+                multiple={false}
             />
             <Stack spacing={1} direction={'row'} >
 

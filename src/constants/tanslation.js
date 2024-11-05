@@ -124,7 +124,23 @@ export const tamil = {
           வழியிலோ சுயமாக சரிபார்க்க வேண்டிய பொறுப்பு உங்களுடையதே.
           இந்த தகவலை உங்கள் சொந்த விருப்பப்படி பயன்படுத்தவும்.`,
   [`File size exceeds the maximum limit of 5MB.`]: "கோப்பின் அளவு அதிகபட்ச 5MB ஐ விட அதிகமாக உள்ளது.",
-  [`download as PDF`]: "PDF ஆக பதிவிறக்கம் செய்யவும்"
+  [`download as PDF`]: "PDF ஆக பதிவிறக்கம் செய்யவும்",
 
+  ['Match score']: "பொருத்தம் மதிப்பெண்",
+  "name": "பொருத்தம்",
+  "match": "பொருத்தம் உண்டு / இல்லை",
+  "description": "விளக்கம்",
+  "Dina Porutham": "தின பொருத்தம்",
+  "Gana Porutham": "கண பொருத்தம்",
+  "Mahendra Porutham": "மகேந்திர பொருத்தம்",
+  "Stree Deergha Porutham": "ஸ்திரீ தீர்க்கம் பொருத்தம்",
+  "Yoni Porutham": "யோனி பொருத்தம்",
+  "Veda Porutham": "வேத பொருத்தம்",
+  "Rajju Porutham": "ராஜு பொருத்தம்",
+  "Rasi Porutham": "ராசி பொருத்தம்",
+  "Rasi Lord Porutham": "ராசி அதிபதி பொருத்தம்",
+  "Vashya Porutham": "வாசிய பொருத்தம்",
+  "Nadi Porutham": "நாடி பொருத்தம்",
+  "Varna Porutham": "வர்ண பொருத்தம்"
 
 };
