@@ -23,15 +23,8 @@ export default function AuthFooter() {
         </Typography> */}
 
         <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 1, sm: 3 }} textAlign={{ xs: 'center', sm: 'inherit' }}>
-          <Typography
-            variant="subtitle2"
-            color="secondary"
-            component={Link}
-            target="_blank"
-            underline="hover"
-          >
-            &copy; <a href="http://marriagematcher.com/">Marriagematcher</a> <span id="copyrightYear">2024</span>
-
+          <Typography variant="subtitle2" color="secondary">
+            &copy; {new Date().getFullYear()} Marriagematcher
           </Typography>
           <Typography
             variant="subtitle2"

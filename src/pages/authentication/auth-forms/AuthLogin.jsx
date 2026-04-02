@@ -35,9 +35,13 @@ export default function AuthLogin() {
               fullWidth 
               size="large" 
               variant="contained" 
-              color="primary"
+              sx={{ 
+                borderRadius: '24px',
+                background: 'linear-gradient(45deg, #A6627C 30%, #D9AEBB 90%)',
+                boxShadow: '0 4px 15px rgba(166, 98, 124, 0.2)'
+              }}
             >
-              Logout
+              Sign Out
             </Button>
           ) : (
             <Button 
@@ -45,11 +49,23 @@ export default function AuthLogin() {
               onClick={handleGoogleLogin} 
               fullWidth 
               size="large" 
-              variant="outlined" 
-              color="secondary"
-              startIcon={<img src={Google} alt="Google" />}
+              variant="contained" 
+              sx={{ 
+                py: 1.5,
+                borderRadius: '24px',
+                background: '#fff',
+                color: '#000',
+                border: '1px solid rgba(0,0,0,0.1)',
+                boxShadow: '0 4px 12px rgba(166, 98, 124, 0.1)',
+                '&:hover': {
+                  background: '#f8f8f8',
+                  transform: 'translateY(-2px)',
+                  boxShadow: '0 8px 20px rgba(166, 98, 124, 0.2)'
+                }
+              }}
+              startIcon={<img src={Google} alt="Google" style={{ width: 20 }} />}
             >
-              Login with Google
+              Sign in with Google
             </Button>
           )}
         </AnimateButton>

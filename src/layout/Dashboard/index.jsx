@@ -13,19 +13,25 @@ import navigation from 'menu-items';
 import Loader from 'components/Loader';
 import Breadcrumbs from 'components/@extended/Breadcrumbs';
 
+import { useTheme } from '@mui/material/styles';
 import { handlerDrawerOpen, useGetMenuMaster } from 'services/menu';
-import { ThemeContextProvider } from 'contexts/theme-context/dark-mode';
 import { useAuth0 } from '@auth0/auth0-react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import profileService from 'services/profileService';
 import AuthFooter from 'components/cards/AuthFooter';
 import { Grid } from '@mui/material';
 import ToastNotification from 'components/toaster/toast';
+import MobileNavigation from './MobileNavigation';
+
+import { drawerWidth } from 'config';
 
 // ==============================|| MAIN LAYOUT ||============================== //
 
 export default function DashboardLayout() {
-  const { menuMasterLoading } = useGetMenuMaster();
+  const { menuMasterLoading, menuMaster } = useGetMenuMaster();
+  const drawerOpen = menuMaster?.isDashboardDrawerOpened || false;
+  const theme = useTheme();
+  const downLG = useMediaQuery((theme) => theme.breakpoints.down('lg'));
   const downXL = useMediaQuery((theme) => theme.breakpoints.down('xl'));
   const { user, isAuthenticated, isLoading } = useAuth0();
   const navigate = useNavigate();
@@ -36,6 +42,8 @@ export default function DashboardLayout() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [downXL]);
 
+  // Temporarily disabled as per user request
+  /*
   useEffect(() => {
     if (!isLoading && isAuthenticated && user) {
       profileService.searchProfiles({ filters: { email: user.email }, isFullProfile: true })
@@ -47,23 +55,43 @@ export default function DashboardLayout() {
         .catch(() => {});
     }
   }, [isLoading, isAuthenticated, user, location.pathname, navigate]);
+  */
 
   if (menuMasterLoading || isLoading) return <Loader />;
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-      <Box sx={{ display: 'flex', flexGrow: 1, width: '100%' }}>
+    <Box sx={{ 
+      display: 'flex', 
+      flexDirection: 'column', 
+      minHeight: '100vh',
+      background: 'linear-gradient(135deg, #FFF9F3 0%, #FDF2F5 100%)' // Soft Gradient Background
+    }}>
+      <Box sx={{ display: 'flex', flexGrow: 1, width: '100%', pb: downLG ? '100px' : 0 }}>
         <Header />
-        <Drawer />
-        <Box component="main" sx={{ width: 'calc(100% - 260px)', flexGrow: 1, p: { xs: 2, sm: 3 } }}>
+        {!downLG && <Drawer />}
+        <Box 
+          component="main" 
+          sx={{ 
+            width: downLG ? '100%' : (drawerOpen ? `calc(100% - ${drawerWidth}px)` : '100%'), 
+            flexGrow: 1, 
+            p: { xs: 2, sm: 3 },
+            transition: theme.transitions.create('width', {
+              easing: theme.transitions.easing.sharp,
+              duration: theme.transitions.duration.enteringScreen
+            })
+          }}
+        >
           <Toolbar />
           <Breadcrumbs navigation={navigation} title />
           <Outlet />
         </Box>
       </Box>
-      <Grid item xs={12} sx={{ m: 3, mt: 1 }}>
-        <AuthFooter />
-      </Grid>
+      {!downLG && (
+        <Grid item xs={12} sx={{ m: 3, mt: 1 }}>
+          <AuthFooter />
+        </Grid>
+      )}
+      <MobileNavigation />
       <ToastNotification />
     </Box>
   );

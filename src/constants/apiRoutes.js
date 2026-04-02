@@ -22,7 +22,9 @@ export const prokerala = {
 export const interest = {
     SEND: "/interests/send",
     LIST: "/interests/list",
-    UPDATE: "/interests/update"
+    UPDATE: "/interests/update",
+    TOGGLE: "/interests/toggle",
+    CHECK: "/interests/check"
 }
 
 

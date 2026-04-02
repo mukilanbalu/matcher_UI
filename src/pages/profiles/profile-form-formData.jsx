@@ -353,44 +353,88 @@ const ProfileForm = (props) => {
         >
             {({ handleSubmit, handleChange, values, isSubmitting, errors }) => (
                 <form noValidate onSubmit={handleSubmit}>
-                    <MainCard border={false} shadow={3} boxShadow sx={{ p: 2 }}>
-                        <Stepper activeStep={activeStep} orientation="horizontal" sx={{ mb: 4, display: { xs: 'none', md: 'flex' } }}>
+                    <MainCard 
+                        border={false} 
+                        boxShadow 
+                        sx={{ 
+                            p: { xs: 1, md: 3 }, 
+                            borderRadius: '32px',
+                            background: 'rgba(255, 255, 255, 0.8)',
+                            backdropFilter: 'blur(10px)'
+                        }}
+                    >
+                        <Typography variant="h2" sx={{ mb: 4, textAlign: 'center', color: 'primary.main' }}>
+                             {props.isCreateProfile ? t("Create Your Journey") : t("Edit Your Profile")}
+                        </Typography>
+
+                        <Stepper 
+                            activeStep={activeStep} 
+                            orientation="horizontal" 
+                            sx={{ 
+                                mb: 6, 
+                                display: { xs: 'none', md: 'flex' },
+                                '& .MuiStepIcon-root.Mui-active': { color: 'primary.main' },
+                                '& .MuiStepIcon-root.Mui-completed': { color: 'secondary.main' }
+                            }}
+                        >
                             {steps.map((label) => (
                                 <Step key={label}><StepLabel>{t(label)}</StepLabel></Step>
                             ))}
                         </Stepper>
                         
-                        <Box sx={{ mb: 4 }}>
-                            <Typography variant="h4" sx={{ mb: 2, display: { md: 'none' } }}>
-                                {t(steps[activeStep])} ({activeStep + 1}/{steps.length})
+                        <Box sx={{ mb: 4, minHeight: '400px' }}>
+                            <Typography variant="h3" sx={{ mb: 3, color: 'text.primary', borderBottom: '2px solid', borderColor: 'primary.lighter', pb: 1, display: 'inline-block' }}>
+                                {t(steps[activeStep])}
                             </Typography>
                             {renderStepContent(activeStep, handleChange, values)}
                         </Box>
 
-                        <Divider sx={{ my: 2 }} />
+                        <Divider sx={{ my: 3, opacity: 0.1 }} />
 
-                        <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                            <Button disabled={activeStep === 0} onClick={handleBack}>
+                        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                            <Button 
+                                disabled={activeStep === 0} 
+                                onClick={handleBack}
+                                sx={{ borderRadius: '12px', px: 4 }}
+                            >
                                 {t("Back")}
                             </Button>
-                            <Box>
-                                <Button onClick={() => props.setIsEdit(false)} sx={{ mr: 1 }}>
+                            <Box sx={{ display: 'flex', gap: 2 }}>
+                                <Button 
+                                    onClick={() => props.setIsEdit(false)}
+                                    color="secondary"
+                                    sx={{ borderRadius: '12px' }}
+                                >
                                     {t("Cancel")}
                                 </Button>
                                 {activeStep === steps.length - 1 ? (
                                     <AnimateButton>
                                         <Button 
                                             variant="contained" 
-                                            color="primary" 
                                             type="submit" 
                                             disabled={isSubmitting}
+                                            sx={{ 
+                                                borderRadius: '24px', 
+                                                px: 6, 
+                                                py: 1.5,
+                                                background: 'linear-gradient(45deg, #A6627C 30%, #D9AEBB 90%)',
+                                                boxShadow: '0 8px 20px rgba(166, 98, 124, 0.3)'
+                                            }}
                                         >
-                                            {t("Save Profile")}
+                                            {t("Complete Profile")}
                                         </Button>
                                     </AnimateButton>
                                 ) : (
-                                    <Button variant="contained" color="primary" onClick={handleNext}>
-                                        {t("Next")}
+                                    <Button 
+                                        variant="contained" 
+                                        onClick={handleNext}
+                                        sx={{ 
+                                            borderRadius: '24px', 
+                                            px: 6, 
+                                            background: 'linear-gradient(45deg, #A6627C 30%, #D9AEBB 90%)',
+                                        }}
+                                    >
+                                        {t("Continue")}
                                     </Button>
                                 )}
                             </Box>

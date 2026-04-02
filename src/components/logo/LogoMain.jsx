@@ -6,12 +6,24 @@ import logo from 'assets/images/logo.png';
 
 // ==============================|| LOGO SVG ||============================== //
 
-const Logo = (props) => {
-  const theme = useTheme();
+import { Typography } from '@mui/material';
 
+// ==============================|| LOGO SVG ||============================== //
+
+const Logo = () => {
   return (
-
-    <img src={logo} alt="Matcher" width={"100%"} />
+    <Typography
+      variant="h3"
+      sx={{
+        fontFamily: "'Outfit', sans-serif",
+        fontWeight: 700,
+        color: 'primary.main',
+        letterSpacing: '1px',
+        textTransform: 'uppercase'
+      }}
+    >
+      Matcher
+    </Typography>
   );
 };
 

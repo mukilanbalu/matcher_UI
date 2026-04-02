@@ -9,19 +9,22 @@ export default function Typography(fontFamily) {
     fontWeightMedium: 500,
     fontWeightBold: 600,
     h1: {
-      fontWeight: 600,
-      fontSize: '2.375rem',
-      lineHeight: 1.21
+      fontWeight: 700,
+      fontSize: '2.5rem',
+      lineHeight: 1.2,
+      fontFamily: `'Outfit', sans-serif`
     },
     h2: {
-      fontWeight: 600,
-      fontSize: '1.875rem',
-      lineHeight: 1.27
+      fontWeight: 700,
+      fontSize: '2rem',
+      lineHeight: 1.25,
+      fontFamily: `'Outfit', sans-serif`
     },
     h3: {
-      fontWeight: 600,
-      fontSize: '1.5rem',
-      lineHeight: 1.33
+      fontWeight: 700,
+      fontSize: '1.75rem',
+      lineHeight: 1.3,
+      fontFamily: `'Outfit', sans-serif`
     },
     h4: {
       fontWeight: 600,

@@ -42,11 +42,13 @@ function MainCard(
       {...others}
       sx={{
         border: border ? '1px solid' : 'none',
-        borderRadius: 2,
-        borderColor: theme.palette.mode === 'dark' ? theme.palette.divider : theme.palette.grey.A800,
-        boxShadow: boxShadow && (!border || theme.palette.mode === 'dark') ? shadow || theme.customShadows.z1 : 'inherit',
+        borderRadius: 4, // Increased for contemporary feel (32px)
+        borderColor: theme.palette.divider,
+        boxShadow: boxShadow ? shadow || '0 10px 30px -10px rgba(0,0,0,0.05)' : 'none',
+        transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
         ':hover': {
-          boxShadow: boxShadow ? shadow || theme.customShadows.z1 : 'inherit'
+          boxShadow: boxShadow ? shadow || '0 20px 40px -12px rgba(166, 98, 124, 0.12)' : 'none', // Berry-tinted shadow
+          transform: boxShadow ? 'translateY(-4px)' : 'none'
         },
         '& pre': {
           m: 0,

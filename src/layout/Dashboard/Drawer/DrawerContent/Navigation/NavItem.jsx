@@ -59,12 +59,14 @@ export default function NavItem({ item, level }) {
         pl: drawerOpen ? `${level * 28}px` : 1.5,
         py: !drawerOpen && level === 1 ? 1.25 : 1,
         ...(drawerOpen && {
+          borderRadius: 2,
+          mx: 1,
+          mb: 0.5,
           '&:hover': {
             bgcolor: 'primary.lighter'
           },
           '&.Mui-selected': {
             bgcolor: 'primary.lighter',
-            borderRight: `2px solid ${theme.palette.primary.main}`,
             color: iconSelectedColor,
             '&:hover': {
               color: iconSelectedColor,

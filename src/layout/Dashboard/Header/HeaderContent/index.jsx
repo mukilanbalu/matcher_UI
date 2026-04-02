@@ -50,12 +50,12 @@ export default function HeaderContent() {
         color: '#fff',
         '& + .MuiSwitch-track': {
           opacity: 1,
-          backgroundColor: theme.palette.mode === 'dark' ? '#177ddc' : '#1890ff',
+          backgroundColor: '#D9AEBB'
         },
       },
     },
     '& .MuiSwitch-thumb': {
-      boxShadow: '0 2px 4px 0 rgb(0 35 11 / 20%)',
+      boxShadow: '0 2px 4px 0 rgb(166 98 124 / 20%)',
       width: 12,
       height: 12,
       borderRadius: 6,
@@ -66,7 +66,7 @@ export default function HeaderContent() {
     '& .MuiSwitch-track': {
       borderRadius: 16 / 2,
       opacity: 1,
-      backgroundColor: "#177ddc",
+      backgroundColor: "#A6627C",
       boxSizing: 'border-box',
     },
   }));
@@ -74,7 +74,9 @@ export default function HeaderContent() {
   return (
     <>
       {!downLG &&
-        <Box sx={{ width: '100%', ml: { xs: 0, md: 1 } }} />
+        <Box sx={{ width: '100%', ml: { xs: 0, md: 1 } }}>
+           <Search />
+        </Box>
       }
       {downLG && <Box sx={{ width: '100%', ml: 1 }} />}
       {/* <IconButton
@@ -93,9 +95,9 @@ export default function HeaderContent() {
         <AntSwitch inputProps={{ 'aria-label': 'ant design' }} checked={checked} onChange={handleLanguageChange} />
         <Typography>தமிழ்</Typography>
       </Stack>
-      {/* <Notification /> */}
-      {!downLG && <Profile />}
-      {downLG && <MobileSection />}
+      <Stack direction="row" spacing={1} alignItems="center" sx={{ ml: 2 }}>
+        <Profile />
+      </Stack>
     </>
   );
 }

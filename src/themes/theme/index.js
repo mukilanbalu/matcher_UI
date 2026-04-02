@@ -1,7 +1,12 @@
-// ==============================|| PRESET THEME - THEME SELECTOR ||============================== //
-
 export default function Theme(colors) {
-  const { blue, red, gold, cyan, green, grey } = colors;
+  const { grey } = colors;
+
+  // Contemporary Romance Palette
+  const primaryMain = '#A6627C'; // Soft Berry
+  const secondaryMain = '#D9AEBB'; // Dusty Rose
+  const accentGold = '#C9A37A'; // Brushed Gold
+  const backgroundBeige = '#FFF9F3'; // Creamy Beige
+
   const greyColors = {
     0: grey[0],
     50: grey[1],
@@ -21,68 +26,69 @@ export default function Theme(colors) {
     A700: grey[14],
     A800: grey[16]
   };
+
   const contrastText = '#fff';
 
   return {
     primary: {
-      lighter: blue[0],
-      100: blue[1],
-      200: blue[2],
-      light: blue[3],
-      400: blue[4],
-      main: blue[5],
-      dark: blue[6],
-      700: blue[7],
-      darker: blue[8],
-      900: blue[9],
+      lighter: '#FCE4EC',
+      100: '#F8BBD0',
+      200: '#F48FB1',
+      light: '#F06292',
+      400: '#EC407A',
+      main: primaryMain,
+      dark: '#880E4F',
+      700: '#AD1457',
+      darker: '#4A148C',
+      900: '#311B92',
       contrastText
     },
     secondary: {
-      lighter: greyColors[100],
-      100: greyColors[100],
-      200: greyColors[200],
-      light: greyColors[300],
-      400: greyColors[400],
-      main: greyColors[500],
+      lighter: '#FDFCFB',
+      100: '#FDFCFB',
+      200: '#FDFCFB',
+      light: '#FDFCFB',
+      400: '#FDFCFB',
+      main: secondaryMain,
       600: greyColors[600],
-      dark: greyColors[700],
+      dark: '#8E24AA',
       800: greyColors[800],
-      darker: greyColors[900],
+      darker: '#5E35B1',
       A100: greyColors[0],
-      A200: greyColors.A400,
+      A200: backgroundBeige,
       A300: greyColors.A700,
-      contrastText: greyColors[0]
+      contrastText: greyColors[900]
     },
     error: {
-      lighter: red[0],
-      light: red[2],
-      main: red[4],
-      dark: red[7],
-      darker: red[9],
+      lighter: '#FFEBEE',
+      light: '#EF9A9A',
+      main: '#D32F2F',
+      dark: '#C62828',
+      darker: '#B71C1C',
       contrastText
     },
     warning: {
-      lighter: gold[0],
-      light: gold[3],
-      main: gold[5],
-      dark: gold[7],
-      darker: gold[9],
-      contrastText: greyColors[100]
+      lighter: '#FFF8E1',
+      light: '#FFECB3',
+      main: accentGold,
+      dark: '#B8860B',
+      darker: '#8B4513',
+      contrastText: greyColors[900]
     },
     info: {
-      lighter: cyan[0],
-      light: cyan[3],
-      main: cyan[5],
-      dark: cyan[7],
-      darker: cyan[9],
+      lighter: '#E1F5FE',
+      light: '#81D4FA',
+      main: '#0288D1',
+      dark: '#01579B',
+      darker: '#01579B',
       contrastText
     },
     success: {
-      lighter: green[0],
-      light: green[3],
-      main: green[5],
-      dark: green[7],
-      darker: green[9],
+      lighter: '#E8F5E9',
+      light: '#A5D6A7',
+      main: '#2E7D32',
+      dark: '#1B5E20',
+      darker: '#1B5E20',
       contrastText
     },
     grey: greyColors

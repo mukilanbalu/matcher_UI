@@ -163,7 +163,14 @@ const ProfileFilters = (props) => {
                                         valueLabelDisplay="auto"
                                         step={1}
                                         min={21}
-                                        max={55} />
+                                        max={55}
+                                        sx={{
+                                            color: '#A6627C',
+                                            '& .MuiSlider-thumb': {
+                                                background: 'linear-gradient(45deg, #A6627C 30%, #D9AEBB 90%)',
+                                                border: '2px solid #fff'
+                                            }
+                                        }} />
                                 </Stack>
                                 <ErrorMessage name="age" component="div" />
                             </FormControl>

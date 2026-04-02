@@ -16,9 +16,24 @@ import AuthBackground from 'assets/images/auth/AuthBackground';
 
 export default function AuthWrapper({ children }) {
   return (
-    <Box sx={{ minHeight: '100vh' }}>
-      <AuthBackground />
-      <Grid container direction="column" justifyContent="flex-end" sx={{ minHeight: '100vh' }}>
+    <Box sx={{ 
+      minHeight: '100vh',
+      background: 'radial-gradient(circle at top left, #A6627C 0%, #D9AEBB 40%, #FFF9F3 100%)',
+      position: 'relative',
+      overflow: 'hidden',
+      '&::after': {
+        content: '""',
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        background: 'url("https://www.transparenttextures.com/patterns/silk.png")',
+        opacity: 0.1,
+        pointerEvents: 'none'
+      }
+    }}>
+      <Grid container direction="column" sx={{ minHeight: '100vh' }}>
         <Grid item xs={12} sx={{ ml: 3, mt: 3 }}>
           {/* <Box sx={{ width: "100px" }}>
             <Logo />

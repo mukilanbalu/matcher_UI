@@ -24,6 +24,7 @@ tsconfig.node.json
 # Ignore IDE directories and files
 .vscode/
 .idea/
+.agent/
 *.suo
 *.ntvs*
 *.njsproj

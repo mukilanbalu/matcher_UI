@@ -40,6 +40,10 @@ export default function Palette(mode, presetColor) {
         white: '#fff'
       },
       ...paletteColor,
+      primary: {
+        ...paletteColor.primary,
+        gradient: 'linear-gradient(45deg, #A6627C 30%, #D9AEBB 90%)'
+      },
       text: {
         primary: paletteColor.grey[700],
         secondary: paletteColor.grey[500],
@@ -51,7 +55,7 @@ export default function Palette(mode, presetColor) {
       divider: paletteColor.grey[200],
       background: {
         paper: paletteColor.grey[0],
-        default: paletteColor.grey.A50
+        default: '#FFF9F3'
       }
     }
   });
