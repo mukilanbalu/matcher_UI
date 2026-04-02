@@ -3,7 +3,7 @@ import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import MainCard from 'components/MainCard';
 import { CardContent, CardMedia } from '@mui/material';
-import profileService from 'apiServices/profileService';
+import profileService from 'services/profileService';
 import ComponentSkeleton from 'pages/component-overview/ComponentSkeleton';
 import { useNavigate } from 'react-router';
 import { useAuth0 } from '@auth0/auth0-react';
@@ -13,6 +13,7 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import { notifyError } from 'components/toaster/toast';
 import ScrollToTopButton from 'components/scroll-to-top/scroll-top';
 import { useTranslation } from 'react-i18next';
+import { Box, Divider } from '@mui/material';
 
 // DASHBOARD //
 
@@ -95,7 +96,6 @@ export default function DashboardMatcher() {
         });
     }
 
-
     useEffect(() => {
         if (timeoutId.current) {
             clearTimeout(timeoutId.current);
@@ -141,54 +141,49 @@ export default function DashboardMatcher() {
             content={false}
             sx={{
                 display: "flex",
+                flexDirection: "column",
                 cursor: "pointer",
+                borderRadius: '12px',
+                overflow: 'hidden',
+                transition: '0.3s',
                 "&:hover": {
-                    backgroundColor: "rgba(22, 119, 255, 0.08)",
-                    borderRight: "2px solid rgb(22, 119, 255)"
+                    transform: 'translateY(-4px)',
+                    boxShadow: '0 4px 20px 0 rgba(0,0,0,0.12)'
                 },
-                minHeight: "252px",
-                border: "1px solid #d5d5d5"
+                border: "1px solid #eee"
             }}
             onClick={() => navigate("/profile/details", { state: profile })}
         >
-            <Grid container spacing={0}>
-                <Grid item xs={12} sm={12} md={6} lg={6} xl={6} sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-                    <CardMedia
-                        component="img"
-                        sx={{ maxHeight: "250px", width: "auto", height: "auto", maxWidth: "100%", minWidth: "190" }}
-                        image={profile?.profile_img ? `${profile.profile_img[0]}` : ""}
-                        alt="profile image"
-                    />
-                </Grid>
-                <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
-                    <CardContent>
-                        <Typography variant="h2" gutterBottom>
-                            {profile.name}
+            <Box sx={{ position: 'relative' }}>
+                <CardMedia
+                    component="img"
+                    sx={{ height: 260, objectFit: 'cover' }}
+                    image={profile?.profile_img ? `${profile.profile_img[0]}` : ""}
+                    alt={profile.name}
+                    loading="lazy"
+                />
+            </Box>
+            <CardContent sx={{ p: 2, flexGrow: 1 }}>
+                <Typography variant="h5" sx={{ fontWeight: 600, mb: 0.5 }}>
+                    {profile.name}
+                </Typography>
+                <Typography variant="body2" color="textSecondary" sx={{ mb: 1 }}>
+                    {calculateAge(profile?.birth?.dob)} yrs • {profile?.marital_status}
+                </Typography>
+                <Divider sx={{ my: 1 }} />
+                <Grid container spacing={0.5}>
+                    <Grid item xs={12}>
+                        <Typography variant="caption" color="textSecondary" sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                            📍 {profile.professional.location}
                         </Typography>
-
-                        <Grid>
-                            <Typography variant="body1">
-                                {calculateAge(profile?.birth?.dob)} years | {profile?.marital_status}
-                            </Typography>
-                            <Typography variant="body1">
-                                {profile.professional.education}
-                            </Typography>
-                            <Typography variant="body1">
-                                {profile.professional.job}
-                            </Typography>
-                            <Typography variant="body1">
-                                {profile.professional.location}
-                            </Typography>
-                            <Typography variant="body1">
-                                {profile?.astro?.rasi}
-                            </Typography>
-                            <Typography variant="body1">
-                                {profile?.astro?.nakshatram}
-                            </Typography>
-                        </Grid>
-                    </CardContent>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Typography variant="caption" color="textSecondary" sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                            🎓 {profile.professional.education}
+                        </Typography>
+                    </Grid>
                 </Grid>
-            </Grid>
+            </CardContent>
         </MainCard>
     );
 

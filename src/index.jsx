@@ -38,38 +38,31 @@ import { store } from 'store/store';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
-
-
-// ==============================|| MAIN - REACT DOM RENDER ||============================== //
-
 const onRedirectCallback = (appState) => {
     // history.push(
     //     appState && appState.returnTo ? appState.returnTo : window.location.pathname
     // );
-
 };
+
 const providerConfig = {
-    domain: "dev-matcher.us.auth0.com",
-    clientId: "ElYbgNgv8swQ0cKUCv0QuFFWAA8uh4VK",
+    domain: import.meta.env.VITE_AUTH0_DOMAIN || "dev-matcher.us.auth0.com",
+    clientId: import.meta.env.VITE_AUTH0_CLIENT_ID || "ElYbgNgv8swQ0cKUCv0QuFFWAA8uh4VK",
     onRedirectCallback,
     authorizationParams: {
         redirect_uri: window.location.origin,
-        audience: "matcher",
+        audience: import.meta.env.VITE_AUTH0_AUDIENCE || "matcher",
         scope: "openid profile email"
     },
 };
 
 root.render(
-    <Auth0Provider
-        {...providerConfig}>
+    <Auth0Provider {...providerConfig}>
         <ScrollTop>
             <Provider store={store}>
                 <App />
             </Provider>
         </ScrollTop>
     </Auth0Provider>
-
-
 );
 
 // If you want to start measuring performance in your app, pass a function

@@ -12,7 +12,7 @@ import ListItemText from '@mui/material/ListItemText';
 import Typography from '@mui/material/Typography';
 
 // project import
-import { handlerActiveItem, useGetMenuMaster } from 'apiServices/menu';
+import { handlerActiveItem, useGetMenuMaster } from 'services/menu';
 import { useTranslation } from 'react-i18next';
 
 export default function NavItem({ item, level }) {

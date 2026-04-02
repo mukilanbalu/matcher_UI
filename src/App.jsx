@@ -18,10 +18,8 @@ import TermsOfUse from 'pages/public-pges/terms-of-use';
 
 
 const ProfileDetails = Loadable(lazy(() => import('pages/profiles/profile-details')));
-
-
-// render - sample page
 const SamplePage = Loadable(lazy(() => import('pages/extra-pages/sample-page')));
+const Interests = Loadable(lazy(() => import('pages/interests')));
 
 
 // ==============================|| APP - THEME, ROUTER, LOCAL ||============================== //
@@ -64,6 +62,7 @@ export default function App() {
                     <Route path='/' element={(!isLoading && isAuthenticated) ? <DashboardMatcher /> : <Navigate to="/login" />} />
                     <Route path='/my_profile' element={<ProfileDetails currentUser={user} />} />
                     <Route path='/profile/details' element={<ProfileDetails />} />
+                    <Route path='/interests' element={(!isLoading && isAuthenticated) ? <Interests /> : <Navigate to="/login" />} />
                   </Route>
                 </Routes>
               </BrowserRouter >

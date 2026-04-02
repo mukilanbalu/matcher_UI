@@ -19,5 +19,11 @@ export const prokerala = {
     GET_MATCH: "/getMatch"
 }
 
+export const interest = {
+    SEND: "/interests/send",
+    LIST: "/interests/list",
+    UPDATE: "/interests/update"
+}
+
 
 

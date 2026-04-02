@@ -13,40 +13,58 @@ import navigation from 'menu-items';
 import Loader from 'components/Loader';
 import Breadcrumbs from 'components/@extended/Breadcrumbs';
 
-import { handlerDrawerOpen, useGetMenuMaster } from 'apiServices/menu';
+import { handlerDrawerOpen, useGetMenuMaster } from 'services/menu';
 import { ThemeContextProvider } from 'contexts/theme-context/dark-mode';
+import { useAuth0 } from '@auth0/auth0-react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import profileService from 'services/profileService';
 import AuthFooter from 'components/cards/AuthFooter';
 import { Grid } from '@mui/material';
 import ToastNotification from 'components/toaster/toast';
+
 // ==============================|| MAIN LAYOUT ||============================== //
 
 export default function DashboardLayout() {
   const { menuMasterLoading } = useGetMenuMaster();
   const downXL = useMediaQuery((theme) => theme.breakpoints.down('xl'));
+  const { user, isAuthenticated, isLoading } = useAuth0();
+  const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     handlerDrawerOpen(!downXL);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [downXL]);
 
-  if (menuMasterLoading) return <Loader />;
+  useEffect(() => {
+    if (!isLoading && isAuthenticated && user) {
+      profileService.searchProfiles({ filters: { email: user.email }, isFullProfile: true })
+        .then((res) => {
+          if ((res.status === 204 || (res.status === 200 && res.data.data?.length === 0)) && location.pathname !== '/my_profile') {
+            navigate('/my_profile');
+          }
+        })
+        .catch(() => {});
+    }
+  }, [isLoading, isAuthenticated, user, location.pathname, navigate]);
 
-  return (<>
-    <Box sx={{ display: 'flex', width: '100%' }}>
-      <Header />
-      <Drawer />
-      <Box component="main" sx={{ width: 'calc(100% - 260px)', flexGrow: 1, p: { xs: 2, sm: 3 } }}>
-        <Toolbar />
-        <Breadcrumbs navigation={navigation} title />
-        <Outlet />
+  if (menuMasterLoading || isLoading) return <Loader />;
+
+  return (
+    <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+      <Box sx={{ display: 'flex', flexGrow: 1, width: '100%' }}>
+        <Header />
+        <Drawer />
+        <Box component="main" sx={{ width: 'calc(100% - 260px)', flexGrow: 1, p: { xs: 2, sm: 3 } }}>
+          <Toolbar />
+          <Breadcrumbs navigation={navigation} title />
+          <Outlet />
+        </Box>
       </Box>
+      <Grid item xs={12} sx={{ m: 3, mt: 1 }}>
+        <AuthFooter />
+      </Grid>
+      <ToastNotification />
     </Box>
-    <Grid item xs={12} sx={{ m: 3, mt: 1 }}>
-      <AuthFooter />
-    </Grid>
-    <ToastNotification />
-
-  </>
-
   );
 }

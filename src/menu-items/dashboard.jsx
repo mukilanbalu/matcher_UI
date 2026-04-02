@@ -1,10 +1,11 @@
 // assets
-import { DashboardOutlined, UserOutlined } from '@ant-design/icons';
+import { DashboardOutlined, UserOutlined, HeartOutlined } from '@ant-design/icons';
 
 // icons
 const icons = {
   DashboardOutlined,
-  UserOutlined
+  UserOutlined,
+  HeartOutlined
 };
 
 // ==============================|| MENU ITEMS - DASHBOARD ||============================== //
@@ -27,6 +28,13 @@ const dashboard = {
       type: 'item',
       url: '/my_profile',
       icon: icons.UserOutlined,
+      breadcrumbs: false
+    }, {
+      id: 'interests',
+      title: 'Interests',
+      type: 'item',
+      url: '/interests',
+      icon: icons.HeartOutlined,
       breadcrumbs: false
     }
   ]

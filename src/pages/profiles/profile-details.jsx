@@ -13,7 +13,7 @@ import SchoolIcon from '@mui/icons-material/School';
 import { useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 
-import profileService from 'apiServices/profileService';
+import profileService from 'services/profileService';
 import ProfileForm from './profile-form-formData';
 import html2pdf from 'html2pdf.js';
 import ImageCarousel from "../../components/image-carousel";
@@ -22,7 +22,10 @@ import { calculateAge } from 'utils/appUtils';
 import { notifyError } from 'components/toaster/toast';
 import { useTranslation } from 'react-i18next';
 import axios from 'axios';
-import pokeralaService from 'apiServices/prokereala';
+import pokeralaService from 'services/prokereala';
+import interestService from 'services/interestService';
+import { notifySuccess } from 'components/toaster/toast';
+import { HeartOutlined } from '@ant-design/icons';
 import { MaterialReactTable } from 'material-react-table';
 export default function ProfileDetails(props) {
 
@@ -47,21 +50,34 @@ export default function ProfileDetails(props) {
     try {
       setIsLoading(true);
       if (state) {
-        profileService.searchProfiles({ filters: { email: state.email }, isFullProfile: true }).then(res => {
-          if (res.status === 200) {
-            setProfile(res.data.data[0]);
-          }
-          setIsLoading(false);
-        });
+        profileService.searchProfiles({ filters: { email: state.email }, isFullProfile: true })
+          .then(res => {
+            if (res.status === 200 && res.data.data?.length > 0) {
+              setProfile(res.data.data[0]);
+            } else {
+              setIsCreateProfile(true);
+            }
+          })
+          .catch(err => {
+            console.error("Error fetching state profile:", err);
+            notifyError("Error searching profile");
+          })
+          .finally(() => setIsLoading(false));
       } else {
-        profileService.searchProfiles({ filters: { email: props?.currentUser?.email }, isFullProfile: true }).then(res => {
-          if (res.status === 200) {
-            setProfile(res.data.data[0]);
-          } else if (res.status === 204) {
-            setIsCreateProfile(true)
-          }
-          setIsLoading(false);
-        })
+        profileService.searchProfiles({ filters: { email: props?.currentUser?.email }, isFullProfile: true })
+          .then(res => {
+            if (res.status === 200 && res.data.data?.length > 0) {
+              setProfile(res.data.data[0]);
+            } else {
+              setProfile({ ...initialProfileValues, email: props?.currentUser?.email });
+              setIsCreateProfile(true);
+            }
+          })
+          .catch(err => {
+            console.error("Error fetching my profile:", err);
+            notifyError("Error fetching your profile");
+          })
+          .finally(() => setIsLoading(false));
       }
     }
     catch (err) {
@@ -89,8 +105,10 @@ export default function ProfileDetails(props) {
     getData()
   }, [state, pathname]);
 
+  const [isPdfLoading, setIsPdfLoading] = useState(false);
+
   const downloadAsPDF = () => {
-    setIsLoading(true);
+    setIsPdfLoading(true);
     const input = document.getElementById('pdf-content');
     html2pdf()
       .from(input)
@@ -100,25 +118,15 @@ export default function ProfileDetails(props) {
         margin: [1, 0.5],
         html2canvas: {
           scale: 3,
-          logging: true, // Enable logging to check for any errors
-          useCORS: true, // Enable cross-origin images
-          allowTaint: true, // Allow cross-origin images to taint the canvas
-          onclone: (document) => {
-            // Ensure all images are fully loaded
-            const images = document.querySelectorAll('img');
-            images.forEach((img) => {
-              if (!img.complete) {
-                img.onload = () => { }; // Force load event
-                img.src = img.src; // Re-trigger the loading
-              }
-            });
-          }
+          logging: true,
+          useCORS: true,
+          allowTaint: true,
         },
         jsPDF: { unit: 'in', format: 'A4', orientation: 'portrait' }
       })
       .save()
       .finally(() => {
-        setIsLoading(false);
+        setIsPdfLoading(false);
       });
 
   };
@@ -160,8 +168,12 @@ export default function ProfileDetails(props) {
             <Box
               component="img"
               sx={{
+                width: '100%',
+                maxHeight: '400px',
+                objectFit: 'contain'
               }}
               src={data[category]}
+              loading="lazy"
             ></Box>
           </Grid>)
       } else if (category !== "_id" && category !== "mobile") {
@@ -201,29 +213,32 @@ export default function ProfileDetails(props) {
               src={(profile?.profile_img) ? `${profile.profile_img[0]}` : ""}
               alt={"profile_image"}
               onClick={handleOpen}
-              blurDataURL={`data:image/png;base64,${profile.profile_img[0]}`}
+              loading="lazy"
             />
           </Grid>
           <Grid item xs={12} lg={9} xl={9}>
             {pathname === "/my_profile" ?
-              <Button variant="outilned" size='large' sx={{ float: "right", fontSize: "22px" }} onClick={() => setIsEdit(true)}>
+              <Button variant="outlined" size='large' sx={{ float: "right", fontSize: "22px" }} onClick={() => setIsEdit(true)}>
                 <EditOutlined alt='Edit proifle' />
               </Button> :
-              <Tooltip title={t("download as PDF")}>
+              <Tooltip title={isPdfLoading ? t("Preparing PDF...") : t("download as PDF")}>
                 <Button
-                  variant="outilned"
+                  disabled={isPdfLoading}
+                  variant="outlined"
                   color='primary'
                   size='large'
                   sx={{ float: "right", fontSize: "22px", color: "primary" }}
                   onClick={downloadAsPDF}
                 >
-                  <FilePdfOutlined />
+                  {isPdfLoading ? <Box sx={{ fontSize: '14px' }}>⌛</Box> : <FilePdfOutlined />}
                 </Button>
               </Tooltip>
             }
-            <Typography variant="h3" color="textPrimary">
-              {profile?.name}
-            </Typography>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <Typography variant="h3" color="textPrimary">
+                {profile?.name}
+              </Typography>
+            </Box>
             <br />
             <Typography variant="h6" color="textPrimary" sx={{ mb: "8px", fontWeight: "500" }}>
               {calculateAge(profile?.birth?.dob)} {`years | ${profile?.marital_status}`}
@@ -242,9 +257,6 @@ export default function ProfileDetails(props) {
             </Typography>
             <Typography variant="h6" color="textPrimary" sx={{ mb: "8px", fontWeight: "500" }}>
               <PhoneOutlined /> {profile?.family?.mobile}
-            </Typography>
-            <Typography variant="caption" color="textPrimary" sx={{ mb: "8px", fontWeight: "500" }}>
-              {/* <em>Profile created on: {new Intl.DateTimeFormat('en-US', { month: 'short', year: 'numeric' }).format(profile?.created_on && new Date(profile?.created_on))} </em> */}
             </Typography>
           </Grid>
         </Grid>
@@ -312,29 +324,6 @@ export default function ProfileDetails(props) {
         </Grid>
       </MainCard>
     </Grid>
-    <Grid item xs={12} lg={12} mb={2}>
-      <MainCard border={false} shadow={3} boxShadow  >
-        <Grid >
-          <Typography variant="h3" color="textPrimary">
-
-            {t("Match score")}  {matchScore?.obtained_points} / {matchScore?.maximum_points}
-          </Typography>
-          <br />
-        </Grid>
-        {/* <Grid container> */}
-
-        <MaterialReactTable
-          columns={columns}
-          data={matchScore?.matches}
-          enableBottomToolbar={false}
-          enableTopToolbar={false}
-          enableSorting={false}
-          enablePagination={false}
-          enableColumnActions={false}
-        />
-        {/* </Grid> */}
-      </MainCard>
-    </Grid>
   </>
 
 
@@ -357,7 +346,7 @@ export default function ProfileDetails(props) {
       </MainCard>
     </Grid>
   </>
-  getProutham()
+  
   return (
     <ComponentSkeleton isLoading={isLoading}>
       <Container maxWidth="md" id="pdf-content">

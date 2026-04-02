@@ -47,10 +47,11 @@ const ImageUploader = (props) => {
 
         processImages().then(() => {
             setImages(imagesArray);
+            const dataToPass = files; // Pass raw files
             if (props.title !== "astrology_image") {
-                props.setProfileImage(imagesArray)
+                props.setProfileImage(dataToPass);
             } else {
-                props.setAstroImage(imagesArray[0])
+                props.setAstroImage(dataToPass[0]);
             }
         }).catch((error) => {
             console.error('Error processing images:', error);
