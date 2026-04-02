@@ -32,17 +32,6 @@ export default function Header() {
   const iconBackColor = 'grey.100';
   const iconBackColorOpen = 'grey.200';
 
-  const user = {
-        _id: {
-            "$oid": "6673dd3626e43bb26bbf0cb9"
-        },
-        email: "arjun@yahoo.com",
-        password: "123",
-        logged_in: true,
-        last_login: "12/09/2023",
-        gender: "Male",
-        ip_address: "235.142.231.130"
-    }
 
   // common header
   const mainHeader = (

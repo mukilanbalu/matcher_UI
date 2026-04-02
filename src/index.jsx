@@ -45,12 +45,12 @@ const onRedirectCallback = (appState) => {
 };
 
 const providerConfig = {
-    domain: import.meta.env.VITE_AUTH0_DOMAIN || "dev-matcher.us.auth0.com",
-    clientId: import.meta.env.VITE_AUTH0_CLIENT_ID || "ElYbgNgv8swQ0cKUCv0QuFFWAA8uh4VK",
+    domain: import.meta.env.VITE_AUTH0_DOMAIN,
+    clientId: import.meta.env.VITE_AUTH0_CLIENT_ID,
     onRedirectCallback,
     authorizationParams: {
         redirect_uri: window.location.origin,
-        audience: import.meta.env.VITE_AUTH0_AUDIENCE || "matcher",
+        audience: import.meta.env.VITE_AUTH0_AUDIENCE,
         scope: "openid profile email"
     },
 };
