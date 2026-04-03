@@ -14,11 +14,6 @@ export const profile = {
     DELETE_PROFILE: "/profiles/:email"
 };
 
-export const prokerala = {
-    GET_TOKEN: "/getToken",
-    GET_MATCH: "/getMatch"
-}
-
 export const interest = {
     SEND: "/interests/send",
     LIST: "/interests/list",
