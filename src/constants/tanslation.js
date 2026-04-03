@@ -141,6 +141,19 @@ export const tamil = {
   "Rasi Lord Porutham": "ராசி அதிபதி பொருத்தம்",
   "Vashya Porutham": "வாசிய பொருத்தம்",
   "Nadi Porutham": "நாடி பொருத்தம்",
-  "Varna Porutham": "வர்ண பொருத்தம்"
-
+  "Varna Porutham": "வர்ண பொருத்தம்",
+  "Navigation": "முக்கிய பக்கங்கள்",
+  "interest": "ஆர்வம்",
+  "Attached Document / Jathagam": "ஜாதகம்",
+  "Age / Status": "வயது / திருமண நிலை",
+  "Contact": "தொடர்பு",
+  "Occupation": "தொழில்",
+  "Astrology & Horoscope": "ஜோதிடம் மற்றும் ஜாதகம்",
+  "Family Background": "குடும்ப பின்னணி",
+  "Career & Education": "கல்வி மற்றும் தொழில்",
+  "Personal & Birth Details": "தனிப்பட்ட மற்றும் பிறப்பு விவரங்கள்",
+  "YRS": "வயது",
+  "Interests": "விருப்பங்கள்",
+  "Interest": "விருப்பம்",
+  "VIEW": "மேலும் அறிய"
 };

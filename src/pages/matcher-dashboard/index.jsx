@@ -135,11 +135,9 @@ export default function DashboardMatcher() {
         const fetchInterestedProfiles = async () => {
             try {
                 const res = await interestService.getInterests(user.email);
-                if (res.status === 200 && res.data.data) {
+                if (res.status === 200 && res.data.sent) {
                     const interestedEmails = new Set(
-                        res.data.data
-                            .filter(item => item.sender_email === user.email)
-                            .map(item => item.partner_profile?.email)
+                        res.data.sent.map(item => item.partner_profile?.email)
                     );
                     setInterestedProfiles(interestedEmails);
                 }
@@ -196,114 +194,107 @@ export default function DashboardMatcher() {
                 display: "flex",
                 flexDirection: "column",
                 cursor: "pointer",
-                border: "none",
-                background: 'rgba(255, 255, 255, 0.9)',
-                backdropFilter: 'blur(5px)',
-                borderRadius: '16px',
+                border: "1px solid rgba(166, 98, 124, 0.05)",
+                background: 'rgba(255, 255, 255, 0.95)',
+                backdropFilter: 'blur(10px)',
+                borderRadius: '24px',
+                overflow: 'hidden',
+                transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
                 ":hover": {
-                    boxShadow: '0 20px 40px -12px rgba(166, 98, 124, 0.2)',
-                    transform: 'scale(1.02)'
+                    boxShadow: '0 30px 60px -12px rgba(166, 98, 124, 0.15)',
+                    transform: 'translateY(-8px)',
+                    "& img": { transform: 'scale(1.05)' }
                 }
             }}
             onClick={() => navigate("/profile/details", { state: profile })}
         >
-            <Box sx={{ position: 'relative', overflow: 'hidden', borderRadius: '16px 16px 0 0' }}>
+            <Box sx={{ position: 'relative', overflow: 'hidden', aspectRatio: { xs: '4/5', sm: '3/4' } }}>
                 <CardMedia
                     component="img"
-                    sx={{ height: 200, objectFit: 'cover' }}
+                    sx={{ 
+                        height: '100%', 
+                        width: '100%',
+                        objectFit: 'cover',
+                        transition: 'transform 0.6s ease'
+                    }}
                     image={profile?.profile_img ? `${profile.profile_img[0]}` : ""}
                     alt={profile.name}
                     loading="lazy"
                 />
-                {/* Profile ID Chip */}
-                <Box sx={{
-                    position: 'absolute',
-                    top: 8,
-                    right: 8,
-                    background: 'linear-gradient(45deg, #A6627C 30%, #D9AEBB 90%)',
-                    color: 'white',
-                    px: 1,
-                    py: 0.25,
-                    borderRadius: '12px',
-                    fontSize: '0.65rem',
-                    fontWeight: 700,
-                    boxShadow: '0 4px 10px rgba(166, 98, 124, 0.3)',
-                    maxWidth: '80%',
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                    whiteSpace: 'nowrap'
-                }}>
-                    {profile.profile_id || 'CURATED'}
-                </Box>
+                
+                {/* Removed Verified Badge */}
+
                 {/* Floating Heart Icon */}
                 <IconButton
                     onClick={(e) => handleToggleInterest(e, profile)}
                     sx={{
                         position: 'absolute',
-                        top: 8,
-                        left: 8,
-                        width: 28,
-                        height: 28,
+                        top: 12,
+                        right: 12,
+                        width: 42,
+                        height: 42,
                         borderRadius: '50%',
-                        background: interestedProfiles.has(profile.email) ? 'rgba(255, 82, 82, 0.9)' : 'rgba(255, 255, 255, 0.4)',
-                        backdropFilter: 'blur(10px)',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
+                        background: interestedProfiles.has(profile.email) ? 'rgba(166, 98, 124, 0.9)' : 'rgba(255, 255, 255, 0.7)',
+                        backdropFilter: 'blur(20px)',
+                        border: '1px solid rgba(255, 255, 255, 0.3)',
                         color: interestedProfiles.has(profile.email) ? '#fff' : '#A6627C',
                         transition: 'all 0.3s',
+                        zIndex: 2,
                         '&:hover': {
-                            background: interestedProfiles.has(profile.email) ? 'rgba(255, 82, 82, 1)' : 'rgba(255, 255, 255, 0.7)',
+                            background: interestedProfiles.has(profile.email) ? 'rgba(166, 98, 124, 1)' : 'rgba(255, 255, 255, 0.9)',
                             transform: 'scale(1.1)'
                         }
                     }}
                 >
                     {interestedProfiles.has(profile.email) ?
-                        <HeartFilled style={{ fontSize: '14px' }} /> :
-                        <HeartOutlined style={{ fontSize: '14px' }} />
+                        <HeartFilled style={{ fontSize: '20px' }} /> :
+                        <HeartOutlined style={{ fontSize: '20px' }} />
                     }
                 </IconButton>
+
                 <Box sx={{
                     position: 'absolute',
                     bottom: 0,
                     left: 0,
                     right: 0,
-                    height: '60%',
-                    background: 'linear-gradient(transparent, rgba(0,0,0,0.7))'
-                }} />
-                <Typography variant="h6" sx={{
-                    position: 'absolute',
-                    bottom: 8,
-                    left: 10,
-                    color: 'white',
-                    fontFamily: "'Outfit', sans-serif",
-                    fontSize: '1rem',
-                    fontWeight: 600,
-                    textOverflow: 'ellipsis',
-                    overflow: 'hidden',
-                    whiteSpace: 'nowrap',
-                    maxWidth: 'calc(100% - 20px)'
+                    height: '50%',
+                    background: 'linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 100%)',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'flex-end',
+                    p: 2.5
                 }}>
-                    {profile.name}
+                    <Typography variant="h3" sx={{
+                        color: 'white',
+                        fontFamily: "'Outfit', 'Noto Sans Tamil', sans-serif",
+                        fontSize: { xs: '1.35rem', sm: '1.6rem' },
+                        fontWeight: 700,
+                        mb: 0.5,
+                        textShadow: '0 2px 4px rgba(0,0,0,0.2)'
+                    }}>
+                        {profile.name}, {calculateAge(profile?.birth?.dob)}
+                    </Typography>
+                    <Typography variant="body2" sx={{ color: 'rgba(255,255,255,0.95)', fontWeight: 800, fontSize: '0.95rem' }}>
+                        {profile.professional.job} • {profile.professional.location}
+                    </Typography>
+                </Box>
+            </Box>
+            
+            <Box sx={{ p: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: '#fdfdfd' }}>
+                <Stack direction="row" spacing={2.5}>
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                        <StarBorder sx={{ fontSize: 16, color: '#A6627C', opacity: 0.7 }} />
+                        <Typography sx={{ fontSize: '0.75rem', fontWeight: 600, color: 'text.secondary' }}>{profile.astro.nakshatram || 'Revati'}</Typography>
+                    </Box>
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                        <SchoolIcon sx={{ fontSize: 16, color: '#A6627C', opacity: 0.7 }} />
+                        <Typography sx={{ fontSize: '0.75rem', fontWeight: 700, color: 'text.secondary' }}>{profile.professional.education || 'Masters'}</Typography>
+                    </Box>
+                </Stack>
+                <Typography sx={{ fontSize: '0.75rem', fontWeight: 800, color: '#A6627C', cursor: 'pointer', "&:hover": { textDecoration: 'underline' } }}>
+                    {t("VIEW")}
                 </Typography>
             </Box>
-            <CardContent sx={{ p: 1.5, flexGrow: 1 }}>
-                <Typography variant="caption" color="primary.main" sx={{ mb: 1, fontWeight: 700, letterSpacing: '0.1em', display: 'block' }}>
-                    {calculateAge(profile?.birth?.dob)} YRS • {profile?.marital_status}
-                </Typography>
-                <Grid container spacing={0.5}>
-                    <Grid item xs={12}>
-                        <Typography variant="caption" sx={{ display: 'flex', alignItems: 'center', gap: 0.5, color: 'text.secondary', fontSize: '0.7rem' }}>
-                            <span style={{ fontSize: '10px' }}>📍</span> {profile.professional.location}
-                        </Typography>
-                    </Grid>
-                    <Grid item xs={12}>
-                        <Typography variant="caption" sx={{ display: 'flex', alignItems: 'center', gap: 0.5, color: 'text.secondary', fontSize: '0.7rem' }}>
-                            <span style={{ fontSize: '10px' }}>🎓</span> {profile.professional.education}
-                        </Typography>
-                    </Grid>
-                </Grid>
-            </CardContent>
         </MainCard>
     );
 
@@ -327,44 +318,58 @@ export default function DashboardMatcher() {
     const [showFilters, setShowFilters] = useState(false);
 
     return (
-        <Grid container rowSpacing={2} columnSpacing={2} >
-            <Grid item xs={12} >
+        <Grid container rowSpacing={{ xs: 2, sm: 3 }} columnSpacing={{ xs: 2, sm: 3 }}>
+            <Grid item xs={12}>
                 <MainCard
                     border={false}
-                    boxShadow
                     sx={{
                         background: 'rgba(255, 255, 255, 0.7)',
-                        backdropFilter: 'blur(10px)',
+                        backdropFilter: 'blur(20px)',
                         borderRadius: '24px',
-                        mb: 2
+                        mb: 2,
+                        boxShadow: '0 10px 30px -10px rgba(166, 98, 124, 0.1)'
                     }}
                 >
                     <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: showFilters ? 3 : 0 }}>
-                        <Typography variant="h3" color="primary">
+                        <Typography variant="h3" sx={{ 
+                            color: 'primary.main', 
+                            fontWeight: 800,
+                            fontFamily: "'Outfit', 'Noto Sans Tamil', sans-serif",
+                            fontSize: { xs: '1.5rem', sm: '2rem' }
+                        }}>
                             {t("Find Your Soulmate")}
                         </Typography>
                         <Button
                             variant="contained"
                             onClick={() => setShowFilters(!showFilters)}
                             sx={{
-                                background: 'linear-gradient(45deg, #A6627C 30%, #D9AEBB 90%)',
-                                borderRadius: '12px',
-                                boxShadow: '0 4px 15px rgba(166, 98, 124, 0.2)'
+                                background: 'linear-gradient(135deg, #A6627C 0%, #8a4a63 100%)',
+                                borderRadius: '15px',
+                                px: 3,
+                                py: 1.2,
+                                fontSize: '0.85rem',
+                                fontWeight: 700,
+                                boxShadow: '0 8px 20px rgba(166, 98, 124, 0.25)',
+                                '&:hover': { opacity: 0.9 }
                             }}
                         >
                             {showFilters ? t("Hide Filters") : t("Show Filters")}
                         </Button>
                     </Box>
-                    {showFilters && <ProfileFilters profileFilters={profileFilters} setProfileFilters={setProfileFilters} />}
+                    {showFilters && (
+                        <Box sx={{ mt: 2, pt: 3, borderTop: '1px dashed rgba(166, 98, 124, 0.2)' }}>
+                            <ProfileFilters profileFilters={profileFilters} setProfileFilters={setProfileFilters} />
+                        </Box>
+                    )}
                 </MainCard>
             </Grid>
             <Grid item xs={12}>
                 <ComponentSkeleton isLoading={isLoading} >
                     <InfiniteScroll
-                        dataLength={profiles.length} //This is important field to render the next data
+                        dataLength={profiles.length}
                         next={loadFunc}
                         hasMore={hasMore}
-                        loader={renderMessage(t("Searching for your match..."))}
+                        loader={renderMessage(t("Curating your next match..."))}
                         endMessage={renderMessage(t("You've seen all matches!"))}
                         style={{
                             display: "flex",
@@ -373,18 +378,17 @@ export default function DashboardMatcher() {
                             flexDirection: "row",
                         }}
                         scrollThreshold={"1px"}
-
                     >
                         {!isLoading && profiles.length > 0 ?
                             profiles.map((data) =>
-                                <Grid item xs={6} sm={4} md={3} lg={2.4} key={data?.email} padding={1} >
+                                <Grid item xs={12} sm={6} md={4} lg={3} xl={2.4} key={data?.email} padding={{ xs: 1.5, sm: 2 }} >
                                     {renderProfileCards(data)}
                                 </Grid>
                             )
                             :
-                            <Grid item xs={12} sm={6} md={6} lg={12} sx={{ minHeight: "70vh" }}>
-                                <Typography variant='h4' align='center' mt={"50px"}>
-                                    {t("No profile available for the filters")}
+                            <Grid item xs={12} sx={{ minHeight: "60vh", display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                <Typography variant='h4' color="text.secondary">
+                                    {t("No profiles found matching your preferences")}
                                 </Typography>
                             </Grid>
                         }
@@ -395,3 +399,8 @@ export default function DashboardMatcher() {
         </Grid>
     );
 }
+
+import { StarBorder, VerifiedUserOutlined } from '@mui/icons-material';
+import SchoolIcon from '@mui/icons-material/School';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import Stack from '@mui/material/Stack';

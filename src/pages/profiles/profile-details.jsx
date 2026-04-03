@@ -110,51 +110,91 @@ export default function ProfileDetails(props) {
     if (entries.length === 0) return null;
 
     return (
-      <Box sx={{ mb: 4 }}>
-        <Stack direction="row" alignItems="center" spacing={1.5} sx={{ mb: 2.5 }}>
+      <Box sx={{ mb: 6 }}>
+        <Stack direction="row" alignItems="center" spacing={2} sx={{ mb: 3, px: 1 }}>
           <Box sx={{ 
             display: 'flex', 
-            p: 1.2, 
-            borderRadius: '12px', 
+            p: 1.25, 
+            borderRadius: '14px', 
             background: 'linear-gradient(135deg, #A6627C 0%, #D9AEBB 100%)',
             color: 'white',
-            boxShadow: '0 4px 12px rgba(166, 98, 124, 0.2)'
+            boxShadow: '0 8px 16px rgba(166, 98, 124, 0.25)'
           }}>
             {icon}
           </Box>
-          <Typography variant="h4" sx={{ fontWeight: 800, color: 'primary.dark', fontSize: { xs: '1.25rem', sm: '1.5rem' } }}>
+          <Typography variant="h3" sx={{ 
+            fontWeight: 800, 
+            color: 'primary.main', 
+            fontSize: { xs: '1.25rem', sm: '1.625rem' },
+            fontFamily: "'Outfit', 'Noto Sans Tamil', sans-serif"
+          }}>
             {t(title)}
           </Typography>
         </Stack>
 
         <Paper elevation={0} sx={{ 
-          p: { xs: 2.5, sm: 3.5 }, 
-          borderRadius: '20px', 
-          background: 'rgba(255, 255, 255, 0.5)', 
+          p: { xs: 3, sm: 4.5 }, 
+          borderRadius: '24px', 
+          background: 'rgba(255, 255, 255, 0.7)', 
           border: '1px solid rgba(166, 98, 124, 0.1)',
-          backdropFilter: 'blur(10px)'
+          backdropFilter: 'blur(20px)',
+          boxShadow: '0 10px 30px -5px rgba(0,0,0,0.03)'
         }}>
-          <Grid container spacing={{ xs: 2, sm: 3 }}>
+          <Grid container spacing={{ xs: 2.5, sm: 4 }}>
             {entries.map(([key, value]) => (
-              <Grid item xs={12} sm={6} key={key}>
+              <Grid item xs={6} sm={6} key={key}>
                 <Box>
                   <Typography variant="caption" sx={{ 
-                    color: 'text.secondary', 
+                    color: 'primary.main', 
                     fontWeight: 700, 
                     textTransform: 'uppercase', 
-                    letterSpacing: '1px',
-                    mb: 0.5,
-                    display: 'block'
+                    letterSpacing: '1.5px',
+                    fontSize: '0.65rem',
+                    mb: 0.75,
+                    display: 'block',
+                    opacity: 0.8
                   }}>
                     {t(key.charAt(0).toUpperCase() + key.slice(1).replace("_", " "))}
                   </Typography>
-                  <Typography variant="body1" sx={{ fontWeight: 600, color: 'text.primary', fontSize: '1.05rem' }}>
+                  <Typography variant="body1" sx={{ 
+                    fontWeight: 700, 
+                    color: '#191c1d', 
+                    fontSize: '1.1rem',
+                    fontFamily: "'Public Sans', 'Noto Sans Tamil', sans-serif"
+                  }}>
                     {t(value) || '-'}
                   </Typography>
                 </Box>
               </Grid>
             ))}
           </Grid>
+          {data?.img && (
+            <Box sx={{ mt: 4, pt: 4, borderTop: '1px dashed rgba(166, 98, 124, 0.2)' }}>
+              <Typography variant="caption" sx={{ 
+                color: 'primary.main', 
+                fontWeight: 700, 
+                textTransform: 'uppercase', 
+                letterSpacing: '1.5px',
+                fontSize: '0.65rem',
+                mb: 2,
+                display: 'block',
+                opacity: 0.8
+              }}>
+                {t('Attached Document / Jathagam')}
+              </Typography>
+              <Box
+                component="img"
+                src={data.img}
+                sx={{
+                  width: '100%',
+                  maxWidth: 400,
+                  borderRadius: '16px',
+                  border: '1px solid rgba(166, 98, 124, 0.15)',
+                  boxShadow: '0 10px 25px rgba(0,0,0,0.05)'
+                }}
+              />
+            </Box>
+          )}
         </Paper>
       </Box>
     );
@@ -164,29 +204,30 @@ export default function ProfileDetails(props) {
     <>
       {/* Hero Section */}
       <Paper elevation={0} sx={{ 
-        p: { xs: 2.5, sm: 4 }, 
-        borderRadius: '24px', 
-        background: 'rgba(255, 255, 255, 0.8)', 
-        backdropFilter: 'blur(20px)',
-        border: '1px solid rgba(255,255,255,0.3)',
-        mb: 4,
+        p: { xs: 3, sm: 5 }, 
+        borderRadius: '30px', 
+        background: 'rgba(255, 255, 255, 0.85)', 
+        backdropFilter: 'blur(30px)',
+        border: '1px solid rgba(166, 98, 124, 0.05)',
+        mb: 6,
         position: 'relative',
-        overflow: 'hidden'
+        overflow: 'hidden',
+        boxShadow: '0 20px 50px rgba(166, 98, 124, 0.08)'
       }}>
         {/* Background Accent */}
         <Box sx={{ 
           position: 'absolute', 
-          top: -100, 
-          right: -100, 
-          width: 300, 
-          height: 300, 
-          background: 'radial-gradient(circle, rgba(166, 98, 124, 0.1) 0%, transparent 70%)',
+          top: -120, 
+          right: -120, 
+          width: 400, 
+          height: 400, 
+          background: 'radial-gradient(circle, rgba(166, 98, 124, 0.12) 0%, transparent 75%)',
           borderRadius: '50%',
           zIndex: 0
         }} />
 
-        <Grid container spacing={4} sx={{ position: 'relative', zIndex: 1 }}>
-          <Grid item xs={12} sm={4} md={3}>
+        <Grid container spacing={5} sx={{ position: 'relative', zIndex: 1 }}>
+          <Grid item xs={12} sm={5} md={3.5}>
             <Box sx={{ position: 'relative' }}>
               <Box
                 component="img"
@@ -194,12 +235,14 @@ export default function ProfileDetails(props) {
                 src={profile?.profile_img?.[0] || ""}
                 sx={{
                   width: '100%',
-                  aspectRatio: '3/4',
-                  borderRadius: '20px',
+                  aspectRatio: '0.8',
+                  borderRadius: '24px',
                   objectFit: 'cover',
                   cursor: 'pointer',
-                  boxShadow: '0 20px 40px -12px rgba(166, 98, 124, 0.3)',
-                  border: '4px solid white'
+                  boxShadow: '0 30px 60px -15px rgba(0, 0, 0, 0.25)',
+                  border: '6px solid white',
+                  transition: 'transform 0.3s ease',
+                  '&:hover': { transform: 'scale(1.02)' }
                 }}
               />
               {!state?.email && (
@@ -208,111 +251,182 @@ export default function ProfileDetails(props) {
                   variant="contained" 
                   sx={{ 
                     position: 'absolute', 
-                    bottom: -15, 
-                    right: 20, 
-                    minWidth: 46, 
-                    height: 46,
-                    borderRadius: '14px',
-                    boxShadow: '0 8px 16px rgba(0,0,0,0.1)'
+                    bottom: -20, 
+                    right: 30, 
+                    minWidth: 52, 
+                    height: 52,
+                    borderRadius: '16px',
+                    boxShadow: '0 12px 24px rgba(166, 98, 124, 0.3)',
+                    background: 'linear-gradient(135deg, #A6627C 0%, #8a4a63 100%)'
                   }}
                   onClick={() => setIsEdit(true)}
                 >
-                  <EditOutlined style={{ fontSize: '20px' }} />
+                  <EditOutlined style={{ fontSize: '24px' }} />
                 </Button>
               )}
             </Box>
           </Grid>
-          <Grid item xs={12} sm={8} md={9}>
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: 2 }}>
+          <Grid item xs={12} sm={7} md={8.5}>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: 3, mb: 4 }}>
               <Box>
-                <Stack direction="row" alignItems="center" spacing={1} mb={0.5}>
-                   <Typography variant="h1" sx={{ fontWeight: 900, color: 'text.primary', fontSize: { xs: '1.75rem', sm: '2.5rem' } }}>
+                <Stack direction="row" alignItems="center" spacing={1.5} mb={1}>
+                  <Typography variant="h1" sx={{ 
+                    fontWeight: 900, 
+                    color: '#191c1d', 
+                    fontSize: { xs: '2.2rem', sm: '3.2rem' },
+                    fontFamily: "'Outfit', 'Noto Sans Tamil', sans-serif",
+                    letterSpacing: '-1px'
+                  }}>
                     {profile?.name}
                   </Typography>
-                  <VerifiedUserOutlined color="primary" sx={{ fontSize: 24 }} />
                 </Stack>
-                <Typography variant="subtitle1" color="textSecondary" sx={{ fontWeight: 700, mb: 1, display: 'flex', alignItems: 'center', gap: 1 }}>
-                  <Box sx={{ px: 1.5, py: 0.4, borderRadius: '8px', background: 'rgba(166, 98, 124, 0.1)', color: 'primary.main', fontSize: '0.85rem' }}>
-                    {profile?.profile_id || 'ID PENDING'}
-                  </Box>
-                </Typography>
+                {/* Removed ID Chip */}
               </Box>
-              <Box sx={{ display: 'flex', gap: 1.5 }}>
+              <Box sx={{ display: 'flex', gap: 2 }}>
                 {pathname !== "/my_profile" && (
                   <Tooltip title={isInterested ? "Remove Interest" : "Express Interest"}>
                     <Button
                       variant={isInterested ? "contained" : "outlined"}
-                      color="primary"
                       onClick={handleToggleInterest}
-                      sx={{ borderRadius: '14px', minWidth: 50, height: 50, p: 0 }}
+                      sx={{ 
+                        borderRadius: '18px', 
+                        minWidth: 56, 
+                        height: 56, 
+                        p: 0,
+                        borderWidth: isInterested ? 0 : '1.5px',
+                        borderColor: 'rgba(166, 98, 124, 0.2)',
+                        background: isInterested ? 'linear-gradient(135deg, #A6627C 0%, #8a4a63 100%)' : 'transparent',
+                        '&:hover': { background: isInterested ? 'linear-gradient(135deg, #A6627C 0%, #8a4a63 100%)' : 'rgba(166, 98, 124, 0.05)', borderColor: '#A6627C' }
+                      }}
                     >
-                      {isInterested ? <HeartFilled style={{ fontSize: '20px' }} /> : <HeartOutlined style={{ fontSize: '20px' }} />}
+                      {isInterested ? <HeartFilled style={{ fontSize: '24px', color: 'white' }} /> : <HeartOutlined style={{ fontSize: '24px', color: '#A6627C' }} />}
                     </Button>
                   </Tooltip>
                 )}
                 <Tooltip title="Download Profile PDF">
                   <Button
                     variant="outlined"
-                    color="warning"
                     onClick={downloadAsPDF}
-                    sx={{ borderRadius: '14px', minWidth: 50, height: 50, p: 0 }}
+                    sx={{ 
+                      borderRadius: '18px', 
+                      minWidth: 56, 
+                      height: 56, 
+                      p: 0,
+                      borderWidth: '1.5px',
+                      borderColor: 'rgba(166, 98, 124, 0.2)',
+                      color: '#A6627C',
+                      '&:hover': { background: 'rgba(166, 98, 124, 0.05)', borderColor: '#A6627C' }
+                    }}
                     disabled={isPdfLoading}
                   >
-                    {isPdfLoading ? '...' : <FilePdfOutlined style={{ fontSize: '20px' }} />}
+                    {isPdfLoading ? '...' : <FilePdfOutlined style={{ fontSize: '24px' }} />}
                   </Button>
                 </Tooltip>
               </Box>
             </Box>
 
-            <Divider sx={{ my: 3, opacity: 0.6 }} />
+            <Box sx={{ 
+              display: 'grid', 
+              gridTemplateColumns: { xs: '1fr 1fr', sm: '1fr 1fr', md: '1fr 1fr' }, 
+              gap: { xs: 3, sm: 4 }, 
+              pt: 4, 
+              borderTop: '1px solid rgba(166, 98, 124, 0.1)' 
+            }}>
+              <Stack direction="row" spacing={2.5} alignItems="center">
+                <Box sx={{ 
+                  width: 44, 
+                  height: 44, 
+                  borderRadius: '50%', 
+                  background: 'rgba(217, 174, 187, 0.15)', 
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  justifyContent: 'center',
+                  color: '#A6627C'
+                }}>
+                  <PersonOutline sx={{fontSize: 22}} />
+                </Box>
+                <Box>
+                  <Typography variant="caption" sx={{ color: '#837377', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '1px', fontSize: '0.65rem' }}>{t('Age / Status')}</Typography>
+                  <Typography variant="body1" sx={{ fontWeight: 800, color: '#191c1d', fontSize: '1.05rem' }}>{calculateAge(profile?.birth?.dob)} {t('YRS')} / {t(profile?.marital_status)}</Typography>
+                </Box>
+              </Stack>
 
-            <Grid container spacing={3}>
-              <Grid item xs={6} md={4}>
-                <Stack direction="row" spacing={1.5} alignItems="center">
-                  <Box sx={{ color: 'primary.main' }}><PersonOutline /></Box>
-                  <Box>
-                    <Typography variant="caption" color="textSecondary" sx={{ fontWeight: 600 }}>{t('Age / Status')}</Typography>
-                    <Typography variant="body1" sx={{ fontWeight: 700 }}>{calculateAge(profile?.birth?.dob)} YRS / {profile?.marital_status}</Typography>
-                  </Box>
-                </Stack>
-              </Grid>
-              <Grid item xs={6} md={4}>
-                <Stack direction="row" spacing={1.5} alignItems="center">
-                  <Box sx={{ color: 'primary.main' }}><SchoolIcon /></Box>
-                  <Box>
-                    <Typography variant="caption" color="textSecondary" sx={{ fontWeight: 600 }}>{t('Education')}</Typography>
-                    <Typography variant="body1" sx={{ fontWeight: 700 }} noWrap>{profile?.professional?.education}</Typography>
-                  </Box>
-                </Stack>
-              </Grid>
-              <Grid item xs={6} md={4}>
-                <Stack direction="row" spacing={1.5} alignItems="center">
-                  <Box sx={{ color: 'primary.main' }}><WorkOutline /></Box>
-                  <Box>
-                    <Typography variant="caption" color="textSecondary" sx={{ fontWeight: 600 }}>{t('Occupation')}</Typography>
-                    <Typography variant="body1" sx={{ fontWeight: 700 }} noWrap>{profile?.professional?.job}</Typography>
-                  </Box>
-                </Stack>
-              </Grid>
-              <Grid item xs={6} md={4}>
-                <Stack direction="row" spacing={1.5} alignItems="center">
-                  <Box sx={{ color: 'primary.main' }}><LocationOnIcon /></Box>
-                  <Box>
-                    <Typography variant="caption" color="textSecondary" sx={{ fontWeight: 600 }}>{t('Location')}</Typography>
-                    <Typography variant="body1" sx={{ fontWeight: 700 }}>{profile?.professional?.location}</Typography>
-                  </Box>
-                </Stack>
-              </Grid>
-              <Grid item xs={12} md={4}>
-                <Stack direction="row" spacing={1.5} alignItems="center">
-                  <Box sx={{ color: 'primary.main' }}><PhoneOutlined /></Box>
-                  <Box>
-                    <Typography variant="caption" color="textSecondary" sx={{ fontWeight: 600 }}>{t('Contact')}</Typography>
-                    <Typography variant="body1" sx={{ fontWeight: 700 }}>{profile?.family?.mobile || 'HIDDEN'}</Typography>
-                  </Box>
-                </Stack>
-              </Grid>
-            </Grid>
+              <Stack direction="row" spacing={2.5} alignItems="center">
+                <Box sx={{ 
+                  width: 44, 
+                  height: 44, 
+                  borderRadius: '50%', 
+                  background: 'rgba(217, 174, 187, 0.15)', 
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  justifyContent: 'center',
+                  color: '#A6627C'
+                }}>
+                  <SchoolIcon sx={{fontSize: 22}} />
+                </Box>
+                <Box>
+                  <Typography variant="caption" sx={{ color: '#837377', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '1px', fontSize: '0.65rem' }}>{t('Education')}</Typography>
+                  <Typography variant="body1" sx={{ fontWeight: 800, color: '#191c1d', fontSize: '1.05rem' }} noWrap>{profile?.professional?.education}</Typography>
+                </Box>
+              </Stack>
+
+              <Stack direction="row" spacing={2.5} alignItems="center">
+                <Box sx={{ 
+                  width: 44, 
+                  height: 44, 
+                  borderRadius: '50%', 
+                  background: 'rgba(217, 174, 187, 0.15)', 
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  justifyContent: 'center',
+                  color: '#A6627C'
+                }}>
+                  <LocationOnIcon sx={{fontSize: 22}} />
+                </Box>
+                <Box>
+                  <Typography variant="caption" sx={{ color: '#837377', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '1px', fontSize: '0.65rem' }}>{t('Location')}</Typography>
+                  <Typography variant="body1" sx={{ fontWeight: 800, color: '#191c1d', fontSize: '1.05rem' }}>{profile?.professional?.location}</Typography>
+                </Box>
+              </Stack>
+
+              <Stack direction="row" spacing={2.5} alignItems="center">
+                <Box sx={{ 
+                  width: 44, 
+                  height: 44, 
+                  borderRadius: '50%', 
+                  background: 'rgba(217, 174, 187, 0.15)', 
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  justifyContent: 'center',
+                  color: '#A6627C'
+                }}>
+                  <PhoneOutlined sx={{fontSize: 22}} />
+                </Box>
+                <Box>
+                  <Typography variant="caption" sx={{ color: '#837377', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '1px', fontSize: '0.65rem' }}>{t('Contact')}</Typography>
+                  <Typography variant="body1" sx={{ fontWeight: 800, color: '#191c1d', fontSize: '1.05rem' }}>{profile?.family?.mobile || 'HIDDEN'}</Typography>
+                </Box>
+              </Stack>
+
+              <Stack direction="row" spacing={2.5} alignItems="center" sx={{ gridColumn: { sm: 'span 2' } }}>
+                <Box sx={{ 
+                  width: 44, 
+                  height: 44, 
+                  borderRadius: '50%', 
+                  background: 'rgba(217, 174, 187, 0.15)', 
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  justifyContent: 'center',
+                  color: '#A6627C'
+                }}>
+                  <WorkOutline sx={{fontSize: 22}} />
+                </Box>
+                <Box>
+                  <Typography variant="caption" sx={{ color: '#837377', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '1px', fontSize: '0.65rem' }}>{t('Occupation')}</Typography>
+                  <Typography variant="body1" sx={{ fontWeight: 800, color: '#191c1d', fontSize: '1.05rem' }} noWrap>{profile?.professional?.job}</Typography>
+                </Box>
+              </Stack>
+            </Box>
           </Grid>
         </Grid>
       </Paper>

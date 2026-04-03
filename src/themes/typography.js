@@ -12,19 +12,19 @@ export default function Typography(fontFamily) {
       fontWeight: 700,
       fontSize: '2.5rem',
       lineHeight: 1.2,
-      fontFamily: `'Outfit', sans-serif`
+      fontFamily: `'Outfit', 'Noto Sans Tamil', sans-serif`
     },
     h2: {
       fontWeight: 700,
       fontSize: '2rem',
       lineHeight: 1.25,
-      fontFamily: `'Outfit', sans-serif`
+      fontFamily: `'Outfit', 'Noto Sans Tamil', sans-serif`
     },
     h3: {
       fontWeight: 700,
       fontSize: '1.75rem',
       lineHeight: 1.3,
-      fontFamily: `'Outfit', sans-serif`
+      fontFamily: `'Outfit', 'Noto Sans Tamil', sans-serif`
     },
     h4: {
       fontWeight: 600,
