@@ -155,5 +155,32 @@ export const tamil = {
   "YRS": "வயது",
   "Interests": "விருப்பங்கள்",
   "Interest": "விருப்பம்",
-  "VIEW": "மேலும் அறிய"
+  "VIEW": "மேலும் அறிய",
+  "Find Your Soulmate": "உங்கள் வாழ்க்கைத் துணையைத் தேடுங்கள்",
+  "Show Filters": "வடிப்பான்களைக் காண்பி",
+  "Hide Filters": "வடிப்பான்களை மறை",
+
+  // Rasi
+  "Mesham": "மேஷம்", "Rishabam": "ரிஷபம்", "Midhunam": "மிதுனம்", "Kadagam": "கடகம்", "Simmam": "சிம்மம்", "Kanni": "கன்னி", "Thulaam": "துலாம்", "Viruchigam": "விருச்சிகம்", "Dhanusu": "தனுசு", "Magaram": "மகரம்", "Kumbam": "கும்பம்", "Meenam": "மீனம்",
+
+  // Nakshatram
+  "Ashwini": "அஸ்வினி", "Bharani": "பரணி", "Krithigai": "கார்த்திகை", "Rohini": "ரோகிணி", "Mrigashirisham": "மிருகசீரிடம்", "Thiruvadhirai": "திருவாதிரை", "Punarpusam": "புனர்பூசம்", "Pusam": "பூசம்", "Ayilyam": "ஆயில்யம்",
+  "Magam": "மகம்", "Puram": "பூரம்", "Uthiram": "உத்திரம்", "Hastham": "ஹஸ்தம்", "Chithirai": "சித்திரை", "Swathi": "சுவாதி", "Visakam": "விசாகம்", "Anusham": "அனுஷம்", "Kettai": "கேட்டை",
+  "Moolam": "மூலம்", "Puradam": "பூராடம்", "Uthiradam": "உத்திராடம்", "Thiruvonam": "திருவோணம்", "Avittam": "அவிட்டம்", "Sadhayam": "சதயம்", "Purattadhi": "பூரட்டாதி", "Uthirattadhi": "உத்திரட்டாதி", "Revathi": "ரேவதி",
+
+  // Days
+  "Sunday": "ஞாயிறு", "Monday": "திங்கள்", "Tuesday": "செவ்வாய்", "Wednesday": "புதன்", "Thursday": "வியாழன்", "Friday": "வெள்ளி", "Saturday": "சனி",
+
+  // Tamil Months
+  "Chithirai": "சித்திரை", "Vaikasi": "வைகாசி", "Aani": "ஆனி", "Aadi": "ஆடி", "Aavani": "ஆவணி", "Purattasi": "புரட்டாசி", "Aippasi": "ஐப்பசி", "Karthigai": "கார்த்திகை", "Margazhi": "மார்கழி", "Thai": "தை", "Maasi": "மாசி", "Panguni": "பங்குனி",
+
+  // Tamil Years (Varudams)
+  "Prabhava": "பிரபவ", "Vibhava": "விபவ", "Sukla": "சுக்ல", "Pramodhootha": "பிரமோதூத", "Prajotpatti": "பிரஜோத்பத்தி", "Angirasa": "ஆங்கீரச", "Srimukha": "ஸ்ரீமுக", "Bhava": "பவ",
+  "Yuva": "யுவ", "Dhadhu": "தாது", "Easwara": "ஈஸ்வர", "Vegudhaanya": "வெகுதானிய", "Pramadhi": "பிரமாதி", "Vikrama": "விக்கிரம", "Vishu": "விஷு", "Chithrabhanu": "சித்திரபானு",
+  "Subhanu": "சுபானு", "Tharana": "தாரண", "Parthiba": "பார்த்திப", "Viyaya": "வியய", "Sarvajith": "சர்வஜித்", "Sarvadhari": "சர்வதாரி", "Virodhi": "விரோதி", "Vikruthi": "விக்ருதி",
+  "Kara": "நந்தன", "Nandhana": "நந்தன", "Vijaya": "விஜய", "Jaya": "ஜய", "Manmadha": "மன்மத", "Dhunmukhi": "துன்முகி", "Hevilambi": "ஹேவிளம்பி", "Vilambi": "விளம்பி",
+  "Vikari": "விகாரி", "Sarvari": "சார்வரி", "Plava": "பிலவ", "Subhakruthu": "சுபகிருது", "Sobhakruthu": "சோபகிருது", "Krodhi": "குரோதி", "Visuvasu": "விசுவாசு", "Parabhava": "பராபவ",
+  "Plavanga": "பிலவங்க", "Keelaka": "கீலக", "Saumya": "சௌமிய", "Sadhrana": "சாதாரண", "Virodhikruthu": "விரோதிகிருது", "Paridhabhi": "பரிதாபி", "Pramadheesa": "பிரமாதீச", "Anandha": "ஆனந்த",
+  "Rakshasa": "ராட்சச", "Nala": "நள", "Pingala": "பிங்கள", "Kalayukthi": "காளயுக்தி", "Siddharthi": "சித்தார்த்தி", "Raudhri": "ரௌத்திரி", "Dhunmathi": "துன்மதி", "Dhundhubhi": "துந்துபி",
+  "Rudhrodhgari": "रुத்ரோத்காரி", "Rakthakshi": "ரக்தாட்சி", "Krodhana": "குரோதன", "Akshaya": "அட்சய"
 };

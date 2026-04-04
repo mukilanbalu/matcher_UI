@@ -1,212 +1,43 @@
-export const raasiList =
-    ["மேஷம்", "ரிஷபம்", "மிதுனம்", "கடகம்", "சிம்மம்", "கன்னி", "துலாம்", "விருச்சிகம்", "தனுசு", "மகரம்", "கும்பம்", "மீனம்"];
+export const raasiList = [
+    "Mesham", "Rishabam", "Midhunam", "Kadagam", "Simmam", "Kanni", "Thulaam", "Viruchigam", "Dhanusu", "Magaram", "Kumbam", "Meenam"
+];
 
 export const nakshatramList = [
-    "அஸ்வினி",
-    "பரணி",
-    "கார்த்திகை",
-    "ரோகிணி",
-    "திருவாதிரை",
-    "புனர்பூசம்",
-    "பூசம்",
-    "ஆயில்யம்",
-    "மகம்",
-    "பூரம்",
-    "உத்திரம்",
-    "ஹஸ்தம்",
-    "சித்திரை",
-    "சுவாதி",
-    "விசாகம்",
-    "அனுஷம்",
-    "கேட்டை",
-    "மூலம்",
-    "பூராடம்",
-    "உத்திராடம்",
-    "திருவோணம்",
-    "அவிட்டம்",
-    "சதயம்",
-    "பூரட்டாதி",
-    "உத்திரட்டாதி",
-    "ரேவதி"
+    "Ashwini", "Bharani", "Krithigai", "Rohini", "Mrigashirisham", "Thiruvadhirai", "Punarpusam", "Pusam", "Ayilyam",
+    "Magam", "Puram", "Uthiram", "Hastham", "Chithirai", "Swathi", "Visakam", "Anusham", "Kettai",
+    "Moolam", "Puradam", "Uthiradam", "Thiruvonam", "Avittam", "Sadhayam", "Purattadhi", "Uthirattadhi", "Revathi"
 ];
 
-export const nakshatrasWithPadas = [
-    "அஸ்வினி 1",
-    "அஸ்வினி 2",
-    "அஸ்வினி 3",
-    "அஸ்வினி 4",
-    "பரணி 1",
-    "பரணி 2",
-    "பரணி 3",
-    "பரணி 4",
-    "கார்த்திகை 1",
-    "கார்த்திகை 2",
-    "கார்த்திகை 3",
-    "கார்த்திகை 4",
-    "ரோகிணி 1",
-    "ரோகிணி 2",
-    "ரோகிணி 3",
-    "ரோகிணி 4",
-    "மிருகசீரிடம் 1",
-    "மிருகசீரிடம் 2",
-    "மிருகசீரிடம் 3",
-    "மிருகசீரிடம் 4",
-    "திருவாதிரை 1",
-    "திருவாதிரை 2",
-    "திருவாதிரை 3",
-    "திருவாதிரை 4",
-    "புனர்பூசம் 1",
-    "புனர்பூசம் 2",
-    "புனர்பூசம் 3",
-    "புனர்பூசம் 4",
-    "பூசம் 1",
-    "பூசம் 2",
-    "பூசம் 3",
-    "பூசம் 4",
-    "ஆயில்யம் 1",
-    "ஆயில்யம் 2",
-    "ஆயில்யம் 3",
-    "ஆயில்யம் 4",
-    "மகம் 1",
-    "மகம் 2",
-    "மகம் 3",
-    "மகம் 4",
-    "பூரம் 1",
-    "பூரம் 2",
-    "பூரம் 3",
-    "பூரம் 4",
-    "உத்திரம் 1",
-    "உத்திரம் 2",
-    "உத்திரம் 3",
-    "உத்திரம் 4",
-    "ஹஸ்தம் 1",
-    "ஹஸ்தம் 2",
-    "ஹஸ்தம் 3",
-    "ஹஸ்தம் 4",
-    "சித்திரை 1",
-    "சித்திரை 2",
-    "சித்திரை 3",
-    "சித்திரை 4",
-    "சுவாதி 1",
-    "சுவாதி 2",
-    "சுவாதி 3",
-    "சுவாதி 4",
-    "விசாகம் 1",
-    "விசாகம் 2",
-    "விசாகம் 3",
-    "விசாகம் 4",
-    "அனுஷம் 1",
-    "அனுஷம் 2",
-    "அனுஷம் 3",
-    "அனுஷம் 4",
-    "கேட்டை 1",
-    "கேட்டை 2",
-    "கேட்டை 3",
-    "கேட்டை 4",
-    "மூலம் 1",
-    "மூலம் 2",
-    "மூலம் 3",
-    "மூலம் 4",
-    "பூராடம் 1",
-    "பூராடம் 2",
-    "பூராடம் 3",
-    "பூராடம் 4",
-    "உத்திராடம் 1",
-    "உத்திராடம் 2",
-    "உத்திராடம் 3",
-    "உத்திராடம் 4",
-    "திருவோணம் 1",
-    "திருவோணம் 2",
-    "திருவோணம் 3",
-    "திருவோணம் 4",
-    "அவிட்டம் 1",
-    "அவிட்டம் 2",
-    "அவிட்டம் 3",
-    "அவிட்டம் 4",
-    "சதயம் 1",
-    "சதயம் 2",
-    "சதயம் 3",
-    "சதயம் 4",
-    "பூரட்டாதி 1",
-    "பூரட்டாதி 2",
-    "பூரட்டாதி 3",
-    "பூரட்டாதி 4",
-    "உத்திரட்டாதி 1",
-    "உத்திரட்டாதி 2",
-    "உத்திரட்டாதி 3",
-    "உத்திரட்டாதி 4",
-    "ரேவதி 1",
-    "ரேவதி 2",
-    "ரேவதி 3",
-    "ரேவதி 4"
-];
-
+export const nakshatrasWithPadas = nakshatramList.flatMap(n => [1, 2, 3, 4].map(p => `${n} ${p}`));
 
 export const tamilYearsList = [
-    "பிறவா", "சுபாகிருது", "சோபசிருது", "அன்பிஸி", "குருதிஸ்", "பார்வ", "பவ",
-    "யுவ", "தாது", "ஐஸ்வர்யம்", "ஸோபநம்", "அநந்தம்", "சௌமம்", "ஸாத்யம்", "பத்மநாபம்",
-    "ஸ்ரௌத்ரி", "விகாரி", "சார்வரி", "பிலவ", "சுபகிருது", "சோபகிருது", "அன்பிஸி",
-    "குருதிஸ்", "விக்கிரம", "விரோதி", "விக்காரி", "ஸ்ரீமுகம்", "பாரணீ", "காலயுக",
-    "பார்வ", "அஸ்வினி", "அன்பி", "பிலவ", "கலியுக", "பார்வ", "அயஸி", "பிலவ",
-    "பரமாஸி", "அன்பி", "ஸ்ரவண", "ஸுபகிருது", "பிலவ", "பார்வ", "விகாரி", "ஸ்ரீமுகம்",
-    "விகாரி", "பார்வ", "ஆமையா", "பிலவ", "பார்வ", "பிலவ", "விகாரி", "பார்வ", "பிலவ",
-    "பார்வ", "பிலவ", "ஸ்ரீமுகம்", "பார்வ", "பிலவ", "பார்வ"
+    "Prabhava", "Vibhava", "Sukla", "Pramodhootha", "Prajotpatti", "Angirasa", "Srimukha", "Bhava",
+    "Yuva", "Dhadhu", "Easwara", "Vegudhaanya", "Pramadhi", "Vikrama", "Vishu", "Chithrabhanu",
+    "Subhanu", "Tharana", "Parthiba", "Viyaya", "Sarvajith", "Sarvadhari", "Virodhi", "Vikruthi",
+    "Kara", "Nandhana", "Vijaya", "Jaya", "Manmadha", "Dhunmukhi", "Hevilambi", "Vilambi",
+    "Vikari", "Sarvari", "Plava", "Subhakruthu", "Sobhakruthu", "Krodhi", "Visuvasu", "Parabhava",
+    "Plavanga", "Keelaka", "Saumya", "Sadhrana", "Virodhikruthu", "Paridhabhi", "Pramadheesa", "Anandha",
+    "Rakshasa", "Nala", "Pingala", "Kalayukthi", "Siddharthi", "Raudhri", "Dhunmathi", "Dhundhubhi",
+    "Rudhrodhgari", "Rakthakshi", "Krodhana", "Akshaya"
 ];
 
 export const tamilMonthsList = [
-    "சித்திரை",
-    "வைகாசி",
-    "ஆனி",
-    "ஆடி",
-    "ஆவணி",
-    "புரட்டாசி",
-    "ஐப்பசி",
-    "கார்த்திகை",
-    "மார்கழி",
-    "தை",
-    "மாசி",
-    "பங்குனி"
+    "Chithirai", "Vaikasi", "Aani", "Aadi", "Aavani", "Purattasi", "Aippasi", "Karthigai", "Margazhi", "Thai", "Maasi", "Panguni"
 ];
 
-export const yesNoList = [
-    "Yes",
-    "No"
-]
+export const yesNoList = ["Yes", "No"];
 
-export const skinColorsList = [
-    "மீள்நிறம்",
-    "மஞ்சள்நிறம்",
-    "சிவப்புநிறம்",
-    "கொந்துநிறம்",
-    "இடைநிறம்",
-    "கருமை நிறம்"
-];
+export const skinColorsList = ["Fair", "Wheatish", "Dusky", "Black"];
 
-export const daysList = ["ஞாயிறு", "திங்கள்", "செவ்வாய்", "புதன்", "வியாழன்", "வெள்ளி", "சனி"];
+export const daysList = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
 export const workStatusList = [
     "Working", "Not working", "Seeking Work", "Self-Employed / Business", "Exam Preparation"
-]
-
-export const martialStatusList = [
-    "Single",
-    "Widowed",
-    "Widower",
-    "Divorced",
-    "Separated"
-]
-
-
-const list = [
-    "திருமணமானவர்",
-    "திருமணமாகாதவர்",
-    "விதவையானவர்",
-    "விதவையானவர்",
-    "விபரிதமானவர்",
-    "தற்காலிகமாகப் பிரிந்தவர்"
 ];
 
-export const title = "வாணிய செட்டியார்களுக்கான பிரத்யேக இணைய தளம்!"
+export const martialStatusList = [
+    "Single", "Widowed", "Widower", "Divorced", "Separated"
+];
 
 export const initialProfileValues = {
     name: "",
@@ -215,14 +46,13 @@ export const initialProfileValues = {
     gender: "",
     height: "",
     weight: "",
-    colour: " ",
+    colour: "",
     marital_status: "",
     birth: {
         dob: "",
         time: "",
         day: "",
         place: "",
-
     },
     professional: {
         work_status: "",
@@ -230,7 +60,6 @@ export const initialProfileValues = {
         job: "",
         income: "",
         location: "",
-
     },
     family: {
         father_name: "",

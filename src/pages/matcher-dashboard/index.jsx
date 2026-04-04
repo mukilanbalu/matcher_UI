@@ -31,9 +31,8 @@ export default function DashboardMatcher() {
         marital_status: '',
         created_on: '',
         'birth.age': [21, 31],
-        limit: 5,
+        limit: 12,
         skip: 0
-
     };
 
     const [profiles, setProfiles] = useState([]);
@@ -48,6 +47,8 @@ export default function DashboardMatcher() {
     const timeoutId = useRef(null);
     const page = useRef(1);
     const scrollParentRef = useRef(null);
+    const [isInitialized, setIsInitialized] = useState(false);
+    const [totalProfiles, setTotalProfiles] = useState(0);
     const [interestedProfiles, setInterestedProfiles] = useState(new Set());
 
     const getProfiles = async (profileFilter, append) => {
@@ -80,6 +81,7 @@ export default function DashboardMatcher() {
                 } else {
                     setProfiles(res.data.data);
                 }
+                setTotalProfiles(res.data.totalRec || 0);
                 setHasMore(!((profileFilter.limit + profileFilter.skip) >= res.data.totalRec));
             } else if (res.status === 204) {
                 setProfiles([]);
@@ -87,7 +89,7 @@ export default function DashboardMatcher() {
             }
             setLoading(false);
         } catch (err) {
-            notifyError("Error fetching profiles");
+            notifyError(err.response?.data?.message || t("Error fetching profiles"));
             setLoading(false);
         }
     };
@@ -95,11 +97,13 @@ export default function DashboardMatcher() {
     const loadFunc = () => {
         setProfileFilters({
             ...profileFilters,
-            skip: profileFilters.skip + 5,
+            skip: profileFilters.skip + initialValues.limit,
         });
     }
 
     useEffect(() => {
+        if (!isInitialized) return;
+
         if (timeoutId.current) {
             clearTimeout(timeoutId.current);
         }
@@ -107,7 +111,7 @@ export default function DashboardMatcher() {
         timeoutId.current = setTimeout(() => {
             // No need to reset skip/limit in internal state here as it would re-trigger this effect
             setProfiles([]); // Clear current list on filter change
-            getProfiles({ ...profileFilters, skip: 0, limit: 5 });
+            getProfiles({ ...profileFilters, skip: 0, limit: initialValues.limit });
         }, debounceTimeout);
 
         return () => {
@@ -116,6 +120,7 @@ export default function DashboardMatcher() {
             }
         };
     }, [
+        isInitialized,
         profileFilters.gender,
         profileFilters['astro.nakshatram'],
         profileFilters['professional.work_status'],
@@ -130,11 +135,30 @@ export default function DashboardMatcher() {
         }
     }, [profileFilters.limit, profileFilters.skip]);
 
-    // Fetch user's interested profiles on mount
+    // Fetch user's profile to set opposite gender default
     useEffect(() => {
+        const setGenderDefault = async () => {
+            if (user?.email) {
+                try {
+                    const res = await profileService.getProfile({ email: user.email });
+                    if (res.status === 200 && res.data.data) {
+                        const myGender = res.data.data.gender; // "Male" or "Female"
+                        const opposite = myGender === "Male" ? "Bride" : "Groom";
+                        setProfileFilters(prev => ({ ...prev, gender: opposite }));
+                    }
+                } catch (err) {
+                    console.error("Error setting gender default:", err);
+                } finally {
+                    setIsInitialized(true);
+                }
+            } else {
+                setIsInitialized(true);
+            }
+        };
+
         const fetchInterestedProfiles = async () => {
             try {
-                const res = await interestService.getInterests(user.email);
+                const res = await interestService.getInterests(user?.email);
                 if (res.status === 200 && res.data.sent) {
                     const interestedEmails = new Set(
                         res.data.sent.map(item => item.partner_profile?.email)
@@ -147,7 +171,11 @@ export default function DashboardMatcher() {
         };
 
         if (user?.email) {
+            setGenderDefault();
             fetchInterestedProfiles();
+        } else {
+            // If no user email, still initialize to show something (or handle guest)
+            setIsInitialized(true);
         }
     }, [user]);
 
@@ -181,7 +209,7 @@ export default function DashboardMatcher() {
                 }
             }
         } catch (err) {
-            notifyError("Error updating interest");
+            notifyError(err.response?.data?.message || t("Error updating interest"));
             console.error("Error toggling interest:", err);
         }
     };
@@ -280,20 +308,17 @@ export default function DashboardMatcher() {
                 </Box>
             </Box>
             
-            <Box sx={{ p: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: '#fdfdfd' }}>
-                <Stack direction="row" spacing={2.5}>
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                        <StarBorder sx={{ fontSize: 16, color: '#A6627C', opacity: 0.7 }} />
-                        <Typography sx={{ fontSize: '0.75rem', fontWeight: 600, color: 'text.secondary' }}>{profile.astro.nakshatram || 'Revati'}</Typography>
+            <Box sx={{ p: 2, display: 'flex', justifyContent: 'center', background: '#fdfdfd' }}>
+                <Stack direction="row" spacing={3}>
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.25 }}>
+                        <StarBorder sx={{ fontSize: 18, color: '#A6627C', opacity: 0.8 }} />
+                        <Typography sx={{ fontSize: '0.850rem', fontWeight: 700, color: 'text.secondary' }}>{t(profile.astro.nakshatram) || 'Revati'}</Typography>
                     </Box>
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                        <SchoolIcon sx={{ fontSize: 16, color: '#A6627C', opacity: 0.7 }} />
-                        <Typography sx={{ fontSize: '0.75rem', fontWeight: 700, color: 'text.secondary' }}>{profile.professional.education || 'Masters'}</Typography>
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.25 }}>
+                        <SchoolIcon sx={{ fontSize: 18, color: '#A6627C', opacity: 0.8 }} />
+                        <Typography sx={{ fontSize: '0.850rem', fontWeight: 700, color: 'text.secondary' }}>{t(profile.professional.education) || 'Masters'}</Typography>
                     </Box>
                 </Stack>
-                <Typography sx={{ fontSize: '0.75rem', fontWeight: 800, color: '#A6627C', cursor: 'pointer', "&:hover": { textDecoration: 'underline' } }}>
-                    {t("VIEW")}
-                </Typography>
             </Box>
         </MainCard>
     );
@@ -337,8 +362,26 @@ export default function DashboardMatcher() {
                             fontFamily: "'Outfit', 'Noto Sans Tamil', sans-serif",
                             fontSize: { xs: '1.5rem', sm: '2rem' }
                         }}>
-                            {t("Find Your Soulmate")}
-                        </Typography>
+                                {t("Find Your Soulmate")}
+                                {totalProfiles > 0 && (
+                                    <Typography 
+                                        component="span" 
+                                        sx={{ 
+                                            ml: 2, 
+                                            fontSize: '1rem', 
+                                            fontWeight: 600, 
+                                            color: '#A6627C',
+                                            verticalAlign: 'middle',
+                                            background: 'rgba(166, 98, 124, 0.1)',
+                                            px: 2,
+                                            py: 0.5,
+                                            borderRadius: '20px'
+                                        }}
+                                    >
+                                        {totalProfiles} {t("MatchesFound")}
+                                    </Typography>
+                                )}
+                            </Typography>
                         <Button
                             variant="contained"
                             onClick={() => setShowFilters(!showFilters)}
@@ -376,22 +419,25 @@ export default function DashboardMatcher() {
                             flexWrap: "wrap",
                             width: "100%",
                             flexDirection: "row",
+                            overflow: 'hidden'
                         }}
-                        scrollThreshold={"1px"}
+                        scrollThreshold={0.9}
                     >
-                        {!isLoading && profiles.length > 0 ?
-                            profiles.map((data) =>
-                                <Grid item xs={12} sm={6} md={4} lg={3} xl={2.4} key={data?.email} padding={{ xs: 1.5, sm: 2 }} >
-                                    {renderProfileCards(data)}
-                                </Grid>
-                            )
-                            :
+                        {!isLoading && profiles.length > 0 ? (
+                            <Grid container rowSpacing={{ xs: 2, sm: 3 }} columnSpacing={{ xs: 2, sm: 3 }} sx={{ width: '100%', m: 0 }}>
+                                {profiles.map((data) => (
+                                    <Grid item xs={12} sm={6} md={4} lg={3} xl={2.4} key={data?.email}>
+                                        {renderProfileCards(data)}
+                                    </Grid>
+                                ))}
+                            </Grid>
+                        ) : (
                             <Grid item xs={12} sx={{ minHeight: "60vh", display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                                 <Typography variant='h4' color="text.secondary">
                                     {t("No profiles found matching your preferences")}
                                 </Typography>
                             </Grid>
-                        }
+                        )}
                     </InfiniteScroll>
                 </ComponentSkeleton>
             </Grid>

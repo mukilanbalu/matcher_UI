@@ -7,7 +7,7 @@ export const auth = {
 }
 
 export const profile = {
-    GET_PROFILE: "/profile",
+    GET_PROFILE: "/get-profile",
     SEARCH_PROFILE: "/profiles/search",
     CREATE_PROFILE: "/profile",
     EDIT_PROFILE: "/profiles",

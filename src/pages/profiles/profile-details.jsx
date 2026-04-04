@@ -52,17 +52,18 @@ export default function ProfileDetails(props) {
               setProfile(res.data.data[0]);
               checkInterest(res.data.data[0].email);
             } else {
+              setProfile({...initialProfileValues, email: props?.currentUser?.email || ""});
               if (email === props?.currentUser?.email) setIsCreateProfile(true);
             }
           })
           .catch(err => {
             console.error("Error fetching profile:", err);
-            notifyError("Error searching profile");
+            notifyError(err.response?.data?.message || t("Error searching profile"));
           })
           .finally(() => setIsLoading(false));
       }
     } catch (err) {
-      notifyError("Error fetching profile");
+      notifyError(err.response?.data?.message || t("Error fetching profile"));
       setIsLoading(false);
     }
   }
@@ -81,7 +82,7 @@ export default function ProfileDetails(props) {
         setIsInterested(res.data.action === "added");
         notifySuccess(res.data.message);
       }
-    } catch (err) { notifyError("Error toggling interest"); }
+    } catch (err) { notifyError(err.response?.data?.message || t("Error toggling interest")); }
   }
 
   useEffect(() => {

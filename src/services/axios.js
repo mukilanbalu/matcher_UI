@@ -115,10 +115,7 @@ import axios from 'axios';
 // Create an Axios instance
 const axiosClient = axios.create({
     baseURL: import.meta.env.VITE_API_ENDPOINT,
-    timeout: 50000,
-    headers: {
-        'Content-Type': 'application/json',
-    },
+    timeout: 50000
 });
 
 // Request interceptor to add token to headers

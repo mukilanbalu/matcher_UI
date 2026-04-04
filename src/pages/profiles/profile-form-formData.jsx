@@ -39,6 +39,7 @@ const ProfileForm = (props) => {
     const validationSchema = Yup.object({
         name: Yup.string().min(3, 'Name must be at least 2 characters')
             .matches(/^[a-zA-Z\s]*$/, 'Name cannot contain special characters').required('Required'),
+        email: Yup.string().email('Invalid email format').required('Required'),
         height: Yup.string().trim().required('Required'),
         weight: Yup.string().trim().required('Required'),
         gender: Yup.string().trim().required('Required'),
@@ -67,10 +68,10 @@ const ProfileForm = (props) => {
             poorvigam: Yup.string().trim().required('Required'),
             gothram: Yup.string().trim().required('Required'),
             kuladeivam: Yup.string().trim().required('Required'),
-            brothers: Yup.number().required('Required'),
-            sisters: Yup.number().required('Required'),
-            married_brothers: Yup.number().required('Required'),
-            married_sisters: Yup.number().required('Required'),
+            brothers: Yup.number().typeError('Must be a number').required('Required'),
+            sisters: Yup.number().typeError('Must be a number').required('Required'),
+            married_brothers: Yup.number().typeError('Must be a number').required('Required'),
+            married_sisters: Yup.number().typeError('Must be a number').required('Required'),
             address: Yup.string().trim().required('Required'),
             mobile: Yup.string().trim().matches(/^\d{10}$/, 'Invalid mobile number').required('Required'),
         }),
@@ -92,7 +93,7 @@ const ProfileForm = (props) => {
     const handleNext = () => setActiveStep((prev) => prev + 1);
     const handleBack = () => setActiveStep((prev) => prev - 1);
 
-    const renderField = (name, key, value, handleChange, values) => {
+    const renderField = (name, key, value, handleChange, values, disabled = false) => {
         const dropdownOptions = {
             gender: ["Male", "Female"],
             colour: ["Fair", "Wheatish", "Dusky", "Black"],
@@ -131,6 +132,7 @@ const ProfileForm = (props) => {
                     fullWidth
                     variant="outlined"
                     displayEmpty
+                    disabled={disabled}
                 >
                     <MenuItem value={" "}><em>{t("Select")}</em></MenuItem>
                     {dropdownOptions[key].map(option => (
@@ -147,6 +149,7 @@ const ProfileForm = (props) => {
                 onChange={handleChange}
                 fullWidth
                 variant="outlined"
+                disabled={disabled}
                 placeholder={placeholders[key] || `Enter ${key}`}
             />
         );
@@ -160,6 +163,7 @@ const ProfileForm = (props) => {
                         <Grid item xs={12}><Typography variant="h5">{t("Basic Details")}</Typography></Grid>
                         {[
                             { name: 'name', label: 'Name' },
+                            { name: 'email', label: 'Email', disabled: true },
                             { name: 'gender', label: 'Gender' },
                             { name: 'marital_status', label: 'Marital Status' },
                             { name: 'height', label: 'Height' },
@@ -168,7 +172,7 @@ const ProfileForm = (props) => {
                         ].map(f => (
                             <Grid item xs={12} sm={6} key={f.name}>
                                 <InputLabel required>{t(f.label)}</InputLabel>
-                                {renderField(f.name, f.name, null, handleChange, values)}
+                                {renderField(f.name, f.name, null, handleChange, values, f.disabled)}
                                 <ErrorMessage name={f.name} component={FormHelperText} error />
                             </Grid>
                         ))}
@@ -284,52 +288,32 @@ const ProfileForm = (props) => {
         }
     };
 
-    const uploadFile = async (file, bucket) => {
-        const fileExt = file.name.split('.').pop();
-        const fileName = `${Math.random()}.${fileExt}`;
-        const filePath = `${user.sub}/${fileName}`;
-
-        let { error: uploadError } = await supabase.storage
-            .from(bucket)
-            .upload(filePath, file);
-
-        if (uploadError) {
-            throw uploadError;
-        }
-
-        const { data } = supabase.storage
-            .from(bucket)
-            .getPublicUrl(filePath);
-
-        return data.publicUrl;
-    };
-
     const handleSubmit = async (values, { setSubmitting }) => {
+        console.log("Submitting values:", values);
         try {
-            let profileImgUrls = [];
-            if (profileImage.length) {
-                profileImgUrls = await Promise.all(
-                    profileImage.map(file => uploadFile(file, 'profile_images'))
-                );
-            }
-
-            let astroImgUrl = "";
-            if (astroImage && typeof astroImage !== 'string') {
-                astroImgUrl = await uploadFile(astroImage, 'astro_images');
-            }
-
-            let payload = {
+            let payloadData = {
                 ...formData,
                 ...values,
-                email: user?.email,
-                profile_img: profileImgUrls.length ? [...(formData.profile_img || []), ...profileImgUrls] : formData.profile_img,
-                astro: { ...values.astro, img: astroImgUrl || formData.astro?.img },
+                email: values.email || user?.email,
                 created_on: props.isCreateProfile ? new Date().toISOString() : formData.created_on
             };
 
+            const submitData = new FormData();
+            submitData.append('profileData', JSON.stringify(payloadData));
+
+            if (profileImage && profileImage.length > 0) {
+                profileImage.forEach(file => {
+                    submitData.append('profileImage', file);
+                });
+            }
+
+            if (astroImage && typeof astroImage !== 'string') {
+                submitData.append('astroImage', astroImage);
+            }
+
             const responseData = props.isCreateProfile 
-                ? await profileService.createProfile(payload) 
-                : await profileService.patchProfile(payload);
+                ? await profileService.createProfile(submitData) 
+                : await profileService.patchProfile(submitData);
             
             if (responseData.status === 200) {
                 props.setProfile(responseData.data.data);
@@ -338,7 +322,7 @@ const ProfileForm = (props) => {
                 props.setIsEdit(false);
             }
         } catch (e) {
-            notifyError("Error saving profile!");
+            notifyError(e.response?.data?.message || t("Error saving profile!"));
             console.error(e);
         } finally {
             setSubmitting(false);
@@ -351,7 +335,11 @@ const ProfileForm = (props) => {
             validationSchema={validationSchema}
             onSubmit={handleSubmit}
         >
-            {({ handleSubmit, handleChange, values, isSubmitting, errors }) => (
+            {({ handleSubmit, handleChange, values, isSubmitting, errors }) => {
+                if (Object.keys(errors).length > 0) {
+                    console.log("Formik Validation Errors:", errors);
+                }
+                return (
                 <form noValidate onSubmit={handleSubmit}>
                     <MainCard 
                         border={false} 
@@ -364,90 +352,57 @@ const ProfileForm = (props) => {
                         }}
                     >
                         <Typography variant="h2" sx={{ mb: 4, textAlign: 'center', color: 'primary.main' }}>
-                             {props.isCreateProfile ? t("Create Your Journey") : t("Edit Your Profile")}
+                             {props.isCreateProfile ? t("Create Your Profile") : t("Edit Your Profile")}
                         </Typography>
 
-                        <Stepper 
-                            activeStep={activeStep} 
-                            orientation="horizontal" 
-                            sx={{ 
-                                mb: 6, 
-                                display: { xs: 'none', md: 'flex' },
-                                '& .MuiStepIcon-root.Mui-active': { color: 'primary.main' },
-                                '& .MuiStepIcon-root.Mui-completed': { color: 'secondary.main' }
-                            }}
-                        >
-                            {steps.map((label) => (
-                                <Step key={label}><StepLabel>{t(label)}</StepLabel></Step>
+                        <Box sx={{ mb: 4 }}>
+                            {steps.map((stepName, index) => (
+                                <Box key={index} sx={{ mb: 5 }}>
+                                    <Box sx={{ p: 0, borderRadius: '16px' }}>
+                                        {renderStepContent(index, handleChange, values)}
+                                    </Box>
+                                </Box>
                             ))}
-                        </Stepper>
-                        
-                        <Box sx={{ mb: 4, minHeight: '400px' }}>
-                            <Typography variant="h3" sx={{ mb: 3, color: 'text.primary', borderBottom: '2px solid', borderColor: 'primary.lighter', pb: 1, display: 'inline-block' }}>
-                                {t(steps[activeStep])}
-                            </Typography>
-                            {renderStepContent(activeStep, handleChange, values)}
                         </Box>
 
                         <Divider sx={{ my: 3, opacity: 0.1 }} />
 
                         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                             <Button 
-                                disabled={activeStep === 0} 
-                                onClick={handleBack}
-                                sx={{ borderRadius: '12px', px: 4 }}
+                                onClick={() => props.setIsEdit(false)}
+                                color="secondary"
+                                sx={{ borderRadius: '12px' }}
                             >
-                                {t("Back")}
+                                {t("Cancel")}
                             </Button>
-                            <Box sx={{ display: 'flex', gap: 2 }}>
-                                <Button 
-                                    onClick={() => props.setIsEdit(false)}
-                                    color="secondary"
-                                    sx={{ borderRadius: '12px' }}
-                                >
-                                    {t("Cancel")}
-                                </Button>
-                                {activeStep === steps.length - 1 ? (
-                                    <AnimateButton>
-                                        <Button 
-                                            variant="contained" 
-                                            type="submit" 
-                                            disabled={isSubmitting}
-                                            sx={{ 
-                                                borderRadius: '24px', 
-                                                px: 6, 
-                                                py: 1.5,
-                                                background: 'linear-gradient(45deg, #A6627C 30%, #D9AEBB 90%)',
-                                                boxShadow: '0 8px 20px rgba(166, 98, 124, 0.3)'
-                                            }}
-                                        >
-                                            {t("Complete Profile")}
-                                        </Button>
-                                    </AnimateButton>
-                                ) : (
+                            
+                            <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
+                                {!isEmpty(errors) && (
+                                    <FormHelperText error sx={{ m: 0 }}>
+                                        {t("Please fix validation errors before saving.")}
+                                    </FormHelperText>
+                                )}
+                                <AnimateButton>
                                     <Button 
                                         variant="contained" 
-                                        onClick={handleNext}
+                                        type="submit" 
+                                        disabled={isSubmitting}
                                         sx={{ 
                                             borderRadius: '24px', 
                                             px: 6, 
+                                            py: 1.5,
                                             background: 'linear-gradient(45deg, #A6627C 30%, #D9AEBB 90%)',
+                                            boxShadow: '0 8px 20px rgba(166, 98, 124, 0.3)'
                                         }}
                                     >
-                                        {t("Continue")}
+                                        {t("Complete Profile")}
                                     </Button>
-                                )}
+                                </AnimateButton>
                             </Box>
                         </Box>
-                        
-                        {!isEmpty(errors) && activeStep === steps.length -1 && (
-                            <FormHelperText error sx={{ mt: 2 }}>
-                                {t("Please fix validation errors before saving.")}
-                            </FormHelperText>
-                        )}
                     </MainCard>
                 </form>
-            )}
+            )}}
         </Formik>
     );
 };

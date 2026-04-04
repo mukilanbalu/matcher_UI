@@ -31,7 +31,7 @@ export default function InterestsPage() {
                 setInterests(res.data);
             }
         } catch (err) {
-            notifyError("Error fetching interests");
+            notifyError(err.response?.data?.message || t("Error fetching interests"));
         } finally {
             setIsLoading(false);
         }
@@ -49,7 +49,7 @@ export default function InterestsPage() {
                 fetchInterests();
             }
         } catch (err) {
-            notifyError("Error updating status");
+            notifyError(err.response?.data?.message || t("Error updating status"));
         }
     };
 
@@ -63,7 +63,7 @@ export default function InterestsPage() {
                 }
             }
         } catch (err) {
-            notifyError("Error removing interest");
+            notifyError(err.response?.data?.message || t("Error removing interest"));
         }
     }
 
